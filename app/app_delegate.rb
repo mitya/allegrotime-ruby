@@ -3,19 +3,19 @@ class AppDelegate
 
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     model = ModelManager.alloc.init
-    app = self
+    app = self # WTF
     
     mainViewController = MainViewController.alloc.initWithNibName "MainView", bundle:nil
-    self.navigationController = UINavigationController.alloc.initWithRootViewController mainViewController
-    navigationController.delegate = self
+    @navigationController = UINavigationController.alloc.initWithRootViewController mainViewController
+    @navigationController.delegate = self
 
-    self.window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
-    window.backgroundColor = UIColor.whiteColor
-    window.rootViewController = self.navigationController
-    window.makeKeyAndVisible
+    @window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
+    @window.backgroundColor = UIColor.whiteColor
+    @window.rootViewController = self.navigationController
+    @window.makeKeyAndVisible
 
-    self.perMinuteTimer = NSTimer.scheduledTimerWithTimeInterval 20, target:self, selector:'timerTicked', userInfo:nil repeats:YES
-    perMinuteTimer.fireDate = Helper.nextFullMinuteDate
+    @perMinuteTimer = NSTimer.scheduledTimerWithTimeInterval 20, target:self, selector:'timerTicked', userInfo:nil repeats:YES
+    @perMinuteTimer.fireDate = Helper.nextFullMinuteDate
 
     true
   end
