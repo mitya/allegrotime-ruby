@@ -22,7 +22,7 @@ class LogViewController
     swipeRecognizer = UISwipeGestureRecognizer.alloc.initWithTarget self, action:'recognizedSwipe:'
     swipeRecognizer.direction = UISwipeGestureRecognizerDirectionRight
     view.addGestureRecognizer swipeRecognizer
-  }
+  end
 
   def viewWillAppear(animated)
     super

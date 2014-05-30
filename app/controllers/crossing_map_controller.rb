@@ -91,7 +91,7 @@ class CrossingMapController
     scheduleController = CrossingScheduleController.alloc.initWithStyle UITableViewStyleGrouped
     scheduleController.crossing = crossing
     navigationController.pushViewController scheduleController, animated:YES
-  }
+  end
   
   ### callbacks
   

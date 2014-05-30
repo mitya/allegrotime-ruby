@@ -1,0 +1,112 @@
+# typedef enum {
+#   ClosingDirectionToFinland = 1,
+#   ClosingDirectionToRussia = 2
+# } ClosingDirection;
+# 
+# typedef enum {
+#   CrossingStateClear,
+#   CrossingStateSoon,
+#   CrossingStateVerySoon,
+#   CrossingStateClosing,
+#   CrossingStateClosed,
+#   CrosingsStateJustOpened
+# } CrossingState;
+# 
+# typedef enum {
+#   StateColorGreen,
+#   StateColorYellow,
+#   StateColorRed
+# } StateColor;
+
+
+#define PREVIOUS_TRAIN_LAG_TIME 5
+#define CLOSING_TIME 10
+
+class ModelManager
+  ### properties
+
+  attr_accessor :crossings, :closings, :closestCrossing, :selectedCrossing
+
+  def defaultCrossing
+    Crossing.getCrossingWithName "Удельная"
+  end
+
+  def closestCrossing
+    unless @closestCrossing
+      if location = CLLocationManager.new.location
+        @closestCrossing = crossingClosestTo location
+      end
+    end
+    @closestCrossing
+  end
+
+  def currentCrossing
+    selectedCrossing || closestCrossing || defaultCrossing
+  end
+
+  def selectedCrossing
+    crossingName = NSUserDefaults.standardUserDefaults.objectForKey "selectedCrossing"
+    crossingName ? Crossing.getCrossingWithName(crossingName) : nil
+  end
+
+  def setSelectedCrossing(aCrossing)
+    NSUserDefaults.standardUserDefaults.setObject aCrossing.name, forKey:"selectedCrossing"
+  end
+
+  def setCurrentCrossing(crossing)
+    selectedCrossing = crossing.isClosest ? nil : crossing;
+  end
+
+  ### methods
+
+  def crossingClosestTo(location)
+    crossings.minimumObject -> do |crossing|
+      currentLocation = CLLocation.alloc.initWithLatitude crossing.latitude, longitude:crossing.longitude
+      currentLocation.distanceFromLocation location
+    end
+  end
+
+  ### initialization
+
+  def init
+    super
+    loadFile
+    self
+  end
+
+  def loadFile
+    crossings = NSMutableArray.arrayWithCapacity 30
+
+    dataPath = NSBundle.mainBundle.pathForResource "data/schedule", ofType:"csv"
+    dataString = NSString.stringWithContentsOfFile dataPath, encoding:NSUTF8StringEncoding, error:NULL
+    dataRows = dataString.componentsSeparatedByString "\n"
+
+    for dataRow in dataRows
+      components = dataRow.componentsSeparatedByString ","
+
+      crossing = Crossing.new
+      crossing.name = components.objectAtIndex 0
+      crossing.distance = components.objectAtIndex(1).intValue
+      crossing.latitude = components.objectAtIndex(2).floatValue
+      crossing.longitude = components.objectAtIndex(3).floatValue
+      crossing.closings = NSMutableArray.arrayWithCapacity(8)
+
+      lastDatumIndex = 3
+      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 1), direction:ClosingDirectionToFinland
+      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 2), direction:ClosingDirectionToRussia
+      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 3), direction:ClosingDirectionToFinland
+      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 4), direction:ClosingDirectionToRussia
+      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 5), direction:ClosingDirectionToFinland
+      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 6), direction:ClosingDirectionToRussia
+      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 7), direction:ClosingDirectionToFinland
+      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 8), direction:ClosingDirectionToRussia
+
+     crossings.addObject crossing
+    end
+
+    closings = NSMutableArray.arrayWithCapacity crossings.count * 8
+    for crossing in crossings
+      closings.addObjectsFromArray crossing.closings
+    end
+  end
+end

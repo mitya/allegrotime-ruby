@@ -174,11 +174,11 @@ class MainViewController
     NSLog("%s ", __cmd);
     if !bannerViewLoaded
       bannerView.frame = CGRectMake(banner.frame.origin.x, view.bounds.size.height, banner.frame.size.width, banner.frame.size.height);
-      UIView.animateWithDuration 0.25, animations: -> {
+      UIView.animateWithDuration 0.25, animations: -> do
         banner.hidden = NO;
         banner.frame = CGRectMake(banner.frame.origin.x, view.bounds.size.height - banner.frame.size.height, 
           banner.frame.size.width, banner.frame.size.height);
-      }
+      end
       bannerViewLoaded = YES;
     end
   end
