@@ -14,7 +14,7 @@ class AppDelegate
     @window.rootViewController = self.navigationController
     @window.makeKeyAndVisible
 
-    @perMinuteTimer = NSTimer.scheduledTimerWithTimeInterval 20, target:self, selector:'timerTicked', userInfo:nil repeats:YES
+    @perMinuteTimer = NSTimer.scheduledTimerWithTimeInterval 20, target:self, selector:'timerTicked', userInfo:nil, repeats:YES
     @perMinuteTimer.fireDate = Helper.nextFullMinuteDate
 
     true

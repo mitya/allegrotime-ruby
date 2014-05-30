@@ -60,7 +60,7 @@ class ModelManager
   ### methods
 
   def crossingClosestTo(location)
-    crossings.minimumObject -> do |crossing|
+    crossings.minimumObject -> (crossing) do 
       currentLocation = CLLocation.alloc.initWithLatitude crossing.latitude, longitude:crossing.longitude
       currentLocation.distanceFromLocation location
     end

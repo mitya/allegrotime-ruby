@@ -62,14 +62,14 @@ class CrossingMapController
   ### methods
   
   def showCrossing(aCrossing)
-    mapView.setRegion MKCoordinateRegionMakeWithDistance(aCrossing.coordinate, 7000, 7000) animated:NO
-    mapView.selectAnnotation aCrossing animated:NO
+    mapView.setRegion MKCoordinateRegionMakeWithDistance(aCrossing.coordinate, 7000, 7000), animated:NO
+    mapView.selectAnnotation aCrossing, animated:NO
   end
   
   ### map view
   
   def mapView(aMapView, viewForAnnotation:annotation)
-    if (![annotation isKindOfClass:[Crossing class]]) return nil;
+    return nil unless annotation.isKindOfClass Crossing.class
   
     crossing = annotation
   
@@ -120,10 +120,9 @@ class CrossingMapController
   
   def pinMapping
     @pinMapping ||= NSDictionary.dictionaryWithObjectsAndKeys(
-        MXImageFromFile("crossing-pin-green.png"), UIColor.greenColor,
-        MXImageFromFile("crossing-pin-yellow.png"), UIColor.yellowColor,
-        MXImageFromFile("crossing-pin-red.png"), UIColor.redColor,
-        nil)
-    end
+      MXImageFromFile("crossing-pin-green.png"), UIColor.greenColor,
+      MXImageFromFile("crossing-pin-yellow.png"), UIColor.yellowColor,
+      MXImageFromFile("crossing-pin-red.png"), UIColor.redColor,
+      nil)
   end
 end

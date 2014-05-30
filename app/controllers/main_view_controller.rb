@@ -25,7 +25,7 @@ class MainViewController
     setupBanner
     setupLogConsoleGesture
 
-    adTimer = NSTimer.scheduledTimerWithTimeInterval GAD_REFRESH_PERIOD, target:self, selector:'adTimerTicked'. userInfo:nil, repeats:YES
+    adTimer = NSTimer.scheduledTimerWithTimeInterval GAD_REFRESH_PERIOD, target:self, selector:'adTimerTicked', userInfo:nil, repeats:YES
   end
 
   def createInfoButton 
@@ -117,11 +117,11 @@ class MainViewController
   def tableView(table, didSelectRowAtIndexPath:indexPath)
     cell = tableView.cellForRowAtIndexPath indexPath
 
-    if cell == crossingCell)
+    if cell == crossingCell
       showCrossingListToChangeCurrent
-    elsif (cell == showScheduleCell) 
+    elsif cell == showScheduleCell
       showCrossingListForSchedule
-    elsif (cell == showMapCell) 
+    elsif cell == showMapCell
       showMap
     end
   end

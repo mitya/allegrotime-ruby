@@ -44,7 +44,7 @@ def MXLogRect(title, rect)
   NSLog("%s %@: {(%.0f,%.0f) %.0fx%.0f}", __func__, title, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 end
 
-def MXLog(char const *desc, id object)
+def MXLog(desc, object)
   if object.isKindOfClass NSArray.class
     MXLogArray(desc, object);
   else
@@ -59,13 +59,8 @@ end
 
 ### Console
 
-MXLoggingBuffer = nil
-
-def MXGetConsole()
-  unless MXLoggingBuffer
-    MXLoggingBuffer = NSMutableArray.arrayWithCapacity 1000
-  end
-  MXLoggingBuffer
+def MXGetConsole
+  $mx_logging_buffer ||= NSMutableArray.arrayWithCapacity 1000
 end
 
 def MXWriteToConsole(format, *args)
@@ -80,11 +75,11 @@ def MXWriteToConsole(format, *args)
   #   formattedMessage = [NSString stringWithFormat:@"%@ %@\n", MXFormatDate([NSDate date], @"HH:mm:ss"), formattedMessage];
   #   [MXGetConsole() addObject:formattedMessage];
   # 
-  #   [NSNotificationCenter.defaultCenter postNotificationName:NXLogConsoleUpdated object:MXLoggingBuffer];
+  #   [NSNotificationCenter.defaultCenter postNotificationName:NXLogConsoleUpdated object:$mx_logging_buffer];
   # 
-  #   if (MXLoggingBuffer.count > 200)
-  #     [MXLoggingBuffer removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 50)]];
-  #     [NSNotificationCenter.defaultCenter postNotificationName:NXLogConsoleFlushed object:MXLoggingBuffer];
+  #   if ($mx_logging_buffer.count > 200)
+  #     [$mx_logging_buffer removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 50)]];
+  #     [NSNotificationCenter.defaultCenter postNotificationName:NXLogConsoleFlushed object:$mx_logging_buffer];
   #   end
   # #endif
 end
@@ -272,14 +267,14 @@ class NSArray
   end
 
    def minimumObject(valueSelector)
-    double minValue = valueSelector.call firstObject
-    minObject = self.firstObject
+    minValue = valueSelector.call firstObject
+    minObject = firstObject
 
-    for object in self
+    for object in self do
       value = valueSelector.call object
       if value < minValue
-        minValue = value;
-        minObject = object;
+        minValue = value
+        minObject = object
       end
     end
 
@@ -287,10 +282,8 @@ class NSArray
   end
 
    def detectObject(predicate)
-    for object in self
-      if predicate.call object
-        return object
-      end
+    for object in self do
+      return object if predicate.call object
     end
     nil
   end
