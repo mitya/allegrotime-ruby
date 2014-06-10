@@ -1,4 +1,4 @@
-class AboutController
+class AboutController < UIViewController
   attr_accessor :webView
 
   def viewDidLoad

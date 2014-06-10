@@ -1,4 +1,4 @@
-class CrossingListController
+class CrossingListController < UITableViewController
   attr_accessor :target, :action, :accessoryType
 
   def viewDidLoad

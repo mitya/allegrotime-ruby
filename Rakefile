@@ -9,6 +9,7 @@ rescue LoadError
 end
 
 Motion::Project::App.setup do |app|
-  # Use `rake config' to see complete project settings.
   app.name = 'allegrotime_rm'
+  app.frameworks += %w(StoreKit AdSupport AVFoundation CoreTelephony SystemConfiguration MessageUI AudioToolbox MapKit CoreLocation CoreData)
+  app.vendor_project 'vendor/GoogleAdMobAdsSdkiOS-6.8.0', :static, force_load: false
 end

@@ -1,4 +1,4 @@
-class CrossingMapController
+class CrossingMapController < UIViewController
  attr_accessor :mapView, :pinMapping, :timer, :lastRegion, :lastMapType
 
   def initialize

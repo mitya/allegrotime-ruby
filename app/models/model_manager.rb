@@ -1,26 +1,19 @@
-# typedef enum {
-#   ClosingDirectionToFinland = 1,
-#   ClosingDirectionToRussia = 2
-# } ClosingDirection;
-# 
-# typedef enum {
-#   CrossingStateClear,
-#   CrossingStateSoon,
-#   CrossingStateVerySoon,
-#   CrossingStateClosing,
-#   CrossingStateClosed,
-#   CrosingsStateJustOpened
-# } CrossingState;
-# 
-# typedef enum {
-#   StateColorGreen,
-#   StateColorYellow,
-#   StateColorRed
-# } StateColor;
+ClosingDirectionToFinland = 1,
+ClosingDirectionToRussia = 2
 
+CrossingStateClear = 0
+CrossingStateSoon = 1
+CrossingStateVerySoon = 2
+CrossingStateClosing = 3
+CrossingStateClosed = 4
+CrosingsStateJustOpened = 5
 
-#define PREVIOUS_TRAIN_LAG_TIME 5
-#define CLOSING_TIME 10
+StateColorGreen = 0
+StateColorYellow = 1
+StateColorRed = 2
+
+PREVIOUS_TRAIN_LAG_TIME = 5
+CLOSING_TIME = 10
 
 class ModelManager
   ### properties

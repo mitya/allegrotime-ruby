@@ -158,7 +158,7 @@ class Crossing
       return crossing if crossing.name.isEqualToString name
     end
 
-    NSLog("[%s] crossing is not found for name = '%@'", sel_getName(_cmd), name)
+    NSLog("[%s] crossing is not found for name = '%@'", sel_getName(__method__), name)
 
     nil
   end

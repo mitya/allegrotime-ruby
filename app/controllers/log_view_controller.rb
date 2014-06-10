@@ -1,4 +1,4 @@
-class LogViewController
+class LogViewController < UIViewController
   attr_accessor :log, :logText, :table
 
   def dealloc

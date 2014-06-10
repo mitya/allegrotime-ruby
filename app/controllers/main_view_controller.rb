@@ -1,7 +1,7 @@
 StateSection = 0
 ActionsSection = 1
 
-class MainViewController
+class MainViewController < UIViewController
   attr_accessor :crossingCell, :stateCell, :stateDetailsCell, :showScheduleCell, :showMapCell, :stateSectionHeader
   attr_accessor :stateCellTopLabel, :stateCellBottomLabel, :tableView
   attr_accessor :adReloadPending
@@ -129,7 +129,7 @@ class MainViewController
   ### banner
 
   def setupBanner
-    bannerView = GADBannerView.alloc.initWithAdSize IPHONE ? kGADAdSizeBanner : kGADAdSizeLeaderboard
+    bannerView = GADBannerView.alloc.initWithAdSize IPHONE ? KGADAdSizeBanner : KGADAdSizeLeaderboard
     bannerView.adUnitID = IPHONE ? GAD_IPHONE_KEY : GAD_IPAD_KEY;
     bannerView.rootViewController = self;
     bannerView.backgroundColor = UIColor.clearColor;
@@ -159,7 +159,7 @@ class MainViewController
   end
 
   def adTimerTicked
-    NSLog("%s ", __cmd);
+    NSLog("%s ", __method__);
 
     if bannerViewLoaded
       if navigationController.visibleViewController == self
@@ -171,7 +171,7 @@ class MainViewController
   end
 
   def adViewDidReceiveAd(banner)
-    NSLog("%s ", __cmd);
+    NSLog("%s ", __method__);
     if !bannerViewLoaded
       bannerView.frame = CGRectMake(banner.frame.origin.x, view.bounds.size.height, banner.frame.size.width, banner.frame.size.height);
       UIView.animateWithDuration 0.25, animations: -> do

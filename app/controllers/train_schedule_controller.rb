@@ -1,5 +1,5 @@
-def TrainScheduleController
-  attr_accessor sampleClosing
+class TrainScheduleController < UITableViewController
+  attr_accessor :sampleClosing
 
   def viewDidLoad
     super

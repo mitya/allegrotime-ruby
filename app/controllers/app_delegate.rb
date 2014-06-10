@@ -1,3 +1,8 @@
+DEBUG = true
+YES = true
+NO = false
+NULL = nil
+
 class AppDelegate
   attr_accessor :window, :locationManager, :perMinuteTimer, :mapController, :navigationController
 

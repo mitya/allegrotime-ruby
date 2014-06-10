@@ -1,4 +1,4 @@
-class CrossingScheduleController
+class CrossingScheduleController < UITableViewController
   attr_accessor :crossing
 
   def viewDidLoad

@@ -1,20 +1,17 @@
-#define GAD_IPHONE_KEY @"a14fa40c3009571"
-#define GAD_IPAD_KEY @"a14fa6612839d98"
-#define GAD_IPAD_WIDTH 728
-#define GAD_REFRESH_PERIOD (DEBUG ? 10 : 60)
-#define GAD_TESTING_MODE (DEBUG ? YES : NO)
+GAD_IPHONE_KEY = "a14fa40c3009571"
+GAD_IPAD_KEY = "a14fa6612839d98"
+GAD_IPAD_WIDTH = 728
+GAD_REFRESH_PERIOD = DEBUG ? 10 : 60
+GAD_TESTING_MODE = DEBUG ? YES : NO
 
-#define IPHONE ( UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone )
+IPHONE = UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone
 
-#define __method ([[NSString stringWithFormat:@"%s", _cmd] cString])
-#define __cmd (sel_getName(_cmd))
+# def __method ([[NSString stringWithFormat:@"%s", _cmd] cString])
+# def __cmd (sel_getName(_cmd))
 
-
-# typedef enum {
-#   LocationStateNotAvailable = 1,
-#   LocationStateSearching = 2,
-#   LocationStateSet = 3
-# } LocationState;
+LocationStateNotAvailable = 1
+LocationStateSearching = 2
+LocationStateSet = 3
 
 
 NXClosestCrossingChanged = "NXClosestCrossingChangedNotification"
@@ -88,7 +85,7 @@ end
 ### Formatting
 
 def T(string)
-  NSLocalizedString string
+  NSLocalizedString string, nil
 end
 
 def TF(format, *args)
@@ -293,58 +290,60 @@ end
 ### Helpers module
 
 class Helper
-  def parseStringAsHHMM(string)
-    components = string.componentsSeparatedByString ":"
-    hours = components.objectAtIndex(0).integerValue
-    minutes = components.objectAtIndex(1).integerValue
-    hours * 60 + minutes
-  end
+  class << self
+    def parseStringAsHHMM(string)
+      components = string.componentsSeparatedByString ":"
+      hours = components.objectAtIndex(0).integerValue
+      minutes = components.objectAtIndex(1).integerValue
+      hours * 60 + minutes
+    end
 
-  def compareInteger(num1, with:num2)
-    num1 < num2 ? -1 : num1 > num2 ? 1 : 0
-  end
+    def compareInteger(num1, with:num2)
+      num1 < num2 ? -1 : num1 > num2 ? 1 : 0
+    end
 
-  def tableViewCellWidth
-    UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 680 : 300
-  end
+    def tableViewCellWidth
+      UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? 680 : 300
+    end
 
-  def spinnerAfterCenteredLabel(label)
-    labelSize = label.text.sizeWithFont label.font
-    spinner = UIActivityIndicatorView.alloc.initWithActivityIndicatorStyle UIActivityIndicatorViewStyleGray
-    spinner.center = CGPointMake(labelSize.width + (label.frame.size.width - labelSize.width) / 2 + spinner.frame.size.width, label.center.y)
-    spinner
-  end
+    def spinnerAfterCenteredLabel(label)
+      labelSize = label.text.sizeWithFont label.font
+      spinner = UIActivityIndicatorView.alloc.initWithActivityIndicatorStyle UIActivityIndicatorViewStyleGray
+      spinner.center = CGPointMake(labelSize.width + (label.frame.size.width - labelSize.width) / 2 + spinner.frame.size.width, label.center.y)
+      spinner
+    end
 
-  def formatTimeInMunutesAsHHMM(minutesSinceMidnight)
-    hours = minutesSinceMidnight / 60
-    minutes = minutesSinceMidnight - hours * 60
-    NSString.stringWithFormat "%02i:%02i", hours, minutes
-  end
+    def formatTimeInMunutesAsHHMM(minutesSinceMidnight)
+      hours = minutesSinceMidnight / 60
+      minutes = minutesSinceMidnight - hours * 60
+      NSString.stringWithFormat "%02i:%02i", hours, minutes
+    end
 
-  def greenColor
-    UIColor.colorWithRed 0, green:0.5, blue:0, alpha:1
-  end
+    def greenColor
+      UIColor.colorWithRed 0, green:0.5, blue:0, alpha:1
+    end
 
-  def yellowColor
-    UIColor.colorWithRed 1, green:0.6, blue:0, alpha:1
-  end
+    def yellowColor
+      UIColor.colorWithRed 1, green:0.6, blue:0, alpha:1
+    end
 
-  def blueTextColor
-    UIColor.colorWithRed 82.0 / 255, green:102.0 / 255, blue:145.0 / 255, alpha:1
-  end
+    def blueTextColor
+      UIColor.colorWithRed 82.0 / 255, green:102.0 / 255, blue:145.0 / 255, alpha:1
+    end
   
-  def roundToFive(value)
-    remainder = value - value / 5 * 5
-    remainderInverse = 5 - remainder
-    remainder <= 2 ? value - remainder : value + remainderInverse
-  end
+    def roundToFive(value)
+      remainder = value - value / 5 * 5
+      remainderInverse = 5 - remainder
+      remainder <= 2 ? value - remainder : value + remainderInverse
+    end
 
-  def timeTillFullMinute
-    dateComponents = NSCalendar.currentCalendar.components NSSecondCalendarUnit, fromDate:NSDate.date
-    60 - dateComponents.second
-  end
+    def timeTillFullMinute
+      dateComponents = NSCalendar.currentCalendar.components NSSecondCalendarUnit, fromDate:NSDate.date
+      60 - dateComponents.second
+    end
 
-  def nextFullMinuteDate
-    NSDate.dateWithTimeIntervalSinceNow timeTillFullMinute
+    def nextFullMinuteDate
+      NSDate.dateWithTimeIntervalSinceNow timeTillFullMinute
+    end
   end
 end
