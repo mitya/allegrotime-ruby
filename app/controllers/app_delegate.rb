@@ -7,9 +7,10 @@ class AppDelegate
   attr_accessor :window, :locationManager, :perMinuteTimer, :mapController, :navigationController
 
   def application(application, didFinishLaunchingWithOptions:launchOptions)
-    model = ModelManager.alloc.init
-    app = self # WTF
-    
+    $model = ModelManager.alloc
+    $model = model.init
+    $app = self
+
     mainViewController = MainViewController.alloc.initWithNibName "MainView", bundle:nil
     @navigationController = UINavigationController.alloc.initWithRootViewController mainViewController
     @navigationController.delegate = self
@@ -46,13 +47,13 @@ class AppDelegate
   ### Location Tracking
   
   def locationManager
-    unless @locationManager
-      @locationManager = CLLocationManager.new
-      @locationManager.delegate = self
-      @locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters
-      @locationManager.distanceFilter = 100
-    end
-    @locationManager
+    @locationManager ||= begin
+      lm = CLLocationManager.new
+      lm.delegate = self
+      lm.desiredAccuracy = KCLLocationAccuracyHundredMeters
+      lm.distanceFilter = 100
+      lm
+    end    
   end
 
   def locationManager(manager, didUpdateToLocation:newLocation, fromLocation:oldLocation)
@@ -78,7 +79,7 @@ class AppDelegate
   
   def navigationController(navController, willShowViewController:viewController, animated:animated)
     navigationController.setToolbarHidden viewController.toolbarItems.count == 0, animated:animated
-    triggerModelUpdateFor.viewController if (animated)
+    triggerModelUpdateFor viewController if animated
   end
   
   def timerTicked

@@ -25,7 +25,7 @@ class MainViewController < UIViewController
     setupBanner
     setupLogConsoleGesture
 
-    adTimer = NSTimer.scheduledTimerWithTimeInterval GAD_REFRESH_PERIOD, target:self, selector:'adTimerTicked', userInfo:nil, repeats:YES
+    self.adTimer = NSTimer.scheduledTimerWithTimeInterval GAD_REFRESH_PERIOD, target:self, selector:'adTimerTicked', userInfo:nil, repeats:YES
   end
 
   def createInfoButton 
@@ -60,7 +60,7 @@ class MainViewController < UIViewController
 
   def performDelayedBannerReload
     if adReloadPending
-      adReloadPending = NO
+      @adReloadPending = NO
       reloadBanner
     end
   end
@@ -129,7 +129,7 @@ class MainViewController < UIViewController
   ### banner
 
   def setupBanner
-    bannerView = GADBannerView.alloc.initWithAdSize IPHONE ? KGADAdSizeBanner : KGADAdSizeLeaderboard
+    self.bannerView = GADBannerView.alloc.initWithAdSize IPHONE ? KGADAdSizeBanner : KGADAdSizeLeaderboard
     bannerView.adUnitID = IPHONE ? GAD_IPHONE_KEY : GAD_IPAD_KEY;
     bannerView.rootViewController = self;
     bannerView.backgroundColor = UIColor.clearColor;
@@ -165,7 +165,7 @@ class MainViewController < UIViewController
       if navigationController.visibleViewController == self
         reloadBanner
       else
-        adReloadPending = YES;
+        @adReloadPending = YES;
       end
     end
   end
@@ -179,7 +179,7 @@ class MainViewController < UIViewController
         banner.frame = CGRectMake(banner.frame.origin.x, view.bounds.size.height - banner.frame.size.height, 
           banner.frame.size.width, banner.frame.size.height);
       end
-      bannerViewLoaded = YES;
+      @bannerViewLoaded = YES;
     end
   end
 

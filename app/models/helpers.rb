@@ -347,3 +347,13 @@ class Helper
     end
   end
 end
+
+################
+
+def app
+  $app
+end
+
+def model
+  $model
+end

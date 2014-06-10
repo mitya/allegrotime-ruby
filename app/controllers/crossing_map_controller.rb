@@ -7,10 +7,10 @@ class CrossingMapController < UIViewController
   end
 
   def loadView
-    @mapView = MKMapView.alloc.init
-    @mapView.showsUserLocation = CLLocationManager.locationServicesEnabled
-    @mapView.delegate = self
-    @mapView.mapType = lastMapType
+    self.mapView = MKMapView.alloc.init
+    mapView.showsUserLocation = CLLocationManager.locationServicesEnabled
+    mapView.delegate = self
+    mapView.mapType = lastMapType
     self.view = mapView
   end
   
