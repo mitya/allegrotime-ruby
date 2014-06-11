@@ -68,7 +68,7 @@ class ModelManager
   end
 
   def loadFile
-    crossings = NSMutableArray.arrayWithCapacity 30
+    @crossings = NSMutableArray.arrayWithCapacity 30
 
     dataPath = NSBundle.mainBundle.pathForResource "data/schedule", ofType:"csv"
     dataString = NSString.stringWithContentsOfFile dataPath, encoding:NSUTF8StringEncoding, error:NULL
@@ -94,12 +94,12 @@ class ModelManager
       crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 7), direction:ClosingDirectionToFinland
       crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 8), direction:ClosingDirectionToRussia
 
-     crossings.addObject crossing
+      @crossings.addObject crossing
     end
 
-    closings = NSMutableArray.arrayWithCapacity crossings.count * 8
+    @closings = NSMutableArray.arrayWithCapacity crossings.count * 8
     for crossing in crossings
-      closings.addObjectsFromArray crossing.closings
+      @closings.addObjectsFromArray crossing.closings
     end
   end
 end

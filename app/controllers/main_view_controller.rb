@@ -2,7 +2,7 @@ StateSection = 0
 ActionsSection = 1
 
 class MainViewController < UIViewController
-  attr_accessor :crossingCell, :stateCell, :stateDetailsCell, :showScheduleCell, :showMapCell, :stateSectionHeader
+  attr_accessor :crossingCell, :stateCell, :stateDetailsCell, :showScheduleCell, :showMapCell
   attr_accessor :stateCellTopLabel, :stateCellBottomLabel, :tableView
   attr_accessor :adReloadPending
   attr_accessor :bannerView, :adTimer, :bannerViewLoaded, :adReloadPending
@@ -13,6 +13,29 @@ class MainViewController < UIViewController
     NSNotificationCenter.defaultCenter.removeObserver self
   end
 
+  def loadView
+    views = NSBundle.mainBundle.loadNibNamed "MainView", owner:self, options:nil    
+    
+    puts "------"
+    puts views
+    puts "------"
+    
+    self.view = views.last
+    
+    self.crossingCell = views.detect { |v| v.tag == 11 }
+    self.stateCell = views.detect { |v| v.tag == 12 }
+    self.stateDetailsCell = views.detect { |v| v.tag == 23 }
+    self.showScheduleCell = views.detect { |v| v.tag == 24 }
+    self.showMapCell = views.detect { |v| v.tag == 15 }
+    
+
+    # self.crossingCell = view.viewWithTag 11
+    # self.stateCell = view.viewWithTag 12
+    # self.stateDetailsCell = view.viewWithTag 23
+    # self.showScheduleCell = view.viewWithTag 24
+    # self.showMapCell = view.viewWithTag 15
+  end
+
   def viewDidLoad
     self.title = T("main.title");
     self.view.backgroundColor = IPHONE ? UIColor.groupTableViewBackgroundColor : MXPadTableViewBackgroundColor()
@@ -20,7 +43,7 @@ class MainViewController < UIViewController
       UIBarButtonItem.alloc.initWithTitle T("main.backbutton"), style:UIBarButtonItemStyleBordered, target:nil, action:nil
 
     NSNotificationCenter.defaultCenter.addObserver self, selector:'closestCrossingChanged', name:NXClosestCrossingChanged, object:nil
-  
+
     createInfoButton
     setupBanner
     setupLogConsoleGesture
@@ -97,10 +120,12 @@ class MainViewController < UIViewController
           model.currentCrossing.state == CrossingStateClosed ? "закрыли" : "закроют",
           Helper.formatTimeInMunutesAsHHMM(nextClosing.closingTime));
     elsif indexPath.section == StateSection && indexPath.row == 2
-      cell = self.stateDetailsCell;
-      MXSetGradientForCell(cell, model.currentCrossing.color);
-      cell.textLabel.adjustsFontSizeToFitWidth = YES;
-      cell.textLabel.text = model.currentCrossing.subtitle;
+      cell = stateDetailsCell
+      puts stateDetailsCell.textLabel
+      puts stateDetailsCell.detailTextLabel
+      MXSetGradientForCell(cell, model.currentCrossing.color)
+      cell.textLabel.adjustsFontSizeToFitWidth = YES
+      cell.textLabel.text = model.currentCrossing.subtitle
     elsif indexPath.section == ActionsSection
       cell = showScheduleCell if indexPath.row == 0
       cell = showMapCell if indexPath.row == 1
@@ -110,7 +135,7 @@ class MainViewController < UIViewController
   end
 
   def tableView(tableView, titleForFooterInSection:section)
-    return T("main.footer") if (section == ActionsSection)
+    return T("main.footer") if section == ActionsSection
     return nil
   end
 
@@ -213,9 +238,9 @@ class MainViewController < UIViewController
 
   def showCrossingListForSchedule
     crossingsController = CrossingListController.alloc.initWithStyle UITableViewStyleGrouped
-    crossingsController.target = self;
+    crossingsController.target = self
     crossingsController.action = 'showScheduleForCrossing:'
-    crossingsController.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    crossingsController.accessoryType = UITableViewCellAccessoryDisclosureIndicator
     navigationController.pushViewController crossingsController, animated:YES
   end
 

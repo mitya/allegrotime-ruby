@@ -9,8 +9,8 @@ class Crossing
   # - вероятно уже закрыт — красный
   # - Аллегро только что прошел — желтый
   def state
-    int currentTime = MXCurrentTimeInMinutes();
-    int trainTime = currentClosing.trainTime;
+    currentTime = MXCurrentTimeInMinutes()
+    trainTime = currentClosing.trainTime
 
     return CrossingStateClear if currentTime > trainTime + PREVIOUS_TRAIN_LAG_TIME # next train will be tomorrow
     return CrosingsStateJustOpened if currentTime >= trainTime && currentTime <= trainTime + PREVIOUS_TRAIN_LAG_TIME
@@ -144,7 +144,7 @@ class Crossing
 
   ### static
 
-  def crossingWithName(name, latitude:lat, longitude:lng)
+  def self.crossingWithName(name, latitude:lat, longitude:lng)
     crossing = new
     crossing.name = name;
     crossing.latitude = lat;
@@ -153,7 +153,7 @@ class Crossing
     crossing
   end
 
-  def getCrossingWithName(name)
+  def self.getCrossingWithName(name)
     for crossing in model.crossings
       return crossing if crossing.name.isEqualToString name
     end

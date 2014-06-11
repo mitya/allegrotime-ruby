@@ -11,7 +11,8 @@ class AppDelegate
     $model = model.init
     $app = self
 
-    mainViewController = MainViewController.alloc.initWithNibName "MainView", bundle:nil
+    # mainViewController = MainViewController.alloc.initWithNibName "MainView", bundle:nil
+    mainViewController = MainViewController.alloc.init
     @navigationController = UINavigationController.alloc.initWithRootViewController mainViewController
     @navigationController.delegate = self
 
@@ -78,8 +79,8 @@ class AppDelegate
   ### handlers
   
   def navigationController(navController, willShowViewController:viewController, animated:animated)
-    navigationController.setToolbarHidden viewController.toolbarItems.count == 0, animated:animated
-    triggerModelUpdateFor viewController if animated
+    # navigationController.setToolbarHidden viewController.toolbarItems.count == 0, animated:animated
+    # triggerModelUpdateFor viewController if animated
   end
   
   def timerTicked

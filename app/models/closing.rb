@@ -41,7 +41,7 @@ class Closing
 
   ### static
 
-  def closingWithCrossingName(crossingName, time:time, direction:direction)
+  def self.closingWithCrossingName(crossingName, time:time, direction:direction)
     crossing = Crossing.getCrossingWithName crossingName
 
     closing = Closing.new
