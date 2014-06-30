@@ -3,7 +3,7 @@ class TrainScheduleController < UITableViewController
 
   def viewDidLoad
     super
-    self.title = NSString.stringWithFormat "Поезд №%i", sampleClosing.trainNumber
+    self.title = Helper.stringWithFormat "Поезд №%i", sampleClosing.trainNumber
   end
 
   def shouldAutorotateToInterfaceOrientation(interfaceOrientation)

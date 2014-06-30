@@ -28,7 +28,7 @@ class CrossingScheduleController < UITableViewController
     if indexPath.section == 1
       cell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleValue1, reuseIdentifier:nil
       cell.textLabel.text = "Переезд на карте"
-      cell.detailTextLabel.text = NSString.stringWithFormat "%i км", crossing.distance
+      cell.detailTextLabel.text = Helper.stringWithFormat "%i км", crossing.distance
       cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
       return cell
     end
@@ -57,7 +57,7 @@ class CrossingScheduleController < UITableViewController
     end
 
     cell.textLabel.text = closing.toRussia ? NSString.stringWithFormat("%@ ↶", closing.time) : closing.time
-    cell.detailTextLabel.text = NSString.stringWithFormat("№%i", closing.trainNumber)
+    cell.detailTextLabel.text = Helper.stringWithFormat("№%i", closing.trainNumber)
 
     cell
   end

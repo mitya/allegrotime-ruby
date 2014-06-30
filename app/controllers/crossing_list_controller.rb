@@ -8,7 +8,7 @@ class CrossingListController < UITableViewController
   def viewDidAppear(animated)
     super
     currentRowIndex = NSIndexPath.indexPathForRow model.currentCrossing.index, inSection:0
-    tableView scrollToRowAtIndexPath currentRowIndex, atScrollPosition:UITableViewScrollPositionMiddle, animated:YES
+    tableView.scrollToRowAtIndexPath currentRowIndex, atScrollPosition:UITableViewScrollPositionMiddle, animated:YES
   end
 
   def shouldAutorotateToInterfaceOrientation(interfaceOrientation)

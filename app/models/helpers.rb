@@ -89,15 +89,7 @@ def T(string)
 end
 
 def TF(format, *args)
-  # NSString *const translatedFormat = T(format);
-  # 
-  # va_list args;
-  # va_start(args, format);
-  # NSString *result = [[NSString alloc] initWithFormat:translatedFormat arguments:args];
-  # va_end(args);
-  # 
-  # return result;
-  format
+  NSString.alloc.initWithFormat(T(format), *args)
 end
 
 # MXPluralizeRussiaWord(х, @"час", @"часа", @"часов")
@@ -121,8 +113,8 @@ def MXFormatMinutesAsText(totalMinutes)
   hours = totalMinutes / 60;
   minutes = totalMinutes % 60;
 
-  hoursString = NSString.stringWithFormat "%i %@", hours, MXPluralizeRussiaWord(hours, "час", "часа", "часов")
-  minutesString = NSString.stringWithFormat "%i %@", minutes, MXPluralizeRussiaWord(minutes, "минуту", "минуты", "минут")
+  hoursString = Helper.stringWithFormat "%i %@", hours, MXPluralizeRussiaWord(hours, "час", "часа", "часов")
+  minutesString = Helper.stringWithFormat "%i %@", minutes, MXPluralizeRussiaWord(minutes, "минуту", "минуты", "минут")
 
   if hours == 0
     minutesString
@@ -291,6 +283,10 @@ end
 
 class Helper
   class << self
+    def stringWithFormat(string, *args)
+      string % args
+    end
+    
     def parseStringAsHHMM(string)
       components = string.componentsSeparatedByString ":"
       hours = components.objectAtIndex(0).integerValue
@@ -316,7 +312,7 @@ class Helper
     def formatTimeInMunutesAsHHMM(minutesSinceMidnight)
       hours = minutesSinceMidnight / 60
       minutes = minutesSinceMidnight - hours * 60
-      NSString.stringWithFormat "%02i:%02i", hours, minutes
+      Helper.stringWithFormat "%02i:%02i", hours, minutes
     end
 
     def greenColor

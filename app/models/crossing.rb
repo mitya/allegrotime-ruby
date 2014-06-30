@@ -43,7 +43,7 @@ class Crossing
   end
 
   def title
-    NSString.stringWithFormat "%@, %i км", name, distance
+    Helper.stringWithFormat "%@, %i км", name, distance
   end
 
   def subtitle
@@ -126,11 +126,11 @@ class Crossing
   end
 
   def description
-    NSStringюstringWithFormat "Crossing(%@, %f, %f, %dn)", name, latitude, longitude, closings.count
+    Helper.stringWithFormat "Crossing(%@, %f, %f, %dn)", name, latitude, longitude, closings.count
   end
 
   def index
-    model.crossingsюindexOfObject self
+    model.crossings.indexOfObject self
   end
 
   def addClosingWithTime(time, direction:direction)

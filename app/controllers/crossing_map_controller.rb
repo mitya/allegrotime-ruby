@@ -1,16 +1,15 @@
 class CrossingMapController < UIViewController
  attr_accessor :mapView, :pinMapping, :timer, :lastRegion, :lastMapType
 
-  def initialize
-    @lastMapType = MKMapTypeStandard
-    @lastRegion = MKCoordinateRegionMakeWithDistance Crossing.getCrossingWithName("Парголово").coordinate, 10000, 10000
-  end
-
   def loadView
+    @lastMapType ||= MKMapTypeStandard
+    @lastRegion ||= MKCoordinateRegionMakeWithDistance Crossing.getCrossingWithName("Парголово").coordinate, 10000, 10000
+
     self.mapView = MKMapView.alloc.init
     mapView.showsUserLocation = CLLocationManager.locationServicesEnabled
     mapView.delegate = self
     mapView.mapType = lastMapType
+
     self.view = mapView
   end
   
@@ -18,7 +17,7 @@ class CrossingMapController < UIViewController
     super
   
     self.title = "Карта"
-  
+
     segmentedItems = NSArray.arrayWithObjects "Стандарт", "Спутник", "Гибрид", nil
     segmentedControl = UISegmentedControl.alloc.initWithItems segmentedItems
     segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar

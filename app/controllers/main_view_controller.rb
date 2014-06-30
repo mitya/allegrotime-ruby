@@ -25,15 +25,9 @@ class MainViewController < UIViewController
     self.stateCellTopLabel = stateCell.viewWithTag(31)
     self.stateCellBottomLabel = stateCell.viewWithTag(32)
 
-    puts '---'
-    puts stateDetailsCell.textLabel
-    puts stateDetailsCell.detailTextLabel
-    puts '---'
-
     self.tableView = view.subviews.detect { |v| UITableView === v }
     tableView.delegate = self
     tableView.dataSource = self
-    # tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
   end
 
   def viewDidLoad
