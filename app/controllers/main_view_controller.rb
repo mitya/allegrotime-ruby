@@ -165,7 +165,7 @@ class MainViewController < UIViewController
   def reloadBanner
     adRequest = GADRequest.request
     adRequest.testing = GAD_TESTING_MODE
-    adRequest.testDevices = [ GAD_SIMULATOR_ID ]
+    adRequest.testDevices = [ GAD_SIMULATOR_ID, '398a17d1387d6fa3ac0e24597718c091' ]
 
     location = app.locationManager.location
     if location
