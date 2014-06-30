@@ -11,5 +11,5 @@ end
 Motion::Project::App.setup do |app|
   app.name = 'allegrotime_rm'
   app.frameworks += %w(StoreKit AdSupport AVFoundation CoreTelephony SystemConfiguration MessageUI AudioToolbox MapKit CoreLocation CoreData)
-  app.vendor_project 'vendor/GoogleAdMobAdsSdkiOS-6.8.0', :static, force_load: false
+  app.vendor_project 'vendor/GoogleMobileAdsSdkiOS-6.9.3', :static, force_load: false
 end

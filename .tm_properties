@@ -1,1 +1,1 @@
-exclude = {build,resources}
+exclude = {build,resources,vendor}

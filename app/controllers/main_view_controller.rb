@@ -169,7 +169,7 @@ class MainViewController < UIViewController
 
     location = app.locationManager.location
     if location
-      adRequest.setLocationWithLatitude location.coordinate.latitude, 
+      adRequest.setLocationWithLatitude location.coordinate.latitude,
         longitude:location.coordinate.longitude, accuracy:location.horizontalAccuracy
     end
 
@@ -177,8 +177,6 @@ class MainViewController < UIViewController
   end
 
   def adTimerTicked
-    NSLog("%s ", __method__);
-
     if bannerViewLoaded
       if navigationController.visibleViewController == self
         reloadBanner
@@ -189,7 +187,6 @@ class MainViewController < UIViewController
   end
 
   def adViewDidReceiveAd(banner)
-    NSLog("%s ", __method__);
     if !bannerViewLoaded
       bannerView.frame = CGRectMake(banner.frame.origin.x, view.bounds.size.height, banner.frame.size.width, banner.frame.size.height);
       UIView.animateWithDuration 0.25, animations: -> do
@@ -202,7 +199,7 @@ class MainViewController < UIViewController
   end
 
   def adView(view, didFailToReceiveAdWithError:error)
-     NSLog("adView:didFailToReceiveAdWithError: %@", error);
+    Helper.warn "adView:didFailToReceiveAdWithError: %@", error
   end
 
   ### handlers

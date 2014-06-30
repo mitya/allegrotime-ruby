@@ -113,8 +113,8 @@ def MXFormatMinutesAsText(totalMinutes)
   hours = totalMinutes / 60;
   minutes = totalMinutes % 60;
 
-  hoursString = Helper.stringWithFormat "%i %@", hours, MXPluralizeRussiaWord(hours, "час", "часа", "часов")
-  minutesString = Helper.stringWithFormat "%i %@", minutes, MXPluralizeRussiaWord(minutes, "минуту", "минуты", "минут")
+  hoursString = Helper.stringWithFormat "%i %s", hours, MXPluralizeRussiaWord(hours, "час", "часа", "часов")
+  minutesString = Helper.stringWithFormat "%i %s", minutes, MXPluralizeRussiaWord(minutes, "минуту", "минуты", "минут")
 
   if hours == 0
     minutesString
@@ -125,6 +125,8 @@ def MXFormatMinutesAsText(totalMinutes)
   end
 end
 
+# (10, "Закроют через %@", "Только что закрыли") => "Закроют через 10 минут"
+# (0, "Закроют через %@", "Только что закрыли") => "Только что закрыли"
 def MXFormatMinutesAsTextWithZero(totalMinutes, formatString, zeroString)
   return zeroString if totalMinutes == 0
   return NSString.stringWithFormat formatString, MXFormatMinutesAsText(totalMinutes)
@@ -283,6 +285,14 @@ end
 
 class Helper
   class << self
+    def log(message, *args)
+      puts message % args if DEBUG
+    end
+
+    def warn(message, *args)
+      puts message % args
+    end
+    
     def stringWithFormat(string, *args)
       string % args
     end
