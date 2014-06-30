@@ -1,25 +1,3 @@
-GAD_IPHONE_KEY = "a14fa40c3009571"
-GAD_IPAD_KEY = "a14fa6612839d98"
-GAD_IPAD_WIDTH = 728
-GAD_REFRESH_PERIOD = DEBUG ? 10 : 60
-GAD_TESTING_MODE = DEBUG ? YES : NO
-
-IPHONE = UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone
-
-# def __method ([[NSString stringWithFormat:@"%s", _cmd] cString])
-# def __cmd (sel_getName(_cmd))
-
-LocationStateNotAvailable = 1
-LocationStateSearching = 2
-LocationStateSet = 3
-
-
-NXClosestCrossingChanged = "NXClosestCrossingChangedNotification"
-NXLogConsoleUpdated = "NXLogConsoleUpdated"
-NXLogConsoleFlushed = "NXLogConsoleFlushed"
-NXModelUpdated = "NXUpdateDataStatus"
-MXDefaultCellID = "MXDefaultCellID"
-
 ### Logging
 
 def MXLogArray(desc, array)
@@ -42,7 +20,7 @@ def MXLogRect(title, rect)
 end
 
 def MXLog(desc, object)
-  if object.isKindOfClass NSArray.class
+  if object.isKindOfClass NSArray
     MXLogArray(desc, object);
   else
     NSLog("%s = %@", desc, object);
@@ -81,16 +59,6 @@ def MXWriteToConsole(format, *args)
   # #endif
 end
 
-
-### Formatting
-
-def T(string)
-  NSLocalizedString string, nil
-end
-
-def TF(format, *args)
-  NSString.alloc.initWithFormat(T(format), *args)
-end
 
 # MXPluralizeRussiaWord(х, @"час", @"часа", @"часов")
 # MXPluralizeRussiaWord(х, @"минута", @"минуты", @"минут")
@@ -229,58 +197,6 @@ def MXIsPhone()
   UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone;
 end
 
-
-### Core extensions
-
-class NSString
-  def format(*args)
-    NSString.stringWithFormat self, *objects
-  end
-
-  def transliterated
-    # buffer = mutableCopy
-    # CFMutableStringRef bufferRef = (__bridge CFMutableStringRef) buffer;
-    # CFStringTransform(bufferRef, NULL, kCFStringTransformToLatin, false);
-    # CFStringTransform(bufferRef, NULL, kCFStringTransformStripCombiningMarks, false);
-    # CFStringTransform(bufferRef, NULL, kCFStringTransformStripDiacritics, false);
-    # [buffer replaceOccurrencesOfString:@"ʹ" withString:@"" options:0 range:NSMakeRange(0, buffer.length)];
-    # [buffer replaceOccurrencesOfString:@"–" withString:@"-" options:0 range:NSMakeRange(0, buffer.length)];
-    # return buffer;
-    self
-  end
-end
-
-
-class NSArray
-  def firstObject
-    return nil if count == 0
-    objectAtIndex 0
-  end
-
-   def minimumObject(valueSelector)
-    minValue = valueSelector.call firstObject
-    minObject = firstObject
-
-    for object in self do
-      value = valueSelector.call object
-      if value < minValue
-        minValue = value
-        minObject = object
-      end
-    end
-
-    minObject;
-  end
-
-   def detectObject(predicate)
-    for object in self do
-      return object if predicate.call object
-    end
-    nil
-  end
-end
-
-
 ### Helpers module
 
 class Helper
@@ -352,14 +268,4 @@ class Helper
       NSDate.dateWithTimeIntervalSinceNow timeTillFullMinute
     end
   end
-end
-
-################
-
-def app
-  $app
-end
-
-def model
-  $model
 end

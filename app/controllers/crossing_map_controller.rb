@@ -1,10 +1,14 @@
 class CrossingMapController < UIViewController
  attr_accessor :mapView, :pinMapping, :timer, :lastRegion, :lastMapType
 
-  def loadView
+  def init
+    super
     @lastMapType ||= MKMapTypeStandard
     @lastRegion ||= MKCoordinateRegionMakeWithDistance Crossing.getCrossingWithName("Парголово").coordinate, 10000, 10000
+    self
+  end
 
+  def loadView
     self.mapView = MKMapView.alloc.init
     mapView.showsUserLocation = CLLocationManager.locationServicesEnabled
     mapView.delegate = self
@@ -61,6 +65,7 @@ class CrossingMapController < UIViewController
   ### methods
   
   def showCrossing(aCrossing)
+    view # ensure that it's laoded
     mapView.setRegion MKCoordinateRegionMakeWithDistance(aCrossing.coordinate, 7000, 7000), animated:NO
     mapView.selectAnnotation aCrossing, animated:NO
   end
@@ -68,7 +73,7 @@ class CrossingMapController < UIViewController
   ### map view
   
   def mapView(aMapView, viewForAnnotation:annotation)
-    return nil unless annotation.isKindOfClass Crossing.class
+    return nil unless annotation.isKindOfClass Crossing
   
     crossing = annotation
   
@@ -79,12 +84,12 @@ class CrossingMapController < UIViewController
       pin.rightCalloutAccessoryView = UIButton.buttonWithType UIButtonTypeDetailDisclosure
     end
     pin.annotation = crossing
-    pin.image = pinMapping.objectForKey crossing.color
+    pin.image = pinMapping[crossing.color]
     pin
   end
   
   def mapView(mapView, annotationView:view, calloutAccessoryControlTapped:control)
-    return unless view.annotation.isKindOfClass Crossing.class
+    return unless view.annotation.isKindOfClass Crossing
   
     crossing = view.annotation
     scheduleController = CrossingScheduleController.alloc.initWithStyle UITableViewStyleGrouped
@@ -101,9 +106,9 @@ class CrossingMapController < UIViewController
   def modelUpdated
     for crossing in mapView.annotations
       annotationView = mapView.viewForAnnotation crossing
-      next unless crossing.isKindOfClass Crossing.class
+      next unless crossing.isKindOfClass Crossing
       next unless annotationView
-      newImage = pinMapping.objectForKey crossing.color
+      newImage = pinMapping[crossing.color]
       annotationView.image = newImage if annotationView.image != newImage
     end
   end
@@ -122,6 +127,6 @@ class CrossingMapController < UIViewController
       MXImageFromFile("crossing-pin-green.png"), UIColor.greenColor,
       MXImageFromFile("crossing-pin-yellow.png"), UIColor.yellowColor,
       MXImageFromFile("crossing-pin-red.png"), UIColor.redColor,
-      nil)
+      nil)      
   end
 end

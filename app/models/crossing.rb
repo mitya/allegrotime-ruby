@@ -43,7 +43,7 @@ class Crossing
   end
 
   def title
-    Helper.stringWithFormat "%@, %i км", name, distance
+    Helper.stringWithFormat "%s, %i км", name, distance
   end
 
   def subtitle
