@@ -15,25 +15,25 @@ class MainViewController < UIViewController
 
   def loadView
     views = NSBundle.mainBundle.loadNibNamed "MainView", owner:self, options:nil    
-    
-    puts "------"
-    puts views
-    puts "------"
-    
+  
     self.view = views.last
-    
     self.crossingCell = views.detect { |v| v.tag == 11 }
-    self.stateCell = views.detect { |v| v.tag == 12 }
-    self.stateDetailsCell = views.detect { |v| v.tag == 23 }
+    self.stateCell = views.detect { |v| v.tag == 23 }
+    self.stateDetailsCell = views.detect { |v| v.tag == 12 }
     self.showScheduleCell = views.detect { |v| v.tag == 24 }
     self.showMapCell = views.detect { |v| v.tag == 15 }
-    
+    self.stateCellTopLabel = stateCell.viewWithTag(31)
+    self.stateCellBottomLabel = stateCell.viewWithTag(32)
 
-    # self.crossingCell = view.viewWithTag 11
-    # self.stateCell = view.viewWithTag 12
-    # self.stateDetailsCell = view.viewWithTag 23
-    # self.showScheduleCell = view.viewWithTag 24
-    # self.showMapCell = view.viewWithTag 15
+    puts '---'
+    puts stateDetailsCell.textLabel
+    puts stateDetailsCell.detailTextLabel
+    puts '---'
+
+    self.tableView = view.subviews.detect { |v| UITableView === v }
+    tableView.delegate = self
+    tableView.dataSource = self
+    # tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
   end
 
   def viewDidLoad
@@ -121,8 +121,6 @@ class MainViewController < UIViewController
           Helper.formatTimeInMunutesAsHHMM(nextClosing.closingTime));
     elsif indexPath.section == StateSection && indexPath.row == 2
       cell = stateDetailsCell
-      puts stateDetailsCell.textLabel
-      puts stateDetailsCell.detailTextLabel
       MXSetGradientForCell(cell, model.currentCrossing.color)
       cell.textLabel.adjustsFontSizeToFitWidth = YES
       cell.textLabel.text = model.currentCrossing.subtitle
@@ -173,6 +171,7 @@ class MainViewController < UIViewController
   def reloadBanner
     adRequest = GADRequest.request
     adRequest.testing = GAD_TESTING_MODE
+    adRequest.testDevices = [ GAD_SIMULATOR_ID ]
 
     location = app.locationManager.location
     if location

@@ -202,7 +202,7 @@ def MXSetGradientForCell(cell, color)
 
   cell.backgroundColor = MXCellGradientColorFor(color)
   cell.textLabel.textColor = $textColorMapping.objectForKey color
-  cell.detailTextLabel.textColor = $textColorMapping.objectForKey color
+  cell.detailTextLabel.textColor = $textColorMapping.objectForKey color if cell.detailTextLabel
 
   if color == UIColor.blueColor || color == UIColor.grayColor
     cell.detailTextLabel.textColor = UIColor.darkGrayColor
