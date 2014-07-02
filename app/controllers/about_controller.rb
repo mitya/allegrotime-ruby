@@ -7,7 +7,7 @@ class AboutController < UIViewController
     self.title = "О программе"
 
     self.webView = UIWebView.alloc.initWithFrame view.bounds
-    webView.backgroundColor = UIColor.yellowColor
+    webView.backgroundColor = UIColor.whiteColor
     webView.delegate = self
     view.addSubview webView
   end
