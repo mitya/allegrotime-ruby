@@ -26,7 +26,7 @@ class CrossingMapController < UIViewController
     segmentedControl = UISegmentedControl.alloc.initWithItems segmentedItems
     segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar
     segmentedControl.selectedSegmentIndex = lastMapType
-    segmentedControl.addTarget self, action:'changeMapType', forControlEvents:UIControlEventValueChanged
+    segmentedControl.addTarget self, action:'changeMapType:', forControlEvents:UIControlEventValueChanged
   
     navigationItem.backBarButtonItem = UIBarButtonItem.alloc.initWithTitle "Карта", style:UIBarButtonItemStylePlain, target:nil, action:nil
   
