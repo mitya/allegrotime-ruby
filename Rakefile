@@ -20,3 +20,11 @@ Motion::Project::App.setup do |app|
   app.frameworks += %w(StoreKit AdSupport AVFoundation CoreTelephony SystemConfiguration MessageUI AudioToolbox MapKit CoreLocation CoreData)
   app.vendor_project 'vendor/GoogleMobileAdsSdkiOS-6.9.3', :static, force_load: false
 end
+
+task :appicon do
+  input = "originals/images/app_icon.png"
+  sizes = { 57 => 'iPhone', 114 => 'iPhone@2x', 72 => 'iPad', 144 => 'iPad@2x' }
+  sizes.each do |size, device|
+    system "convert #{input} -resize #{size}x#{size} resources/Icon-#{device}.png"
+  end
+end
