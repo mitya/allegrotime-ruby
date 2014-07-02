@@ -1,11 +1,11 @@
-StateSection = 0
-ActionsSection = 1
-
 class MainViewController < UIViewController
   attr_accessor :crossingCell, :stateCell, :stateDetailsCell, :showScheduleCell, :showMapCell
   attr_accessor :stateCellTopLabel, :stateCellBottomLabel, :tableView
   attr_accessor :adReloadPending
   attr_accessor :bannerView, :adTimer, :bannerViewLoaded, :adReloadPending
+
+  StateSection = 0
+  ActionsSection = 1
 
   ### lifecycle
 
