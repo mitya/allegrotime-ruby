@@ -7,7 +7,7 @@ class Closing
     trainTime - 10;
   end
 
-  def toRussia
+  def toRussia?
     direction == ClosingDirectionToRussia;
   end
 
@@ -31,7 +31,7 @@ class Closing
     crossing.state
   end
 
-  def isClosest
+  def closest?
     self == crossing.currentClosing
   end
 

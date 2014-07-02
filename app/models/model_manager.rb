@@ -47,7 +47,7 @@ class ModelManager
   end
 
   def setCurrentCrossing(crossing)
-    selectedCrossing = crossing.isClosest ? nil : crossing;
+    selectedCrossing = crossing.closest? ? nil : crossing;
   end
 
   ### methods

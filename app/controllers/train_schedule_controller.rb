@@ -6,10 +6,6 @@ class TrainScheduleController < UITableViewController
     self.title = Helper.stringWithFormat "Поезд №%i", sampleClosing.trainNumber
   end
 
-  def shouldAutorotateToInterfaceOrientation(interfaceOrientation)
-    MXAutorotationPolicy(interfaceOrientation)
-  end
-
   ### table view
 
   def tableView(tableView, numberOfRowsInSection:section)
@@ -35,7 +31,7 @@ class TrainScheduleController < UITableViewController
 
   def tableView(tableView, viewForHeaderInSection:section)
     label = MXConfigureLabelLikeInTableViewFooter UILabel.new
-    label.text = sampleClosing.toRussia ? "Из Хельсинки в Санкт-Петербург" : "Из Санкт-Петербурга в Хельсинки"
+    label.text = sampleClosing.toRussia? ? "Из Хельсинки в Санкт-Петербург" : "Из Санкт-Петербурга в Хельсинки"
     label
   end
 

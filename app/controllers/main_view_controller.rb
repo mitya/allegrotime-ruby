@@ -45,6 +45,11 @@ class MainViewController < UIViewController
     self.adTimer = NSTimer.scheduledTimerWithTimeInterval GAD_REFRESH_PERIOD, target:self, selector:'adTimerTicked', userInfo:nil, repeats:YES
   end
 
+  def viewWillAppear(animated)
+    super
+    performDelayedBannerReload
+  end
+
   def createInfoButton 
     infoButton = UIButton.buttonWithType UIButtonTypeInfoLight
     infoButton.addTarget self, action:'showInfo', forControlEvents:UIControlEventTouchUpInside
@@ -59,35 +64,11 @@ class MainViewController < UIViewController
     end
   end
 
-  def viewDidUnload
-    setShowMapCell nil
-    setShowScheduleCell nil
-    setStateDetailsCell nil
-    setStateCellTopLabel nil
-    setStateCellBottomLabel nil
-    setStateCell nil
-    setCrossingCell nil
-    setStateSectionHeader nil
-  end
-
-  def viewWillAppear(animated)
-    super
-    performDelayedBannerReload
-  end
-
   def performDelayedBannerReload
     if adReloadPending
       @adReloadPending = NO
       reloadBanner
     end
-  end
-
-  def viewWillDisappear(animated)
-    super
-  end
-
-  def shouldAutorotateToInterfaceOrientation(interfaceOrientation)
-    MXAutorotationPolicy(interfaceOrientation)
   end
 
   ### table view stuff

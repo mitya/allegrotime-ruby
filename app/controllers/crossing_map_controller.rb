@@ -58,10 +58,6 @@ class CrossingMapController < UIViewController
     @lastRegion = mapView.region
   end
   
-  def shouldAutorotateToInterfaceOrientation(interfaceOrientation)
-    MXAutorotationPolicy(interfaceOrientation)
-  end
-  
   ### methods
   
   def showCrossing(aCrossing)
@@ -106,7 +102,7 @@ class CrossingMapController < UIViewController
   def modelUpdated
     for crossing in mapView.annotations
       annotationView = mapView.viewForAnnotation crossing
-      next unless crossing.isKindOfClass Crossing
+      next unless Crossing === crossing
       next unless annotationView
       newImage = pinMapping[crossing.color]
       annotationView.image = newImage if annotationView.image != newImage
@@ -123,10 +119,10 @@ class CrossingMapController < UIViewController
   ### helpers
   
   def pinMapping
-    @pinMapping ||= NSDictionary.dictionaryWithObjectsAndKeys(
-      MXImageFromFile("crossing-pin-green.png"), UIColor.greenColor,
-      MXImageFromFile("crossing-pin-yellow.png"), UIColor.yellowColor,
-      MXImageFromFile("crossing-pin-red.png"), UIColor.redColor,
-      nil)      
+    @pinMapping ||= {
+      MXImageFromFile("crossing-pin-green.png") => UIColor.greenColor,
+      MXImageFromFile("crossing-pin-yellow.png") => UIColor.yellowColor,
+      MXImageFromFile("crossing-pin-red.png") => UIColor.redColor
+    }
   end
 end

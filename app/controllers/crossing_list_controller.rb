@@ -11,10 +11,6 @@ class CrossingListController < UITableViewController
     tableView.scrollToRowAtIndexPath currentRowIndex, atScrollPosition:UITableViewScrollPositionMiddle, animated:YES
   end
 
-  def shouldAutorotateToInterfaceOrientation(interfaceOrientation)
-    MXAutorotationPolicy(interfaceOrientation)
-  end
-
   ### handlers
 
   def modelUpdated
@@ -48,8 +44,8 @@ class CrossingListController < UITableViewController
       cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
     end
 
-    MXSetGradientForCell(cell, UIColor.grayColor) if crossing.isClosest
-    MXSetGradientForCell(cell, UIColor.blueColor) if crossing.isCurrent
+    MXSetGradientForCell(cell, UIColor.grayColor) if crossing.closest?
+    MXSetGradientForCell(cell, UIColor.blueColor) if crossing.current?
 
     cell
   end

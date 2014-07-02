@@ -1,7 +1,7 @@
 class Crossing
   ### properties
 
-  attr_accessor :name, :latitude, :longitude, :closings, :distance, :isCurrent
+  attr_accessor :name, :latitude, :longitude, :closings, :distance
 
   # - осталось более часа — зеленый
   # - осталось примерно 55/50/.../20 минут — желтый
@@ -117,11 +117,11 @@ class Crossing
     result
   end
 
-  def isClosest
+  def closest?
     self == model.closestCrossing
   end
 
-  def isCurrent
+  def current?
     self == model.currentCrossing
   end
 

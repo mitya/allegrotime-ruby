@@ -6,10 +6,6 @@ class CrossingScheduleController < UITableViewController
     self.title = self.crossing.name
   end
 
-  def shouldAutorotateToInterfaceOrientation(interfaceOrientation)
-    MXAutorotationPolicy(interfaceOrientation)
-  end
-
   ### table view
 
   def numberOfSectionsInTableView(tableView)
@@ -46,7 +42,7 @@ class CrossingScheduleController < UITableViewController
 
     closing = crossing.closings.objectAtIndex(indexPath.row)
 
-    if closing.isClosest
+    if closing.closest?
       cell.backgroundColor = MXCellGradientColorFor(closing.color)
       if closing.color == UIColor.greenColor || closing.color == UIColor.redColor
         cell.textLabel.textColor = UIColor.whiteColor
@@ -54,7 +50,7 @@ class CrossingScheduleController < UITableViewController
       end
     end
 
-    cell.textLabel.text = closing.toRussia ? NSString.stringWithFormat("%@ ↶", closing.time) : closing.time
+    cell.textLabel.text = closing.toRussia? ? NSString.stringWithFormat("%@ ↶", closing.time) : closing.time
     cell.detailTextLabel.text = Helper.stringWithFormat("№%i", closing.trainNumber)
 
     cell

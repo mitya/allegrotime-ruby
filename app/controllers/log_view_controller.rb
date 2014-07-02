@@ -24,14 +24,6 @@ class LogViewController < UIViewController
     view.addGestureRecognizer swipeRecognizer
   end
 
-  def viewWillAppear(animated)
-    super
-  end
-
-  def shouldAutorotateToInterfaceOrientation(toInterfaceOrientation)
-    MXAutorotationPolicy(toInterfaceOrientation)
-  end
-
   ### handlers
 
   def consoleUpdated
