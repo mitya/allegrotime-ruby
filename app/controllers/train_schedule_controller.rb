@@ -21,8 +21,6 @@ class TrainScheduleController < UITableViewController
     if !cell
       cell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleValue2, reuseIdentifier:MXDefaultCellID
       cell.selectionStyle = UITableViewCellSelectionStyleNone
-      cell.textLabel.font = UIFont.boldSystemFontOfSize 18
-      cell.detailTextLabel.font = UIFont.boldSystemFontOfSize 12
     end
 
     trainIndex = sampleClosing.crossing.closings.indexOfObject sampleClosing

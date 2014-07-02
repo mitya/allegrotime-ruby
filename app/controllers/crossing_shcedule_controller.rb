@@ -37,14 +37,12 @@ class CrossingScheduleController < UITableViewController
     unless cell
       cell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleValue2, reuseIdentifier:MXDefaultCellID
       cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
-      cell.textLabel.font = UIFont.boldSystemFontOfSize 18
       cell.textLabel.backgroundColor = UIColor.clearColor
-      cell.detailTextLabel.font = UIFont.boldSystemFontOfSize 12
+      cell.textLabel.font = UIFont.systemFontOfSize 20
       cell.detailTextLabel.backgroundColor = UIColor.clearColor
+      cell.detailTextLabel.textColor = UIColor.grayColor
     end
 
-    cell.textLabel.textColor = Helper.blueTextColor
-    cell.detailTextLabel.textColor = UIColor.grayColor
 
     closing = crossing.closings.objectAtIndex(indexPath.row)
 

@@ -33,12 +33,10 @@ class CrossingListController < UITableViewController
     cell = tableView.dequeueReusableCellWithIdentifier MXDefaultCellID
     unless cell
       cell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleSubtitle, reuseIdentifier:MXDefaultCellID
-      cell.detailTextLabel.font = UIFont.systemFontOfSize(12)
-      cell.detailTextLabel.backgroundColor = UIColor.clearColor
+      # cell.backgroundColor = UIColor.whiteColor
+      # cell.detailTextLabel.backgroundColor = UIColor.clearColor
     end
 
-    cell.backgroundColor = UIColor.whiteColor
-    cell.textLabel.textColor = UIColor.darkTextColor
 
     cell.textLabel.text = crossing.name;
     cell.detailTextLabel.text = crossing.subtitle;
