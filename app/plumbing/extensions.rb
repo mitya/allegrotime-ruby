@@ -14,6 +14,14 @@ class NSString
     # return buffer;
     self
   end
+  
+  def l
+    NSLocalizedString self, nil
+  end
+  
+  def li(*args)
+    NSString.alloc.initWithFormat self.l, *args
+  end
 end
 
 

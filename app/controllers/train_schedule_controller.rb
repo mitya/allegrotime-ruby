@@ -4,6 +4,7 @@ class TrainScheduleController < UITableViewController
   def viewDidLoad
     super
     self.title = Helper.stringWithFormat "Поезд №%i", sampleClosing.trainNumber
+    # self.title = "schedule.train_no".li(sampleClosing.trainNumber)
   end
 
   ### table view

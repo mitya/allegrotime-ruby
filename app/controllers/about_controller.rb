@@ -4,7 +4,7 @@ class AboutController < UIViewController
   def viewDidLoad
     super
 
-    self.title = "О программе"
+    self.title = T('about.title')
 
     self.webView = UIWebView.alloc.initWithFrame view.bounds
     webView.backgroundColor = UIColor.whiteColor
@@ -15,7 +15,7 @@ class AboutController < UIViewController
   def viewWillAppear(animated)
     super
 
-    htmlPath = NSBundle.mainBundle.pathForResource "data/about", ofType:"html"
+    htmlPath = NSBundle.mainBundle.pathForResource "about", ofType:"html"
     htmlString = NSString.stringWithContentsOfFile htmlPath, encoding:NSUTF8StringEncoding, error:NULL
     webView.loadHTMLString htmlString, baseURL:NSURL.URLWithString("/")
   end

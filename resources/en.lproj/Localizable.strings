@@ -1,0 +1,9 @@
+"main.title" = "AllegroTime";
+"main.backbutton" = "State";
+"main. allegro will pass at $time" = "Allegro will pass in %@";
+"main. crossing $closes at $time" = "Crossing %@ в %@";
+"main.footer" = "Only Allegro-ralted closing are displayed. The crossing can be closed earlier or be opened later because of the regular suburban trains";
+"about.title" = "About";
+"closed" = "closed";
+"will be closed" = "will be closed";
+"schedule.train_no" = "Train N%i";

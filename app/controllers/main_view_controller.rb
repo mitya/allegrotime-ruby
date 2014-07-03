@@ -31,9 +31,9 @@ class MainViewController < UIViewController
   end
 
   def viewDidLoad
-    self.title = T("main.title");
+    self.title = "main.title".l
     navigationItem.backBarButtonItem = 
-      UIBarButtonItem.alloc.initWithTitle T("main.backbutton"), style:UIBarButtonItemStyleBordered, target:nil, action:nil
+      UIBarButtonItem.alloc.initWithTitle "main.backbutton".l, style:UIBarButtonItemStyleBordered, target:nil, action:nil
 
     NSNotificationCenter.defaultCenter.addObserver self, selector:'closestCrossingChanged', name:NXClosestCrossingChanged, object:nil
 
@@ -89,10 +89,11 @@ class MainViewController < UIViewController
     elsif indexPath.section == StateSection && indexPath.row == 1
       cell = stateCell;
       nextClosing = model.currentCrossing.nextClosing;
-      stateCellTopLabel.text = TF("main. allegro will pass at $time", Helper.formatTimeInMunutesAsHHMM(nextClosing.trainTime))
-      stateCellBottomLabel.text = TF("main. crossing $closes at $time",
-          model.currentCrossing.state == CrossingStateClosed ? "закрыли" : "закроют",
-          Helper.formatTimeInMunutesAsHHMM(nextClosing.closingTime));
+      stateCellTopLabel.text = "main. allegro will pass at $time".li(Helper.formatTimeInMunutesAsHHMM(nextClosing.trainTime))
+      stateCellBottomLabel.text = "main. crossing $closes at $time".li(
+          model.currentCrossing.state == CrossingStateClosed ? "closed".l : "will be closed".l,
+          Helper.formatTimeInMunutesAsHHMM(nextClosing.closingTime)
+      )
     elsif indexPath.section == StateSection && indexPath.row == 2
       cell = stateDetailsCell
       MXSetGradientForCell(cell, model.currentCrossing.color)
@@ -107,7 +108,7 @@ class MainViewController < UIViewController
   end
 
   def tableView(tableView, titleForFooterInSection:section)
-    return T("main.footer") if section == ActionsSection
+    return "main.footer".l if section == ActionsSection
     return nil
   end
 
