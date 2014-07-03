@@ -9,7 +9,7 @@ class Crossing
   # - вероятно уже закрыт — красный
   # - Аллегро только что прошел — желтый
   def state
-    currentTime = MXCurrentTimeInMinutes()
+    currentTime = Time.minutes_since_midnight
     trainTime = currentClosing.trainTime
 
     return CrossingStateClear if currentTime > trainTime + PREVIOUS_TRAIN_LAG_TIME # next train will be tomorrow
@@ -43,24 +43,24 @@ class Crossing
   end
 
   def title
-    Helper.stringWithFormat "%s, %i км", name, distance
+    "#{name}, #{distance} км"
   end
 
   def subtitle
     case state
     when CrossingStateClear, CrossingStateSoon, CrossingStateVerySoon, CrossingStateClosing
-      MXFormatMinutesAsTextWithZero(minutesTillClosing, "Закроют через %@", "Только что закрыли");
+      minutesTillClosing == 0 ? "Только что закрыли" : "Закроют через #{Format.minutes_as_text(minutesTillClosing)}"
     when CrossingStateClosed
-      MXFormatMinutesAsTextWithZero(minutesTillOpening, "Откроют через %@", "Только что открыли");
+      minutesTillOpening == 0 ? "Только что открыли" : "Откроют через #{Format.minutes_as_text(minutesTillOpening)}"      
     when CrosingsStateJustOpened
-      MXFormatMinutesAsTextWithZero(minutesSinceOpening, "Открыли %@ назад", "Только что открыли");
+      minutesSinceOpening == 0 ? "Только что открыли" : "Открыли #{Format.minutes_as_text(minutesTillOpening)} назад"
     else
       nil
     end
   end
 
   def nextClosing
-    currentTime = MXCurrentTimeInMinutes();
+    currentTime = Time.minutes_since_midnight;
 
     for closing in closings
       return closing if closing.trainTime >= currentTime
@@ -70,7 +70,7 @@ class Crossing
   end
 
   def previousClosing
-    currentTime = MXCurrentTimeInMinutes()
+    currentTime = Time.minutes_since_midnight
 
     for closing in closings.reverseObjectEnumerator
       return closing if closing.trainTime <= currentTime
@@ -80,7 +80,7 @@ class Crossing
   end
 
   def currentClosing
-    currentTime = MXCurrentTimeInMinutes()
+    currentTime = Time.minutes_since_midnight
     nextClosing = self.nextClosing;
     previousClosing = self.previousClosing;
     currentTime <= previousClosing.trainTime + PREVIOUS_TRAIN_LAG_TIME && currentTime > previousClosing.trainTime - 1 ? 
@@ -89,7 +89,7 @@ class Crossing
 
   def minutesTillClosing
     # int nextClosingTime = self.nextClosing.closingTime;
-    # int currentTime = MXCurrentTimeInMinutes();
+    # int currentTime = Time.minutes_since_midnight
     # 
     # int result = nextClosingTime - currentTime;
     # if (result < 0)
@@ -101,7 +101,7 @@ class Crossing
 
   def minutesTillOpening
     trainTime = nextClosing.trainTime
-    currentTime = MXCurrentTimeInMinutes();
+    currentTime = Time.minutes_since_midnight
 
     result = trainTime - currentTime
     result = 24 * 60 + result if result < 0
@@ -110,7 +110,7 @@ class Crossing
 
   def minutesSinceOpening
     previousTrainTime = previousClosing.trainTime
-    currentTime = MXCurrentTimeInMinutes()
+    currentTime = Time.minutes_since_midnight
 
     result = currentTime - previousTrainTime;
     result = 24 * 60 + result if (result < 0)
@@ -126,7 +126,7 @@ class Crossing
   end
 
   def description
-    Helper.stringWithFormat "Crossing(%@, %f, %f, %dn)", name, latitude, longitude, closings.count
+    "<Crossing: #{name}, #{latitude}, #{longitude}, #{closings.count}>"
   end
 
   def index
@@ -135,10 +135,10 @@ class Crossing
 
   def addClosingWithTime(time, direction:direction)
     closing = Closing.new
-    closing.crossing = self;
-    closing.time = time;
-    closing.trainTime = Helper.parseStringAsHHMM time
-    closing.direction = direction;
+    closing.crossing = self
+    closing.time = time
+    closing.trainTime = time.minutes_from_hhmm
+    closing.direction = direction
     closings.addObject closing
   end
 
@@ -155,10 +155,10 @@ class Crossing
 
   def self.getCrossingWithName(name)
     for crossing in model.crossings
-      return crossing if crossing.name.isEqualToString name
+      return crossing if crossing.name == name
     end
 
-    Helper.warn("[%@] crossing is not found for name = '%@'", __method__, name)
+    Log.warn("[%@] crossing is not found for name = '%@'", __method__, name)
 
     nil
   end

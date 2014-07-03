@@ -47,7 +47,7 @@ class Closing
     closing = Closing.new
     closing.crossing = crossing;
     closing.time = time;
-    closing.trainTime = Helper.parseStringAsHHMM(time)
+    closing.trainTime = time.minutes_from_hhmm
     closing.direction = direction
 
     crossing.closings.addObject closing

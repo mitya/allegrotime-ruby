@@ -21,7 +21,7 @@ class AppDelegate
     @window.makeKeyAndVisible
 
     @perMinuteTimer = NSTimer.scheduledTimerWithTimeInterval 20, target:self, selector:'timerTicked', userInfo:nil, repeats:YES
-    @perMinuteTimer.fireDate = Helper.nextFullMinuteDate
+    @perMinuteTimer.fireDate = Time.next_full_minute_date
 
     true
   end

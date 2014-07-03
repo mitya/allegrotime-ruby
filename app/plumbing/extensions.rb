@@ -1,3 +1,46 @@
+class Symbol
+  def color
+    UIColor.send("#{self.to_s}Color")
+  end
+end
+
+
+class Time
+  def self.minutes_since_midnight
+    calendar = NSCalendar.currentCalendar
+
+    now = NSDate.date
+    nowParts = calendar.components NSHourCalendarUnit | NSMinuteCalendarUnit, fromDate:now
+
+    hours = nowParts.hour;
+    minutes = nowParts.minute;
+    hours * 60 + minutes;    
+  end
+  
+  def self.timestamp_string
+    now = NSDate.date
+    dateFormatter = NSDateFormatter.alloc.init
+    dateFormatter.setDateFormat "HH:mm:ss.SSS"
+    dateFormatter.stringFromDate now
+  end
+  
+  def self.format_date(date, format)
+    dateFormatter = NSDateFormatter.alloc.init
+    dateFormatter.setDateFormat format
+    dateFormatter.stringFromDate date
+  end
+  
+  def self.time_till_full_minute
+    dateComponents = NSCalendar.currentCalendar.components NSSecondCalendarUnit, fromDate:NSDate.date
+    60 - dateComponents.second
+  end
+
+  def self.next_full_minute_date
+    NSDate.dateWithTimeIntervalSinceNow time_till_full_minute
+  end  
+end
+
+
 class NSString
   def format(*args)
     NSString.stringWithFormat self, *objects
@@ -22,6 +65,13 @@ class NSString
   def li(*args)
     NSString.alloc.initWithFormat self.l, *args
   end
+  
+  def minutes_from_hhmm
+    components = self.componentsSeparatedByString ":"
+    hours = components.objectAtIndex(0).integerValue
+    minutes = components.objectAtIndex(1).integerValue
+    hours * 60 + minutes
+  end  
 end
 
 
@@ -51,5 +101,13 @@ class NSArray
       return object if predicate.call object
     end
     nil
+  end
+end
+
+
+class UIColor
+  def mkname
+    @@mkcolor_names ||= { :red.color => "red", :yellow.color => "yellow", :green.color => "green", :gray.color => "gray" }
+    @@mkcolor_names[self]
   end
 end

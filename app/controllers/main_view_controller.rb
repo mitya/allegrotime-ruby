@@ -89,14 +89,14 @@ class MainViewController < UIViewController
     elsif indexPath.section == StateSection && indexPath.row == 1
       cell = stateCell;
       nextClosing = model.currentCrossing.nextClosing;
-      stateCellTopLabel.text = "main. allegro will pass at $time".li(Helper.formatTimeInMunutesAsHHMM(nextClosing.trainTime))
+      stateCellTopLabel.text = "main. allegro will pass at $time".li(Format.munutes_as_hhmm(nextClosing.trainTime))
       stateCellBottomLabel.text = "main. crossing $closes at $time".li(
           model.currentCrossing.state == CrossingStateClosed ? "closed".l : "will be closed".l,
-          Helper.formatTimeInMunutesAsHHMM(nextClosing.closingTime)
+          Format.munutes_as_hhmm(nextClosing.closingTime)
       )
     elsif indexPath.section == StateSection && indexPath.row == 2
       cell = stateDetailsCell
-      MXSetGradientForCell(cell, model.currentCrossing.color)
+      Widgets.set_gradients_for_cell(cell, model.currentCrossing.color)
       cell.textLabel.adjustsFontSizeToFitWidth = YES
       cell.textLabel.text = model.currentCrossing.subtitle
     elsif indexPath.section == ActionsSection
@@ -180,7 +180,7 @@ class MainViewController < UIViewController
   end
 
   def adView(view, didFailToReceiveAdWithError:error)
-    Helper.warn "adView:didFailToReceiveAdWithError: %@", error
+    Log.warn "adView:didFailToReceiveAdWithError: %@", error
   end
 
   ### handlers

@@ -24,7 +24,7 @@ class CrossingScheduleController < UITableViewController
     if indexPath.section == 1
       cell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleValue1, reuseIdentifier:nil
       cell.textLabel.text = "Переезд на карте"
-      cell.detailTextLabel.text = Helper.stringWithFormat "%i км", crossing.distance
+      cell.detailTextLabel.text = "#{crossing.distance} км"
       cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
       return cell
     end
@@ -43,7 +43,7 @@ class CrossingScheduleController < UITableViewController
     closing = crossing.closings.objectAtIndex(indexPath.row)
 
     if closing.closest?
-      cell.backgroundColor = MXCellGradientColorFor(closing.color)
+      cell.backgroundColor = Colors.cell_gradient_pattern_for_color(closing.color)
       if closing.color == UIColor.greenColor || closing.color == UIColor.redColor
         cell.textLabel.textColor = UIColor.whiteColor
         cell.detailTextLabel.textColor = UIColor.lightTextColor
@@ -51,7 +51,7 @@ class CrossingScheduleController < UITableViewController
     end
 
     cell.textLabel.text = closing.toRussia? ? NSString.stringWithFormat("%@ ↶", closing.time) : closing.time
-    cell.detailTextLabel.text = Helper.stringWithFormat("№%i", closing.trainNumber)
+    cell.detailTextLabel.text = "№#{closing.trainNumber}"
 
     cell
   end

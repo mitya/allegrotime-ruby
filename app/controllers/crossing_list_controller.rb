@@ -34,9 +34,9 @@ class CrossingListController < UITableViewController
     end
 
 
-    cell.textLabel.text = crossing.name;
-    cell.detailTextLabel.text = crossing.subtitle;
-    cell.imageView.image = MXImageFromFile(NSString.stringWithFormat("cell-stripe-%@.png", MXNameForColor(crossing.color)))
+    cell.textLabel.text = crossing.name
+    cell.detailTextLabel.text = crossing.subtitle
+    cell.imageView.image = Device.image_named("cell-stripe-#{crossing.color.mkname}")
 
     if accessoryType == UITableViewCellAccessoryCheckmark
       cell.accessoryType = crossing == model.currentCrossing ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone
@@ -44,8 +44,8 @@ class CrossingListController < UITableViewController
       cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
     end
 
-    MXSetGradientForCell(cell, UIColor.grayColor) if crossing.closest?
-    MXSetGradientForCell(cell, UIColor.blueColor) if crossing.current?
+    Widgets.set_gradients_for_cell(cell, UIColor.grayColor) if crossing.closest?
+    Widgets.set_gradients_for_cell(cell, UIColor.blueColor) if crossing.current?
 
     cell
   end
@@ -69,7 +69,7 @@ class CrossingListController < UITableViewController
   end
 
   def tableView(tableView, viewForHeaderInSection:section)
-    label = MXConfigureLabelLikeInTableViewFooter(UILabel.new)
+    label = Widgets.style_label_as_in_table_view_footer(UILabel.new)
     label.text = model.closestCrossing ?
         NSString.stringWithFormat("Ближайший — %@", model.closestCrossing.name) :
         "Ближайший переезд не определен"

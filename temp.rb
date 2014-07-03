@@ -3,7 +3,6 @@ NSString.stringWithFormat "ooooo - %s", "heheh"
 
 
 NSString.stringWithFormat "%@ %@", 20, "mins"
-Helper.stringWithFormat "%i %s", 20, "mins"
 
 
 # rake args="-com.apple.CoreData.SQLDebug 1" 
@@ -14,3 +13,7 @@ Helper.stringWithFormat "%i %s", 20, "mins"
 # NSBundle.mainBundle.localizations
 # NSLocale.currentLocale
 # NSUserDefaults.standardUserDefaults['AppleLanguages']
+
+
+NSBundle.mainBundle.pathForResource("Localizable", ofType:"strings")
+# NSDictionary *dictionary = [NSDictionary dictionaryWithContentsOfFile:stringsPath];

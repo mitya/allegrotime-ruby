@@ -36,7 +36,7 @@ class LogViewController < UIViewController
       table.reloadData
     end
 
-    Helper.log "%@ updated in %d", __func__, startTime - CFAbsoluteTimeGetCurrent()
+    Log.info "%@ updated in %d", __func__, startTime - CFAbsoluteTimeGetCurrent()
   end
 
   def consoleFlushed

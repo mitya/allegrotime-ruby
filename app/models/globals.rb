@@ -38,3 +38,8 @@ end
 def _dd(object)
   puts "**** #{object.description}"
 end
+
+def _ov(view, color = UIColor.greenColor)
+  view.layer.borderColor = color.CGColor
+  view.layer.borderWidth = 1.0
+end

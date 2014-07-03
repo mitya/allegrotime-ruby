@@ -36,7 +36,7 @@ class CrossingMapController < UIViewController
         UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace, target:nil, action:nil),
         nil)
     if mapView.showsUserLocation
-      userLocationIcon = MXImageFromFile("bb-location.png")
+      userLocationIcon = Device.image_named("bb-location")
       userLocationButton = UIBarButtonItem.alloc.
         initWithImage userLocationIcon, style:UIBarButtonItemStyleBordered, target:self, action:'showUserLocation'
       itemsForToolbar.insertObject userLocationButton, atIndex:0
@@ -120,9 +120,9 @@ class CrossingMapController < UIViewController
   
   def pinMapping
     @pinMapping ||= {
-      MXImageFromFile("crossing-pin-green.png") => UIColor.greenColor,
-      MXImageFromFile("crossing-pin-yellow.png") => UIColor.yellowColor,
-      MXImageFromFile("crossing-pin-red.png") => UIColor.redColor
+      :green.color  => Device.image_named("crossing-pin-green"),
+      :yellow.color => Device.image_named("crossing-pin-yellow"),
+      :red.color    => Device.image_named("crossing-pin-red")
     }
   end
 end

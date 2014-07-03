@@ -3,7 +3,8 @@ class TrainScheduleController < UITableViewController
 
   def viewDidLoad
     super
-    self.title = Helper.stringWithFormat "Поезд №%i", sampleClosing.trainNumber
+    self.title = "Поезд №#{sampleClosing.trainNumber}" 
+    # self.title = Helper.stringWithFormat "Поезд №%i", sampleClosing.trainNumber
     # self.title = "schedule.train_no".li(sampleClosing.trainNumber)
   end
 
@@ -31,7 +32,7 @@ class TrainScheduleController < UITableViewController
   end
 
   def tableView(tableView, viewForHeaderInSection:section)
-    label = MXConfigureLabelLikeInTableViewFooter UILabel.new
+    label = Widgets.style_label_as_in_table_view_footer UILabel.new
     label.text = sampleClosing.toRussia? ? "Из Хельсинки в Санкт-Петербург" : "Из Санкт-Петербурга в Хельсинки"
     label
   end
