@@ -32,8 +32,7 @@ class MainViewController < UIViewController
 
   def viewDidLoad
     self.title = T("main.title");
-    self.view.backgroundColor = IPHONE ? UIColor.groupTableViewBackgroundColor : MXPadTableViewBackgroundColor()
-    self.navigationItem.backBarButtonItem = 
+    navigationItem.backBarButtonItem = 
       UIBarButtonItem.alloc.initWithTitle T("main.backbutton"), style:UIBarButtonItemStyleBordered, target:nil, action:nil
 
     NSNotificationCenter.defaultCenter.addObserver self, selector:'closestCrossingChanged', name:NXClosestCrossingChanged, object:nil

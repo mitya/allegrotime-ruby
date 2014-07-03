@@ -19,6 +19,9 @@ Motion::Project::App.setup do |app|
   app.icons = %w(Icon-iPhone.png Icon-iPad.png Icon-iPhone@2x.png Icon-iPad@2x.png)
   app.frameworks += %w(StoreKit AdSupport AVFoundation CoreTelephony SystemConfiguration MessageUI AudioToolbox MapKit CoreLocation CoreData)
   app.vendor_project 'vendor/GoogleMobileAdsSdkiOS-6.9.3', :static, force_load: false
+
+  # app.interface_orientations = [:portrait, :landscape_left, :landscape_right]
+  app.device_family = ENV['IPAD'] == '1' ? [:ipad, :iphone] : [:iphone, :ipad]
 end
 
 task :appicon do
