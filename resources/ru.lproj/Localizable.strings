@@ -7,3 +7,6 @@
 "closed" = "закрыли";
 "will be closed" = "закроют";
 "schedule.train_no" = "Поезд №%i";
+"main.show_schedule" = "Расписание Аллегро";
+"main.show_map" = "Карта переездов";
+"main.crossing_cell" = "Переезд";

@@ -7,4 +7,6 @@
 "closed" = "closed";
 "will be closed" = "will be closed";
 "schedule.train_no" = "Train N%i";
-"Расписание Аллегро" = "Allegro Schedule";
+"main.show_schedule" = "Allegro Schedule";
+"main.show_map" = "Crossings Map";
+"main.crossing_cell" = "Crossing";

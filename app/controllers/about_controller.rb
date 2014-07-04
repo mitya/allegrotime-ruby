@@ -4,7 +4,7 @@ class AboutController < UIViewController
   def viewDidLoad
     super
 
-    self.title = T('about.title')
+    self.title = 'about.title'.l
 
     self.webView = UIWebView.alloc.initWithFrame view.bounds
     webView.backgroundColor = UIColor.whiteColor

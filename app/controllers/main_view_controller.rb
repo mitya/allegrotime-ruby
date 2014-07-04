@@ -1,11 +1,28 @@
 class MainViewController < UIViewController
-  attr_accessor :crossingCell, :stateCell, :stateDetailsCell, :showScheduleCell, :showMapCell
+  attr_accessor :crossingCell, :stateCell, :messageCell, :showScheduleCell, :showMapCell
   attr_accessor :stateCellTopLabel, :stateCellBottomLabel, :tableView
   attr_accessor :adReloadPending
   attr_accessor :bannerView, :adTimer, :bannerViewLoaded, :adReloadPending
 
-  StateSection = 0
-  ActionsSection = 1
+  STATE_SECTION = 0
+  MESSAGE_SECTION = 1
+  ACTIONS_SECTION = 2
+
+  # table_view do
+  #   group :state do
+  #     cell :crossing, :value1, accessory: 'disclosure', action: 'showCrossingListToChangeCurrent'
+  #     cell :state, :default, text_alignment: 'center', detail_alignment: 'center', color: 'darkGray', selection: 'none'
+  #   end
+  #
+  #   group :message do
+  #     cell :message, :default, text_alignment: 'center', selection: 'none'
+  #   end
+  #
+  #   group :actions do
+  #     cell :show_schedule, :default, accessory: 'disclosure', action: 'showScheduleForCrossing'
+  #     cell :show_map, :default, accessory: 'disclosure', action: 'showMap'
+  #   end
+  # end
 
   ### lifecycle
 
@@ -14,20 +31,33 @@ class MainViewController < UIViewController
   end
 
   def loadView
-    views = NSBundle.mainBundle.loadNibNamed "MainView", owner:self, options:nil    
-  
-    self.view = views.last
-    self.crossingCell = views.detect { |v| v.tag == 11 }
-    self.stateCell = views.detect { |v| v.tag == 23 }
-    self.stateDetailsCell = views.detect { |v| v.tag == 12 }
-    self.showScheduleCell = views.detect { |v| v.tag == 24 }
-    self.showMapCell = views.detect { |v| v.tag == 15 }
-    self.stateCellTopLabel = stateCell.viewWithTag(31)
-    self.stateCellBottomLabel = stateCell.viewWithTag(32)
+    self.crossingCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleValue1, reuseIdentifier:MXDefaultCellID
+    crossingCell.textLabel.text = 'main.crossing_cell'.l
+    crossingCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
+    
+    self.stateCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleSubtitle, reuseIdentifier:MXDefaultCellID
+    stateCell.textLabel.textAlignment = NSTextAlignmentCenter
+    stateCell.detailTextLabel.textAlignment = NSTextAlignmentCenter
+    stateCell.detailTextLabel.textColor = :darkGray.color
+    stateCell.selectionStyle = UITableViewCellSelectionStyleNone
+    
+    self.messageCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleDefault, reuseIdentifier:MXDefaultCellID
+    messageCell.selectionStyle = UITableViewCellSelectionStyleNone
+    messageCell.textLabel.textAlignment = NSTextAlignmentCenter
 
-    self.tableView = view.subviews.detect { |v| UITableView === v }
+    self.showScheduleCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleDefault, reuseIdentifier:MXDefaultCellID
+    showScheduleCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
+    showScheduleCell.textLabel.text = 'main.show_schedule'.l
+    
+    self.showMapCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleDefault, reuseIdentifier:MXDefaultCellID
+    showMapCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
+    showMapCell.textLabel.text = 'main.show_map'.l
+    
+    self.tableView = UITableView.alloc.initWithFrame CGRectNull, style:UITableViewStyleGrouped
     tableView.delegate = self
     tableView.dataSource = self
+
+    self.view = tableView
   end
 
   def viewDidLoad
@@ -73,54 +103,54 @@ class MainViewController < UIViewController
   ### table view stuff
 
   def numberOfSectionsInTableView(tableView)
-    2
+    3
   end
 
   def tableView(tableView, numberOfRowsInSection:section)
-    return 3 if (section == StateSection)
-    return 2 if (section == ActionsSection)
-    return 0
+    case section
+      when STATE_SECTION then 2
+      when MESSAGE_SECTION then 1
+      when ACTIONS_SECTION then 2
+    end
   end
 
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
-    if indexPath.section == StateSection && indexPath.row == 0
+    case Pair.new(indexPath.section, indexPath.row)
+    when Pair.new(STATE_SECTION, 0)
       cell = crossingCell
       cell.detailTextLabel.text = model.currentCrossing.name;
-    elsif indexPath.section == StateSection && indexPath.row == 1
-      cell = stateCell;
-      nextClosing = model.currentCrossing.nextClosing;
-      stateCellTopLabel.text = "main. allegro will pass at $time".li(Format.munutes_as_hhmm(nextClosing.trainTime))
-      stateCellBottomLabel.text = "main. crossing $closes at $time".li(
+    when Pair.new(STATE_SECTION, 1)
+      cell = self.stateCell
+      nextClosing = model.currentCrossing.nextClosing
+      cell.textLabel.text = "main. allegro will pass at $time".li(Format.munutes_as_hhmm(nextClosing.trainTime))
+      cell.detailTextLabel.text = "main. crossing $closes at $time".li(
           model.currentCrossing.state == CrossingStateClosed ? "closed".l : "will be closed".l,
           Format.munutes_as_hhmm(nextClosing.closingTime)
       )
-    elsif indexPath.section == StateSection && indexPath.row == 2
-      cell = stateDetailsCell
+    when Pair.new(MESSAGE_SECTION, 0)
+      cell = messageCell
       Widgets.set_gradients_for_cell(cell, model.currentCrossing.color)
       cell.textLabel.adjustsFontSizeToFitWidth = YES
       cell.textLabel.text = model.currentCrossing.subtitle
-    elsif indexPath.section == ActionsSection
-      cell = showScheduleCell if indexPath.row == 0
-      cell = showMapCell if indexPath.row == 1
+    when Pair.new(ACTIONS_SECTION, 0)
+      cell = showScheduleCell
+    when Pair.new(ACTIONS_SECTION, 1)
+      cell = showMapCell
     end
 
     cell
   end
 
   def tableView(tableView, titleForFooterInSection:section)
-    return "main.footer".l if section == ActionsSection
+    return "main.footer".l if section == ACTIONS_SECTION
     return nil
   end
 
   def tableView(table, didSelectRowAtIndexPath:indexPath)
-    cell = tableView.cellForRowAtIndexPath indexPath
-
-    if cell == crossingCell
-      showCrossingListToChangeCurrent
-    elsif cell == showScheduleCell
-      showCrossingListForSchedule
-    elsif cell == showMapCell
-      showMap
+    case tableView.cellForRowAtIndexPath(indexPath)
+      when crossingCell then showCrossingListToChangeCurrent
+      when showScheduleCell then showCrossingListForSchedule
+      when showMapCell then showMap
     end
   end
 
@@ -180,7 +210,7 @@ class MainViewController < UIViewController
   end
 
   def adView(view, didFailToReceiveAdWithError:error)
-    Log.warn "adView:didFailToReceiveAdWithError: %@", error
+    Log.warn "adView:didFailToReceiveAdWithError: #{error.description}"
   end
 
   ### handlers

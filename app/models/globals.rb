@@ -36,10 +36,11 @@ def model
 end
 
 def _dd(object)
-  puts "**** #{object.description}"
+  desc = Boxed === object ? object.inspect : object.description
+  puts "**** #{desc}"
 end
 
-def _ov(view, color = UIColor.greenColor)
-  view.layer.borderColor = color.CGColor
+def _vv(view, color = :green)
+  view.layer.borderColor = color.color.CGColor
   view.layer.borderWidth = 1.0
 end
