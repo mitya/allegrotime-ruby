@@ -20,25 +20,24 @@ class CrossingMapController < UIViewController
   def viewDidLoad
     super
   
-    self.title = "Карта"
+    self.title = 'map.title'.l
 
-    segmentedItems = NSArray.arrayWithObjects "Стандарт", "Спутник", "Гибрид", nil
-    segmentedControl = UISegmentedControl.alloc.initWithItems segmentedItems
+    segmentedControl = UISegmentedControl.alloc.initWithItems ['map.standard'.l, 'map.hybrid'.l, 'map.satellite'.l]
     segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar
     segmentedControl.selectedSegmentIndex = lastMapType
     segmentedControl.addTarget self, action:'changeMapType:', forControlEvents:UIControlEventValueChanged
   
     navigationItem.backBarButtonItem = UIBarButtonItem.alloc.initWithTitle "Карта", style:UIBarButtonItemStylePlain, target:nil, action:nil
   
-    itemsForToolbar = NSMutableArray.arrayWithObjects(
+    itemsForToolbar = [
         UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace, target:nil, action:nil),
         UIBarButtonItem.alloc.initWithCustomView(segmentedControl),
-        UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace, target:nil, action:nil),
-        nil)
+        UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace, target:nil, action:nil)
+      ]
     if mapView.showsUserLocation
       userLocationIcon = Device.image_named("bb-location")
-      userLocationButton = UIBarButtonItem.alloc.
-        initWithImage userLocationIcon, style:UIBarButtonItemStyleBordered, target:self, action:'showUserLocation'
+      userLocationButton = UIBarButtonItem.alloc.initWithImage userLocationIcon, 
+        style:UIBarButtonItemStyleBordered, target:self, action:'showUserLocation'
       itemsForToolbar.insertObject userLocationButton, atIndex:0
     end
     self.toolbarItems = itemsForToolbar
@@ -96,7 +95,11 @@ class CrossingMapController < UIViewController
   ### callbacks
   
   def changeMapType(segment)
-    mapView.mapType = segment.selectedSegmentIndex
+    mapView.mapType = case segment.selectedSegmentIndex
+      when 0 then MKMapTypeStandard
+      when 1 then MKMapTypeHybrid
+      when 2 then MKMapTypeSatellite
+    end
   end
   
   def modelUpdated

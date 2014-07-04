@@ -10,3 +10,7 @@
 "main.show_schedule" = "Расписание Аллегро";
 "main.show_map" = "Карта переездов";
 "main.crossing_cell" = "Переезд";
+"map.title" = "Карта";
+"map.standard" = "Стандарт";
+"map.hybrid" = "Гибрид";
+"map.satellite" = "Спутник";
