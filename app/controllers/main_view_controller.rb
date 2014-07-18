@@ -118,7 +118,7 @@ class MainViewController < UIViewController
     case Pair.new(indexPath.section, indexPath.row)
     when Pair.new(STATE_SECTION, 0)
       cell = crossingCell
-      cell.detailTextLabel.text = model.currentCrossing.name;
+      cell.detailTextLabel.text = model.currentCrossing.localizedName;
     when Pair.new(STATE_SECTION, 1)
       cell = self.stateCell
       nextClosing = model.currentCrossing.nextClosing

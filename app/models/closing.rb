@@ -24,7 +24,7 @@ class Closing
   end
 
   def description
-    NSString.stringWithFormat "Closing(%@, %@, %@)", crossing.name, time, directionCode
+    NSString.stringWithFormat "Closing(%@, %@, %@)", crossing.localizedName, time, directionCode
   end
 
   def state

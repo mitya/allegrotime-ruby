@@ -3,7 +3,7 @@ class CrossingScheduleController < UITableViewController
 
   def viewDidLoad
     super
-    self.title = self.crossing.name
+    self.title = self.crossing.localizedName
   end
 
   ### table view
@@ -23,8 +23,8 @@ class CrossingScheduleController < UITableViewController
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
     if indexPath.section == 1
       cell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleValue1, reuseIdentifier:nil
-      cell.textLabel.text = "Переезд на карте"
-      cell.detailTextLabel.text = "#{crossing.distance} км"
+      cell.textLabel.text = 'schedule.show_crossing_map'.l
+      cell.detailTextLabel.text = 'x km'.li(crossing.distance)
       cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
       return cell
     end

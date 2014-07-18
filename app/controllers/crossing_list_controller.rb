@@ -30,7 +30,7 @@ class CrossingListController < UITableViewController
       UITableViewCell.alloc.initWithStyle UITableViewCellStyleSubtitle, reuseIdentifier:MXDefaultCellID
     end
 
-    cell.textLabel.text = crossing.name
+    cell.textLabel.text = crossing.localizedName
     cell.detailTextLabel.text = crossing.subtitle
     cell.imageView.image = Device.image_named("cell-stripe-#{crossing.color.mkname}")
 
@@ -67,7 +67,7 @@ class CrossingListController < UITableViewController
   def tableView(tableView, viewForHeaderInSection:section)
     label = Widgets.style_label_as_in_table_view_footer(UILabel.new)
     label.text = model.closestCrossing ? 
-        'crossings.closest'.li(model.closestCrossing.name) :
+        'crossings.closest'.li(model.closestCrossing.localizedName) :
         'crossings.closest_undefined'.l
     label
   end

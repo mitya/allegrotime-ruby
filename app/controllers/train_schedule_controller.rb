@@ -26,7 +26,7 @@ class TrainScheduleController < UITableViewController
     closing = crossing.closings.objectAtIndex trainIndex
 
     cell.textLabel.text = closing.time
-    cell.detailTextLabel.text = closing.crossing.name
+    cell.detailTextLabel.text = closing.crossing.localizedName
 
     cell
   end

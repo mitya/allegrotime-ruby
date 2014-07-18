@@ -43,7 +43,11 @@ class Crossing
   end
 
   def title
-    'crossing.title'.li(name, distance)
+    'crossing.title'.li(localizedName, distance)
+  end
+  
+  def localizedName
+    name.l
   end
 
   def subtitle

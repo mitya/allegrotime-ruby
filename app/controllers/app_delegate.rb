@@ -59,7 +59,7 @@ class AppDelegate
   def locationManager(manager, didUpdateToLocation:newLocation, fromLocation:oldLocation)
     MXWriteToConsole(
       "didUpdateToLocation acc=%.f dist=%.f %@", 
-      newLocation.horizontalAccuracy, newLocation.distanceFromLocation(oldLocation), model.closestCrossing.name)
+      newLocation.horizontalAccuracy, newLocation.distanceFromLocation(oldLocation), model.closestCrossing.localizedName)
   
     newClosestCrossing = model.crossingClosestTo(newLocation)
     if newClosestCrossing != model.closestCrossing
