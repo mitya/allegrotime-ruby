@@ -122,8 +122,8 @@ class MainViewController < UIViewController
     when Pair.new(STATE_SECTION, 1)
       cell = self.stateCell
       nextClosing = model.currentCrossing.nextClosing
-      cell.textLabel.text = "main. allegro will pass at $time".li(Format.munutes_as_hhmm(nextClosing.trainTime))
-      cell.detailTextLabel.text = "main. crossing $closes at $time".li(
+      cell.textLabel.text = "main.allegro will pass at $time".li(Format.munutes_as_hhmm(nextClosing.trainTime))
+      cell.detailTextLabel.text = "main.crossing $closes at $time".li(
           model.currentCrossing.state == CrossingStateClosed ? "closed".l : "will be closed".l,
           Format.munutes_as_hhmm(nextClosing.closingTime)
       )

@@ -5,4 +5,8 @@ module Device
     UIImage.imageNamed "images/#{filename}.png"
   end
   
+  def language
+    'lang'.l
+  end
+  
 end

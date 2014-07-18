@@ -11,7 +11,7 @@ NSString.stringWithFormat "%@ %@", 20, "mins"
 # NSLocale.preferredLanguages
 # NSBundle.mainBundle.preferredLocalizations
 # NSBundle.mainBundle.localizations
-# NSLocale.currentLocale
+# NSLocale.currentLocale.localeIdentifier
 # NSUserDefaults.standardUserDefaults['AppleLanguages']
 
 

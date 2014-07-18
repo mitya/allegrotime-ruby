@@ -43,17 +43,17 @@ class Crossing
   end
 
   def title
-    "#{name}, #{distance} км"
+    'crossing.title'.li(name, distance)
   end
 
   def subtitle
     case state
     when CrossingStateClear, CrossingStateSoon, CrossingStateVerySoon, CrossingStateClosing
-      minutesTillClosing == 0 ? "Только что закрыли" : "Закроют через #{Format.minutes_as_text(minutesTillClosing)}"
+      minutesTillClosing == 0 ? 'crossing.just_closed'.l : 'crossing.will be closed in X mins'.li(Format.minutes_as_text(minutesTillClosing))
     when CrossingStateClosed
-      minutesTillOpening == 0 ? "Только что открыли" : "Откроют через #{Format.minutes_as_text(minutesTillOpening)}"      
+      minutesTillOpening == 0 ? 'crossing.just_opened'.l : 'crossing.will be opened in X mins'.li(Format.minutes_as_text(minutesTillOpening))
     when CrosingsStateJustOpened
-      minutesSinceOpening == 0 ? "Только что открыли" : "Открыли #{Format.minutes_as_text(minutesTillOpening)} назад"
+      minutesSinceOpening == 0 ? 'crossing.just_opened'.l : 'crossing.opened X min ago'.li(Format.minutes_as_text(minutesTillOpening))
     else
       nil
     end

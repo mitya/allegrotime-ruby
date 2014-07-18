@@ -2,7 +2,7 @@ class CrossingListController < UITableViewController
   attr_accessor :target, :action, :accessoryType
 
   def viewDidLoad
-    self.title = "Переезды"
+    self.title = "crossings.title".l
   end
 
   def viewDidAppear(animated)
@@ -26,13 +26,9 @@ class CrossingListController < UITableViewController
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
     crossing = model.crossings.objectAtIndex(indexPath.row)
 
-    cell = tableView.dequeueReusableCellWithIdentifier MXDefaultCellID
-    unless cell
-      cell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleSubtitle, reuseIdentifier:MXDefaultCellID
-      # cell.backgroundColor = UIColor.whiteColor
-      # cell.detailTextLabel.backgroundColor = UIColor.clearColor
+    cell = tableView.dequeueReusableCellWithIdentifier(MXDefaultCellID) || begin
+      UITableViewCell.alloc.initWithStyle UITableViewCellStyleSubtitle, reuseIdentifier:MXDefaultCellID
     end
-
 
     cell.textLabel.text = crossing.name
     cell.detailTextLabel.text = crossing.subtitle
@@ -70,9 +66,9 @@ class CrossingListController < UITableViewController
 
   def tableView(tableView, viewForHeaderInSection:section)
     label = Widgets.style_label_as_in_table_view_footer(UILabel.new)
-    label.text = model.closestCrossing ?
-        NSString.stringWithFormat("Ближайший — %@", model.closestCrossing.name) :
-        "Ближайший переезд не определен"
+    label.text = model.closestCrossing ? 
+        'crossings.closest'.li(model.closestCrossing.name) :
+        'crossings.closest_undefined'.l
     label
   end
 
