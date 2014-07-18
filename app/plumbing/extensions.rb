@@ -111,3 +111,13 @@ class UIColor
     @@mkcolor_names[self]
   end
 end
+
+class CGRect
+  def width
+    size.width
+  end
+  
+  def height
+    size.height
+  end
+end

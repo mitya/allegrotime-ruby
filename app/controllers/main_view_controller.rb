@@ -44,7 +44,7 @@ class MainViewController < UIViewController
     self.messageCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleDefault, reuseIdentifier:MXDefaultCellID
     messageCell.selectionStyle = UITableViewCellSelectionStyleNone
     messageCell.textLabel.textAlignment = NSTextAlignmentCenter
-
+    
     self.showScheduleCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleDefault, reuseIdentifier:MXDefaultCellID
     showScheduleCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
     showScheduleCell.textLabel.text = 'main.show_schedule'.l
