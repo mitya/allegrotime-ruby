@@ -29,16 +29,15 @@ class CrossingScheduleController < UITableViewController
       return cell
     end
 
-    cell = tableView.dequeueReusableCellWithIdentifier MXDefaultCellID
-    unless cell
+    cell = tableView.dequeueReusableCellWithIdentifier(MXDefaultCellID) || begin 
       cell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleValue2, reuseIdentifier:MXDefaultCellID
       cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
       cell.textLabel.backgroundColor = UIColor.clearColor
       cell.textLabel.font = UIFont.systemFontOfSize 20
       cell.detailTextLabel.backgroundColor = UIColor.clearColor
       cell.detailTextLabel.textColor = UIColor.grayColor
+      cell
     end
-
 
     closing = crossing.closings.objectAtIndex(indexPath.row)
 
@@ -51,7 +50,7 @@ class CrossingScheduleController < UITableViewController
     end
 
     cell.textLabel.text = closing.toRussia? ? NSString.stringWithFormat("%@ ↶", closing.time) : closing.time
-    cell.detailTextLabel.text = "№#{closing.trainNumber}"
+    cell.detailTextLabel.text = 'no x'.li(closing.trainNumber)
 
     cell
   end

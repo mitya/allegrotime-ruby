@@ -23,6 +23,9 @@
 "crossings.title" = "Переезды";
 "crossings.closest" = "Ближайший — %@";
 "crossings.closest_undefined" = "Ближайший переезд не определен";
-"schedule.train_no" = "Поезд №%i";
+"schedule.train_no" = "Поезд №%@";
 "schedule.show_crossing_map" = "Переезд на карте";
+"schedule.hel_spb" = "Из Хельсинки в Санкт-Петербург";
+"schedule.spb_hel" = "Из Санкт-Петербурга в Хельсинки";
 "x km" = "%@ км";
+"no x" = "№%@";

@@ -3,9 +3,7 @@ class TrainScheduleController < UITableViewController
 
   def viewDidLoad
     super
-    self.title = "Поезд №#{sampleClosing.trainNumber}" 
-    # self.title = Helper.stringWithFormat "Поезд №%i", sampleClosing.trainNumber
-    # self.title = "schedule.train_no".li(sampleClosing.trainNumber)
+    self.title = "schedule.train_no".li(sampleClosing.trainNumber)
   end
 
   ### table view
@@ -15,10 +13,10 @@ class TrainScheduleController < UITableViewController
   end
 
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
-    cell = tableView.dequeueReusableCellWithIdentifier MXDefaultCellID
-    if !cell
+    cell = tableView.dequeueReusableCellWithIdentifier(MXDefaultCellID) || begin
       cell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleValue2, reuseIdentifier:MXDefaultCellID
       cell.selectionStyle = UITableViewCellSelectionStyleNone
+      cell
     end
 
     trainIndex = sampleClosing.crossing.closings.indexOfObject sampleClosing
@@ -33,7 +31,7 @@ class TrainScheduleController < UITableViewController
 
   def tableView(tableView, viewForHeaderInSection:section)
     label = Widgets.style_label_as_in_table_view_footer UILabel.new
-    label.text = sampleClosing.toRussia? ? "Из Хельсинки в Санкт-Петербург" : "Из Санкт-Петербурга в Хельсинки"
+    label.text = sampleClosing.toRussia? ? 'schedule.hel_spb'.l : 'schedule.spb_hel'.l
     label
   end
 

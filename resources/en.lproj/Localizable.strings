@@ -23,9 +23,16 @@
 "crossings.title" = "Crossings";
 "crossings.closest" = "The nearest is %@";
 "crossings.closest_undefined" = "The nearest crossing is not identified";
-"schedule.train_no" = "Train N%i";
+"schedule.train_no" = "Train #%@";
 "schedule.show_crossing_map" = "Crossing on the Map";
+"schedule.hel_spb" = "From Helsinki to Saint Petersburg";
+"schedule.spb_hel" = "From Saint Petersburg to Helsinki";
 "x km" = "%@ km";
+"no x" = "#%@";
+
+
+
+
 
 "Удельная" = "Udelnaya";
 "Поклонногорская" = "Poklonnogorskaya";
