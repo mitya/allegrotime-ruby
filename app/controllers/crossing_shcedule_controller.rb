@@ -2,7 +2,6 @@ class CrossingScheduleController < UITableViewController
   attr_accessor :crossing
 
   def viewDidLoad
-    super
     self.title = self.crossing.localizedName
   end
 

@@ -2,7 +2,6 @@ class TrainScheduleController < UITableViewController
   attr_accessor :sampleClosing
 
   def viewDidLoad
-    super
     self.title = "schedule.train_no".li(sampleClosing.trainNumber)
   end
 

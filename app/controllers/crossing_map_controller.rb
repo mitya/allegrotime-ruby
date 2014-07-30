@@ -35,9 +35,8 @@ class CrossingMapController < UIViewController
         UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace, target:nil, action:nil)
       ]
     if mapView.showsUserLocation
-      userLocationIcon = Device.image_named("bb-location")
-      userLocationButton = UIBarButtonItem.alloc.initWithImage userLocationIcon, 
-        style:UIBarButtonItemStyleBordered, target:self, action:'showUserLocation'
+      userLocationButton = UIBarButtonItem.alloc.initWithImage Device.image_named("bb-location"), style:UIBarButtonItemStyleBordered, 
+          target:self, action:'showUserLocation'
       itemsForToolbar.insertObject userLocationButton, atIndex:0
     end
     self.toolbarItems = itemsForToolbar

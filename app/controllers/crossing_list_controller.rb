@@ -3,6 +3,8 @@ class CrossingListController < UITableViewController
 
   def viewDidLoad
     self.title = "crossings.title".l
+    navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithImage(Device.image_named("bb-define_location"), 
+        style:UIBarButtonItemStylePlain, target:self, action:'selectClosestCrossing')
   end
 
   def viewDidAppear(animated)
@@ -10,11 +12,30 @@ class CrossingListController < UITableViewController
     currentRowIndex = NSIndexPath.indexPathForRow model.currentCrossing.index, inSection:0
     tableView.scrollToRowAtIndexPath currentRowIndex, atScrollPosition:UITableViewScrollPositionMiddle, animated:YES
   end
-
+  
   ### handlers
 
   def modelUpdated
     tableView.reloadData
+  end
+  
+  def selectClosestCrossing
+    closestCrossingIndex = model.crossings.indexOfObject(model.closestCrossing)
+    indexPath = NSIndexPath.indexPathForRow(closestCrossingIndex, inSection:0)
+    
+    # tableView.deselectRowAtIndexPath indexPath, animated:YES
+
+    if accessoryType == UITableViewCellAccessoryCheckmark
+      for cell in tableView.visibleCells
+        cell.accessoryType = UITableViewCellAccessoryNone if cell.accessoryType == UITableViewCellAccessoryCheckmark
+      end
+
+      cell = tableView.cellForRowAtIndexPath indexPath
+      cell.accessoryType = UITableViewCellAccessoryCheckmark
+    end
+    
+    model.currentCrossing = model.closestCrossing
+    tableView.reloadData    
   end
 
   ### table view

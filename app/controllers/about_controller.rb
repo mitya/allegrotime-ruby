@@ -2,8 +2,6 @@ class AboutController < UIViewController
   attr_accessor :webView
 
   def viewDidLoad
-    super
-
     self.title = 'about.title'.l
 
     self.webView = UIWebView.alloc.initWithFrame view.bounds

@@ -6,8 +6,6 @@ class LogViewController < UIViewController
   end
 
   def viewDidLoad
-    super
-
     self.title = "Лог";
 
     table = UITableView.alloc.initWithFrame view.bounds, style:UITableViewStylePlain
