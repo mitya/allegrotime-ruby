@@ -33,21 +33,21 @@ class ModelManager
     @closestCrossing
   end
 
-  def currentCrossing
-    selectedCrossing || closestCrossing || defaultCrossing
-  end
-
   def selectedCrossing
     crossingName = NSUserDefaults.standardUserDefaults.objectForKey "selectedCrossing"
     crossingName ? Crossing.getCrossingWithName(crossingName) : nil
   end
 
-  def setSelectedCrossing(aCrossing)
-    NSUserDefaults.standardUserDefaults.setObject aCrossing.name, forKey:"selectedCrossing"
+  def selectedCrossing=(crossing)
+    NSUserDefaults.standardUserDefaults.setObject crossing ? crossing.name : nil, forKey:"selectedCrossing"
   end
 
-  def setCurrentCrossing(crossing)
-    selectedCrossing = crossing.closest? ? nil : crossing;
+  def currentCrossing
+    selectedCrossing || closestCrossing || defaultCrossing
+  end
+
+  def currentCrossing=(crossing)
+    self.selectedCrossing = crossing.closest? ? nil : crossing
   end
 
   ### methods

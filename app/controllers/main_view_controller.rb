@@ -259,14 +259,14 @@ class MainViewController < UIViewController
     navigationController.pushViewController scheduleController, animated:YES
   end
 
+  def changeCurrentCrossing(crossing)
+    model.currentCrossing = crossing
+    navigationController.popViewControllerAnimated YES
+    tableView.reloadData
+  end
+  
   def showLog
     logController = LogViewController.alloc.init
     navigationController.pushViewController logController, animated:YES
-  end
-
-  def changeCurrentCrossing(crossing)
-    model.setCurrentCrossing crossing
-    navigationController.popViewControllerAnimated YES
-    tableView.reloadData
   end
 end

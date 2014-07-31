@@ -19,20 +19,17 @@ module Widgets
   end
 
   def set_gradients_for_cell(cell, color)
-    @@cell_gradients_mapping ||= {
+    @@bg_to_text_color_map ||= {
       :red.color     => :white.color,
       :yellow.color  => :darkGray.color,
       :green.color   => :white.color,
       :blue.color    => :black.color,
-      :gray.color    => :black.color
+      :gray.color    => :black.color,
+      :clear.color   => :black.color
     }
 
     cell.backgroundColor = Colors.cell_gradient_pattern_for_color(color)
-    cell.textLabel.textColor = @@cell_gradients_mapping.objectForKey color
-    cell.detailTextLabel.textColor = @@cell_gradients_mapping.objectForKey color if cell.detailTextLabel
-
-    if color == UIColor.blueColor || color == UIColor.grayColor
-      cell.detailTextLabel.textColor = UIColor.darkGrayColor
-    end
+    cell.textLabel.textColor = @@bg_to_text_color_map[color]
+    cell.detailTextLabel.textColor = @@bg_to_text_color_map[color] if cell.detailTextLabel
   end
 end

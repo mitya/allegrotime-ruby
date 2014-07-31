@@ -21,21 +21,22 @@ class CrossingListController < UITableViewController
   
   def selectClosestCrossing
     closestCrossingIndex = model.crossings.indexOfObject(model.closestCrossing)
-    indexPath = NSIndexPath.indexPathForRow(closestCrossingIndex, inSection:0)
+    closestCrossingIndexPath = NSIndexPath.indexPathForRow(closestCrossingIndex, inSection:0)
     
-    # tableView.deselectRowAtIndexPath indexPath, animated:YES
-
     if accessoryType == UITableViewCellAccessoryCheckmark
-      for cell in tableView.visibleCells
+      tableView.visibleCells.each do |cell|
         cell.accessoryType = UITableViewCellAccessoryNone if cell.accessoryType == UITableViewCellAccessoryCheckmark
       end
 
-      cell = tableView.cellForRowAtIndexPath indexPath
-      cell.accessoryType = UITableViewCellAccessoryCheckmark
+      if closestCrossingCell = tableView.cellForRowAtIndexPath(closestCrossingIndexPath)
+        closestCrossingCell.accessoryType = UITableViewCellAccessoryCheckmark
+      end
     end
     
     model.currentCrossing = model.closestCrossing
-    tableView.reloadData    
+
+    tableView.reloadData
+    tableView.scrollToRowAtIndexPath closestCrossingIndexPath, atScrollPosition:UITableViewScrollPositionMiddle, animated:YES
   end
 
   ### table view
@@ -45,7 +46,7 @@ class CrossingListController < UITableViewController
   end
 
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
-    crossing = model.crossings.objectAtIndex(indexPath.row)
+    crossing = model.crossings[indexPath.row]
 
     cell = tableView.dequeueReusableCellWithIdentifier(MXDefaultCellID) || begin
       UITableViewCell.alloc.initWithStyle UITableViewCellStyleSubtitle, reuseIdentifier:MXDefaultCellID
@@ -56,11 +57,15 @@ class CrossingListController < UITableViewController
     cell.imageView.image = Device.image_named("cell-stripe-#{crossing.color.mkname}")
 
     if accessoryType == UITableViewCellAccessoryCheckmark
-      cell.accessoryType = crossing == model.currentCrossing ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone
+      cell.accessoryType = crossing.current? ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone
     else
       cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
     end
 
+    cell.backgroundColor = :white.color
+    cell.textLabel.textColor = :black.color
+    cell.detailTextLabel.textColor = :black.color    
+    
     Widgets.set_gradients_for_cell(cell, UIColor.grayColor) if crossing.closest?
     Widgets.set_gradients_for_cell(cell, UIColor.blueColor) if crossing.current?
 

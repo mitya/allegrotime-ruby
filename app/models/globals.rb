@@ -35,10 +35,17 @@ def model
   $model
 end
 
+def _ddl(*objects)
+  string = objects.map { |obj| Boxed === obj ? obj.inspect : obj.description }.join(' ')
+  puts "**** #{string}"
+end
+
 def _dd(object)
   desc = Boxed === object ? object.inspect : object.description
   puts "**** #{desc}"
 end
+
+alias _p _dd
 
 def _vv(view, color = :green)
   view.layer.borderColor = color.color.CGColor
