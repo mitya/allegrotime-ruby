@@ -18,7 +18,7 @@ Motion::Project::App.setup do |app|
   app.provisioning_profile = '/Users/Dima/Library/MobileDevice/Provisioning Profiles/D8251B9B-9F6C-40F3-A0AB-344DCF5C5D94.mobileprovision'
   app.icons = %w(Icon-iPhone.png Icon-iPad.png Icon-iPhone@2x.png Icon-iPad@2x.png)
   app.frameworks += %w(StoreKit AdSupport AVFoundation CoreTelephony SystemConfiguration MessageUI AudioToolbox MapKit CoreLocation CoreData)
-  app.vendor_project 'vendor/GoogleMobileAdsSdkiOS-6.10.0', :static, force_load: false
+  app.vendor_project 'vendor/GoogleMobileAdsSdkiOS-6.11.1', :static, force_load: false
 
   # app.interface_orientations = [:portrait, :landscape_left, :landscape_right]
   app.device_family = ENV['IPAD'] == '1' ? [:ipad, :iphone] : [:iphone, :ipad]

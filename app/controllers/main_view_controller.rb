@@ -158,16 +158,14 @@ class MainViewController < UIViewController
 
   def setupBanner
     self.bannerView = GADBannerView.alloc.initWithAdSize IPHONE ? KGADAdSizeBanner : KGADAdSizeLeaderboard
-    bannerView.adUnitID = IPHONE ? GAD_IPHONE_KEY : GAD_IPAD_KEY;
-    bannerView.rootViewController = self;
-    bannerView.backgroundColor = UIColor.clearColor;
-    bannerView.delegate = self;
-    bannerView.hidden = YES;
-    bannerView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    bannerView.frame = CGRectMake(
-      bannerView.bounds.origin.x, view.bounds.size.height - bannerView.bounds.size.height,
-      bannerView.bounds.size.width, bannerView.bounds.size.height
-    )
+    # bannerView.adUnitID = IPHONE ? GAD_IPHONE_KEY : GAD_IPAD_KEY
+    bannerView.adUnitID = IPHONE ? GAD_IPHONE_AD_UNIT_ID : GAD_IPAP_AD_UNIT_ID
+    bannerView.rootViewController = self
+    bannerView.backgroundColor = UIColor.clearColor
+    bannerView.delegate = self
+    bannerView.hidden = YES
+    bannerView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin
+    bannerView.frame = CGRectMake(bannerView.bounds.x, App.window.bounds.height - bannerView.bounds.height, bannerView.bounds.width, bannerView.bounds.height)
 
     view.addSubview bannerView
     reloadBanner

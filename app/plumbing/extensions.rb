@@ -136,6 +136,14 @@ class UIColor
 end
 
 class CGRect
+  def x
+    origin.x
+  end
+
+  def y
+    origin.y
+  end
+  
   def width
     size.width
   end
