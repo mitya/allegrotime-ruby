@@ -28,14 +28,12 @@ class CrossingScheduleController < UITableViewController
       return cell
     end
 
-    cell = tableView.dequeueReusableCellWithIdentifier(MXDefaultCellID) || begin 
-      cell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleValue2, reuseIdentifier:MXDefaultCellID
+    cell = tableView.dequeue_cell UITableViewCellStyleValue2 do |cell|
       cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
       cell.textLabel.backgroundColor = UIColor.clearColor
       cell.textLabel.font = UIFont.systemFontOfSize 20
       cell.detailTextLabel.backgroundColor = UIColor.clearColor
       cell.detailTextLabel.textColor = UIColor.grayColor
-      cell
     end
 
     closing = crossing.closings.objectAtIndex(indexPath.row)

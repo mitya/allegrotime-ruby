@@ -3,8 +3,11 @@ class CrossingListController < UITableViewController
 
   def viewDidLoad
     self.title = "crossings.title".l
-    navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithImage(Device.image_named("bb-define_location"), 
-        style:UIBarButtonItemStylePlain, target:self, action:'selectClosestCrossing')
+
+    if model.closestCrossing
+      navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithImage(Device.image_named("bb-define_location"), 
+          style:UIBarButtonItemStylePlain, target:self, action:'selectClosestCrossing')
+    end
   end
 
   def viewDidAppear(animated)
@@ -24,9 +27,9 @@ class CrossingListController < UITableViewController
     closestCrossingIndexPath = NSIndexPath.indexPathForRow(closestCrossingIndex, inSection:0)
     
     if accessoryType == UITableViewCellAccessoryCheckmark
-      tableView.visibleCells.each do |cell|
-        cell.accessoryType = UITableViewCellAccessoryNone if cell.accessoryType == UITableViewCellAccessoryCheckmark
-      end
+      tableView.visibleCells.
+        select { |cell| cell.accessoryType == UITableViewCellAccessoryCheckmark }.
+        each { |cell| cell.accessoryType = UITableViewCellAccessoryNone }
 
       if closestCrossingCell = tableView.cellForRowAtIndexPath(closestCrossingIndexPath)
         closestCrossingCell.accessoryType = UITableViewCellAccessoryCheckmark
@@ -48,8 +51,10 @@ class CrossingListController < UITableViewController
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
     crossing = model.crossings[indexPath.row]
 
-    cell = tableView.dequeueReusableCellWithIdentifier(MXDefaultCellID) || begin
-      UITableViewCell.alloc.initWithStyle UITableViewCellStyleSubtitle, reuseIdentifier:MXDefaultCellID
+    cell = tableView.dequeue_cell UITableViewCellStyleSubtitle do |cell|
+      cell.selectedBackgroundView = Widgets.selected_cell_background_view
+      cell.textLabel.highlightedTextColor = :black.color
+      cell.detailTextLabel.highlightedTextColor = :black.color
     end
 
     cell.textLabel.text = crossing.localizedName
@@ -62,23 +67,16 @@ class CrossingListController < UITableViewController
       cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
     end
 
-    cell.backgroundColor = :white.color
-    cell.textLabel.textColor = :black.color
-    cell.detailTextLabel.textColor = :black.color    
-    
-    Widgets.set_gradients_for_cell(cell, UIColor.grayColor) if crossing.closest?
-    Widgets.set_gradients_for_cell(cell, UIColor.blueColor) if crossing.current?
+    tableView.selectRowAtIndexPath indexPath, animated:NO, scrollPosition:UITableViewScrollPositionNone if crossing.current?
 
     cell
   end
 
   def tableView(tableView, didSelectRowAtIndexPath:indexPath)
-    tableView.deselectRowAtIndexPath indexPath, animated:YES
-
     if accessoryType == UITableViewCellAccessoryCheckmark
-      for cell in tableView.visibleCells
-        cell.accessoryType = UITableViewCellAccessoryNone if cell.accessoryType == UITableViewCellAccessoryCheckmark
-      end
+      tableView.visibleCells.
+        select { |cell| cell.accessoryType == UITableViewCellAccessoryCheckmark }.
+        each { |cell| cell.accessoryType = UITableViewCellAccessoryNone }
 
       cell = tableView.cellForRowAtIndexPath indexPath
       cell.accessoryType = UITableViewCellAccessoryCheckmark

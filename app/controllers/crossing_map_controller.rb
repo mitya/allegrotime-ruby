@@ -59,7 +59,7 @@ class CrossingMapController < UIViewController
   ### methods
   
   def showCrossing(aCrossing)
-    view # ensure that it's laoded
+    view # ensure that the view is laoded
     mapView.setRegion MKCoordinateRegionMakeWithDistance(aCrossing.coordinate, 7000, 7000), animated:NO
     mapView.selectAnnotation aCrossing, animated:NO
   end

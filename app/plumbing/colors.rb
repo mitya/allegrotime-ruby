@@ -1,6 +1,6 @@
 module Colors
   module_function
-  
+    
   def green
     UIColor.colorWithRed 0, green:0.5, blue:0, alpha:1
   end

@@ -12,10 +12,8 @@ class TrainScheduleController < UITableViewController
   end
 
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
-    cell = tableView.dequeueReusableCellWithIdentifier(MXDefaultCellID) || begin
-      cell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleValue2, reuseIdentifier:MXDefaultCellID
+    cell = tableView.dequeue_cell UITableViewCellStyleValue2 do |cell|
       cell.selectionStyle = UITableViewCellSelectionStyleNone
-      cell
     end
 
     trainIndex = sampleClosing.crossing.closings.indexOfObject sampleClosing

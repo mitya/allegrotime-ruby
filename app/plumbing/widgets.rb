@@ -32,4 +32,10 @@ module Widgets
     cell.textLabel.textColor = @@bg_to_text_color_map[color]
     cell.detailTextLabel.textColor = @@bg_to_text_color_map[color] if cell.detailTextLabel
   end
+  
+  def selected_cell_background_view
+    view = UIView.alloc.init
+    view.backgroundColor = Colors.cell_gradient_pattern_for_color(:blue.color)
+    view
+  end  
 end
