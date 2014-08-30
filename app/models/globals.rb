@@ -16,8 +16,7 @@ NXLogConsoleFlushed = "NXLogConsoleFlushed"
 NXModelUpdated = "NXUpdateDataStatus"
 MXDefaultCellID = "MXDefaultCellID"
 
-$model = nil
-$app = nil
+##############################
 
 def T(string)
   NSLocalizedString string, nil
@@ -25,14 +24,6 @@ end
 
 def TF(format, *args)
   NSString.alloc.initWithFormat(T(format), *args)
-end
-
-def app
-  $app
-end
-
-def model
-  $model
 end
 
 def _ddl(*objects)

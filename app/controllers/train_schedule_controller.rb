@@ -8,7 +8,7 @@ class TrainScheduleController < UITableViewController
   ### table view
 
   def tableView(tableView, numberOfRowsInSection:section)
-    model.crossings.count
+    Model.crossings.count
   end
 
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
@@ -17,7 +17,7 @@ class TrainScheduleController < UITableViewController
     end
 
     trainIndex = sampleClosing.crossing.closings.indexOfObject sampleClosing
-    crossing = model.crossings.objectAtIndex indexPath.row
+    crossing = Model.crossings.objectAtIndex indexPath.row
     closing = crossing.closings.objectAtIndex trainIndex
 
     cell.textLabel.text = closing.time

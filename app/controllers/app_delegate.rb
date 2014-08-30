@@ -7,9 +7,10 @@ class AppDelegate
   attr_accessor :window, :locationManager, :perMinuteTimer, :mapController, :navigationController
 
   def application(application, didFinishLaunchingWithOptions:launchOptions)
-    $model = ModelManager.alloc
-    $model = model.init
-    $app = self
+    Object.const_set :App, self
+    Object.const_set :Model, ModelManager.alloc
+
+    Model.init
 
     mainViewController = MainViewController.alloc.init
     @navigationController = UINavigationController.alloc.initWithRootViewController mainViewController
@@ -59,20 +60,20 @@ class AppDelegate
   def locationManager(manager, didUpdateToLocation:newLocation, fromLocation:oldLocation)
     MXWriteToConsole(
       "didUpdateToLocation acc=%.f dist=%.f %@", 
-      newLocation.horizontalAccuracy, newLocation.distanceFromLocation(oldLocation), model.closestCrossing.localizedName)
-  
-    newClosestCrossing = model.crossingClosestTo(newLocation)
-    if newClosestCrossing != model.closestCrossing
-      model.closestCrossing = newClosestCrossing
-      NSNotificationCenter.defaultCenter.postNotificationName NXClosestCrossingChanged, object:model.closestCrossing
+      newLocation.horizontalAccuracy, newLocation.distanceFromLocation(oldLocation), Model.closestCrossing.localizedName)
+
+    newClosestCrossing = Model.crossingClosestTo(newLocation)
+    if newClosestCrossing != Model.closestCrossing
+      Model.closestCrossing = newClosestCrossing
+      NSNotificationCenter.defaultCenter.postNotificationName NXClosestCrossingChanged, object:Model.closestCrossing
     end
   end
 
   def locationManager(manager, didFailWithError:error)
     MXWriteToConsole("locationManager:didFailWithError: %@", error)
   
-    model.closestCrossing = nil
-    NSNotificationCenter.defaultCenter.postNotificationName NXClosestCrossingChanged, object:model.closestCrossing
+    Model.closestCrossing = nil
+    NSNotificationCenter.defaultCenter.postNotificationName NXClosestCrossingChanged, object:Model.closestCrossing
   end
   
   ### handlers

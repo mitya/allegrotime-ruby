@@ -52,6 +52,6 @@ class Closing
 
     crossing.closings.addObject closing
 
-    return closing;
+    closing
   end
 end

@@ -122,11 +122,11 @@ class Crossing
   end
 
   def closest?
-    self == model.closestCrossing
+    self == Model.closestCrossing
   end
 
   def current?
-    self == model.currentCrossing
+    self == Model.currentCrossing
   end
 
   def description
@@ -134,7 +134,7 @@ class Crossing
   end
 
   def index
-    model.crossings.indexOfObject self
+    Model.crossings.indexOfObject self
   end
 
   def addClosingWithTime(time, direction:direction)
@@ -158,7 +158,7 @@ class Crossing
   end
 
   def self.getCrossingWithName(name)
-    for crossing in model.crossings
+    for crossing in Model.crossings
       return crossing if crossing.name == name
     end
 

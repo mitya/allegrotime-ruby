@@ -41,7 +41,7 @@ class CrossingMapController < UIViewController
     end
     self.toolbarItems = itemsForToolbar
   
-    mapView.addAnnotations model.crossings
+    mapView.addAnnotations Model.crossings
   end
   
   def viewWillAppear(animated)

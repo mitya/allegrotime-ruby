@@ -118,20 +118,20 @@ class MainViewController < UIViewController
     case Pair.new(indexPath.section, indexPath.row)
     when Pair.new(STATE_SECTION, 0)
       cell = crossingCell
-      cell.detailTextLabel.text = model.currentCrossing.localizedName;
+      cell.detailTextLabel.text = Model.currentCrossing.localizedName;
     when Pair.new(STATE_SECTION, 1)
       cell = self.stateCell
-      nextClosing = model.currentCrossing.nextClosing
+      nextClosing = Model.currentCrossing.nextClosing
       cell.textLabel.text = "main.allegro will pass at $time".li(Format.munutes_as_hhmm(nextClosing.trainTime))
       cell.detailTextLabel.text = "main.crossing $closes at $time".li(
-          model.currentCrossing.state == CrossingStateClosed ? "closed".l : "will be closed".l,
+          Model.currentCrossing.state == CrossingStateClosed ? "closed".l : "will be closed".l,
           Format.munutes_as_hhmm(nextClosing.closingTime)
       )
     when Pair.new(MESSAGE_SECTION, 0)
       cell = messageCell
-      Widgets.set_gradients_for_cell(cell, model.currentCrossing.color)
+      Widgets.set_gradients_for_cell(cell, Model.currentCrossing.color)
       cell.textLabel.adjustsFontSizeToFitWidth = YES
-      cell.textLabel.text = model.currentCrossing.subtitle
+      cell.textLabel.text = Model.currentCrossing.subtitle
     when Pair.new(ACTIONS_SECTION, 0)
       cell = showScheduleCell
     when Pair.new(ACTIONS_SECTION, 1)
@@ -178,7 +178,7 @@ class MainViewController < UIViewController
     adRequest.testing = GAD_TESTING_MODE
     adRequest.testDevices = [ GAD_SIMULATOR_ID, '398a17d1387d6fa3ac0e24597718c091' ]
 
-    location = app.locationManager.location
+    location = App.locationManager.location
     if location
       adRequest.setLocationWithLatitude location.coordinate.latitude,
         longitude:location.coordinate.longitude, accuracy:location.horizontalAccuracy
@@ -234,7 +234,7 @@ class MainViewController < UIViewController
   end
 
   def showMap
-    navigationController.pushViewController app.mapController, animated:YES
+    navigationController.pushViewController App.mapController, animated:YES
   end
 
   def showCrossingListForSchedule
@@ -260,7 +260,7 @@ class MainViewController < UIViewController
   end
 
   def changeCurrentCrossing(crossing)
-    model.currentCrossing = crossing
+    Model.currentCrossing = crossing
     navigationController.popViewControllerAnimated YES
     tableView.reloadData
   end

@@ -4,7 +4,7 @@ class CrossingListController < UITableViewController
   def viewDidLoad
     self.title = "crossings.title".l
 
-    if model.closestCrossing
+    if Model.closestCrossing
       navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithImage(Device.image_named("bb-define_location"), 
           style:UIBarButtonItemStylePlain, target:self, action:'selectClosestCrossing')
     end
@@ -12,7 +12,7 @@ class CrossingListController < UITableViewController
 
   def viewDidAppear(animated)
     super
-    currentRowIndex = NSIndexPath.indexPathForRow model.currentCrossing.index, inSection:0
+    currentRowIndex = NSIndexPath.indexPathForRow Model.currentCrossing.index, inSection:0
     tableView.scrollToRowAtIndexPath currentRowIndex, atScrollPosition:UITableViewScrollPositionMiddle, animated:YES
   end
   
@@ -23,7 +23,7 @@ class CrossingListController < UITableViewController
   end
   
   def selectClosestCrossing
-    closestCrossingIndex = model.crossings.indexOfObject(model.closestCrossing)
+    closestCrossingIndex = Model.crossings.indexOfObject(Model.closestCrossing)
     closestCrossingIndexPath = NSIndexPath.indexPathForRow(closestCrossingIndex, inSection:0)
     
     if accessoryType == UITableViewCellAccessoryCheckmark
@@ -36,7 +36,7 @@ class CrossingListController < UITableViewController
       end
     end
     
-    model.currentCrossing = model.closestCrossing
+    Model.currentCrossing = Model.closestCrossing
 
     tableView.reloadData
     tableView.scrollToRowAtIndexPath closestCrossingIndexPath, atScrollPosition:UITableViewScrollPositionMiddle, animated:YES
@@ -45,11 +45,11 @@ class CrossingListController < UITableViewController
   ### table view
 
   def tableView(tableView, numberOfRowsInSection:section)
-    model.crossings.count
+    Model.crossings.count
   end
 
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
-    crossing = model.crossings[indexPath.row]
+    crossing = Model.crossings[indexPath.row]
 
     cell = tableView.dequeue_cell UITableViewCellStyleSubtitle do |cell|
       cell.selectedBackgroundView = Widgets.selected_cell_background_view
@@ -83,15 +83,15 @@ class CrossingListController < UITableViewController
     end
 
     if target && action
-      crossing = model.crossings.objectAtIndex indexPath.row
+      crossing = Model.crossings.objectAtIndex indexPath.row
       target.performSelector action, withObject:crossing
     end
   end
 
   def tableView(tableView, viewForHeaderInSection:section)
     label = Widgets.style_label_as_in_table_view_footer(UILabel.new)
-    label.text = model.closestCrossing ? 
-        'crossings.closest'.li(model.closestCrossing.localizedName) :
+    label.text = Model.closestCrossing ? 
+        'crossings.closest'.li(Model.closestCrossing.localizedName) :
         'crossings.closest_undefined'.l
     label
   end
