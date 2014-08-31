@@ -151,6 +151,15 @@ class CGRect
   def height
     size.height
   end
+  
+  def change(dimensions)
+    result = dup
+    result.origin.x = dimensions[:x] if dimensions[:x]
+    result.origin.y = dimensions[:y] if dimensions[:y]
+    result.size.width = dimensions[:width] if dimensions[:width]
+    result.size.height = dimensions[:height] if dimensions[:height]
+    result
+  end
 end
 
 class UITableView

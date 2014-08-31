@@ -2,11 +2,10 @@ GAD_IPHONE_AD_UNIT_ID = "ca-app-pub-2088650388410884/5631791058"
 GAD_IPAD_AD_UNIT_ID = "ca-app-pub-2088650388410884/7108524256"
 GAD_IPHONE_KEY = "a14fa40c3009571"
 GAD_IPAD_KEY = "a14fa6612839d98"
-GAD_IPAD_WIDTH = 728
 GAD_REFRESH_PERIOD = DEBUG ? 10 : 60
 GAD_TESTING_MODE = DEBUG ? YES : NO
-
-IPHONE = UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone
+GAD_TESTING_IPHONE_ID = '398a17d1387d6fa3ac0e24597718c091'
+GAD_TESTING_IPAD_ID = 'e993311bb857d82d1b2df4a83f03101e'
 
 LocationStateNotAvailable = 1
 LocationStateSearching = 2
@@ -19,14 +18,6 @@ NXModelUpdated = "NXUpdateDataStatus"
 MXDefaultCellID = "MXDefaultCellID"
 
 ##############################
-
-def T(string)
-  NSLocalizedString string, nil
-end
-
-def TF(format, *args)
-  NSString.alloc.initWithFormat(T(format), *args)
-end
 
 def _ddl(*objects)
   string = objects.map { |obj| Boxed === obj ? obj.inspect : obj.description }.join(' ')

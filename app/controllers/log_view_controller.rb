@@ -9,9 +9,9 @@ class LogViewController < UIViewController
     self.title = "Лог";
 
     table = UITableView.alloc.initWithFrame view.bounds, style:UITableViewStylePlain
-    table.delegate = self;
-    table.dataSource = self;
-    table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    table.delegate = self
+    table.dataSource = self
+    table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
     view.addSubview table
 
     NSNotificationCenter.defaultCenter.addObserver self, selector:'consoleUpdated', name:NXLogConsoleUpdated, object:nil

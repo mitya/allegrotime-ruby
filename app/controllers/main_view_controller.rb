@@ -1,8 +1,8 @@
 class MainViewController < UIViewController
+  attr_accessor :tableView
   attr_accessor :crossingCell, :stateCell, :messageCell, :showScheduleCell, :showMapCell
-  attr_accessor :stateCellTopLabel, :stateCellBottomLabel, :tableView
-  attr_accessor :adReloadPending
-  attr_accessor :bannerView, :adTimer, :bannerViewLoaded, :adReloadPending
+  attr_accessor :stateCellTopLabel, :stateCellBottomLabel
+  attr_accessor :adView, :adTimer, :adViewLoaded
 
   STATE_SECTION = 0
   MESSAGE_SECTION = 1
@@ -31,6 +31,8 @@ class MainViewController < UIViewController
   end
 
   def loadView
+    self.view = UIView.alloc.init
+    
     self.crossingCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleValue1, reuseIdentifier:MXDefaultCellID
     crossingCell.textLabel.text = 'main.crossing_cell'.l
     crossingCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
@@ -53,12 +55,14 @@ class MainViewController < UIViewController
     showMapCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
     showMapCell.textLabel.text = 'main.show_map'.l
     
-    self.tableView = UITableView.alloc.initWithFrame CGRectNull, style:UITableViewStyleGrouped
+    self.tableView = UITableView.alloc.initWithFrame view.bounds, style:UITableViewStyleGrouped
     tableView.delegate = self
     tableView.dataSource = self
-
-    self.view = tableView
+    tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
+    
+    self.view.addSubview(tableView)
   end
+
 
   def viewDidLoad
     self.title = "main.title".l
@@ -67,19 +71,27 @@ class MainViewController < UIViewController
 
     NSNotificationCenter.defaultCenter.addObserver self, selector:'closestCrossingChanged', name:NXClosestCrossingChanged, object:nil
 
-    createInfoButton
-    setupBanner
+    setupInfoButton
     setupLogConsoleGesture
+    setupAdView
 
     self.adTimer = NSTimer.scheduledTimerWithTimeInterval GAD_REFRESH_PERIOD, target:self, selector:'adTimerTicked', userInfo:nil, repeats:YES
   end
 
   def viewWillAppear(animated)
     super
-    performDelayedBannerReload
+    requestAdViewIfDelayed
   end
 
-  def createInfoButton 
+  def willAnimateRotationToInterfaceOrientation(orientation, duration:duration)
+    adSize = Device.portrait?(orientation) ? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape
+    adView.adSize = adSize
+    y = view.frame.height - CGSizeFromGADAdSize(adSize).height
+    adView.frame = CGRectMake(0, y, adView.frame.width, adView.frame.height)
+    tableView.frame = tableView.frame.change(height: view.bounds.height - adView.frame.height)
+  end
+
+  def setupInfoButton 
     infoButton = UIButton.buttonWithType UIButtonTypeInfoLight
     infoButton.addTarget self, action:'showInfo', forControlEvents:UIControlEventTouchUpInside
     navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithCustomView infoButton
@@ -90,13 +102,6 @@ class MainViewController < UIViewController
       swipeRecognizer = UISwipeGestureRecognizer.alloc.initWithTarget self, action:'recognizedSwipe:'
       swipeRecognizer.direction = UISwipeGestureRecognizerDirectionLeft
       view.addGestureRecognizer swipeRecognizer
-    end
-  end
-
-  def performDelayedBannerReload
-    if adReloadPending
-      @adReloadPending = NO
-      reloadBanner
     end
   end
 
@@ -156,54 +161,58 @@ class MainViewController < UIViewController
 
   ### banner
 
-  def setupBanner
-    self.bannerView = GADBannerView.alloc.initWithAdSize IPHONE ? KGADAdSizeBanner : KGADAdSizeLeaderboard
-    # bannerView.adUnitID = IPHONE ? GAD_IPHONE_KEY : GAD_IPAD_KEY
-    bannerView.adUnitID = IPHONE ? GAD_IPHONE_AD_UNIT_ID : GAD_IPAP_AD_UNIT_ID
-    bannerView.rootViewController = self
-    bannerView.backgroundColor = UIColor.clearColor
-    bannerView.delegate = self
-    bannerView.hidden = YES
-    bannerView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin
-    bannerView.frame = CGRectMake(bannerView.bounds.x, App.window.bounds.height - bannerView.bounds.height, bannerView.bounds.width, bannerView.bounds.height)
-
-    view.addSubview bannerView
-    reloadBanner
+  def setupAdView
+    self.adView = GADBannerView.alloc.initWithAdSize Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape
+    adView.adUnitID = Device.iphone? ? GAD_IPHONE_AD_UNIT_ID : GAD_IPAD_AD_UNIT_ID
+    adView.rootViewController = self
+    adView.backgroundColor = UIColor.clearColor
+    adView.delegate = self
+    adView.hidden = YES
+    adView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin
+    adView.origin = CGPointMake(0, App.window.bounds.height - adView.bounds.height)
+    
+    view.addSubview adView
+    requestAdView
   end
 
-  def reloadBanner
+  def requestAdView
     adRequest = GADRequest.request
     adRequest.testing = GAD_TESTING_MODE
-    adRequest.testDevices = [ GAD_SIMULATOR_ID, '398a17d1387d6fa3ac0e24597718c091' ]
+    adRequest.testDevices = [ GAD_SIMULATOR_ID, GAD_TESTING_IPHONE_ID, GAD_TESTING_IPAD_ID ]
 
-    location = App.locationManager.location
-    if location
-      adRequest.setLocationWithLatitude location.coordinate.latitude,
-        longitude:location.coordinate.longitude, accuracy:location.horizontalAccuracy
+    if location = App.locationManager.location
+      adRequest.setLocationWithLatitude location.coordinate.latitude, longitude:location.coordinate.longitude, accuracy:location.horizontalAccuracy
     end
 
-    bannerView.loadRequest adRequest
+    adView.loadRequest adRequest
+  end
+
+  def requestAdViewIfDelayed
+    if @adViewRequestPending
+      @adViewRequestPending = NO
+      requestAdView
+    end
   end
 
   def adTimerTicked
-    if bannerViewLoaded
+    if adViewLoaded
       if navigationController.visibleViewController == self
-        reloadBanner
+        requestAdView
       else
-        @adReloadPending = YES;
+        @adViewRequestPending = YES;
       end
     end
   end
 
-  def adViewDidReceiveAd(banner)
-    if !bannerViewLoaded
-      bannerView.frame = CGRectMake(banner.frame.origin.x, view.bounds.size.height, banner.frame.size.width, banner.frame.size.height);
+  def adViewDidReceiveAd(adView)
+    if !adViewLoaded
+      adView.frame = adView.frame.change(y: view.bounds.height)
       UIView.animateWithDuration 0.25, animations: -> do
-        banner.hidden = NO;
-        banner.frame = CGRectMake(banner.frame.origin.x, view.bounds.size.height - banner.frame.size.height, 
-          banner.frame.size.width, banner.frame.size.height);
+        adView.hidden = NO
+        adView.frame = adView.frame.change(y: view.bounds.height - adView.frame.height)
+        tableView.frame = tableView.frame.change(height: view.bounds.height - adView.frame.height)
       end
-      @bannerViewLoaded = YES;
+      @adViewLoaded = YES
     end
   end
 
