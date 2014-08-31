@@ -1,4 +1,4 @@
-ClosingDirectionToFinland = 1,
+ClosingDirectionToFinland = 1
 ClosingDirectionToRussia = 2
 
 CrossingStateClear = 0
@@ -70,11 +70,11 @@ class ModelManager
   def loadFile
     @crossings = NSMutableArray.arrayWithCapacity 30
 
-    dataPath = NSBundle.mainBundle.pathForResource "data/schedule", ofType:"csv"
-    dataString = NSString.stringWithContentsOfFile dataPath, encoding:NSUTF8StringEncoding, error:NULL
-    dataRows = dataString.componentsSeparatedByString "\n"
+    dataPath = NSBundle.mainBundle.pathForResource("data/schedule", ofType:"csv")
+    dataString = NSString.stringWithContentsOfFile(dataPath, encoding:NSUTF8StringEncoding, error:NULL)
+    dataRows = dataString.componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet).reject(&:empty?)
 
-    for dataRow in dataRows
+    dataRows.each do |dataRow| 
       components = dataRow.componentsSeparatedByString ","
 
       crossing = Crossing.new

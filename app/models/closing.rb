@@ -8,7 +8,7 @@ class Closing
   end
 
   def toRussia?
-    direction == ClosingDirectionToRussia;
+    direction == ClosingDirectionToRussia
   end
 
   def trainNumber
@@ -45,8 +45,8 @@ class Closing
     crossing = Crossing.getCrossingWithName crossingName
 
     closing = Closing.new
-    closing.crossing = crossing;
-    closing.time = time;
+    closing.crossing = crossing
+    closing.time = time
     closing.trainTime = time.minutes_from_hhmm
     closing.direction = direction
 
