@@ -46,7 +46,7 @@ class CrossingScheduleController < UITableViewController
       end
     end
 
-    cell.textLabel.text = closing.toRussia? ? NSString.stringWithFormat("%@ ↶", closing.time) : closing.time
+    cell.textLabel.text = closing.toRussia? ? NSString.stringWithFormat("↶ %@", closing.time) : closing.time
     cell.detailTextLabel.text = 'no x'.li(closing.trainNumber)
 
     cell
