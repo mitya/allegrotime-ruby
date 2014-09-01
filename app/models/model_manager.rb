@@ -50,6 +50,10 @@ class ModelManager
     self.selectedCrossing = crossing.closest? ? nil : crossing
     NSNotificationCenter.defaultCenter.postNotificationName NXCurrentCrossingChanged, object:crossing
   end
+  
+  def reverseCrossings
+    @reverseCrossings ||= crossings.reverse
+  end
 
   ### methods
 

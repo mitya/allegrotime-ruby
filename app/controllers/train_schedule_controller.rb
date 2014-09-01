@@ -3,6 +3,9 @@ class TrainScheduleController < UITableViewController
 
   def viewDidLoad
     self.title = "schedule.train_no".li(sampleClosing.trainNumber)
+    
+    @trainIndex = @sampleClosing.crossing.closings.indexOfObject @sampleClosing
+    @crossings = @sampleClosing.toRussia?? Model.reverseCrossings : Model.crossings
   end
 
   ### table view
@@ -17,12 +20,11 @@ class TrainScheduleController < UITableViewController
       cell.textLabel.textColor = Colors.mainCellTextColor
     end
 
-    trainIndex = sampleClosing.crossing.closings.indexOfObject sampleClosing
-    crossing = Model.crossings.objectAtIndex indexPath.row
-    closing = crossing.closings.objectAtIndex trainIndex
+    crossing = @crossings[indexPath.row]
+    closing = crossing.closings[@trainIndex]
 
     cell.textLabel.text = closing.time
-    cell.detailTextLabel.text = closing.crossing.localizedName
+    cell.detailTextLabel.text = crossing.localizedName
 
     cell
   end

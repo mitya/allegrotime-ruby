@@ -42,7 +42,7 @@ class CrossingScheduleController < UITableViewController
     
     Widgets.styleClosingCell(cell, closing.color) if closing.closest?
 
-    cell.textLabel.text = closing.toRussia? ? NSString.stringWithFormat("↶ %@", closing.time) : closing.time
+    cell.textLabel.text = closing.toRussia? ? "↶ #{closing.time}" : closing.time
     cell.detailTextLabel.text = 'no x'.li(closing.trainNumber)
 
     cell
