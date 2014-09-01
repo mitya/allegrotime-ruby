@@ -1,5 +1,5 @@
 class CrossingMapController < UIViewController
- attr_accessor :mapView, :pinMapping, :timer, :lastRegion, :lastMapType
+ attr_accessor :mapView, :pinMapping, :timer, :lastRegion, :lastMapType, :crossingToShowOnNextAppearance
 
   def init
     super
@@ -46,22 +46,19 @@ class CrossingMapController < UIViewController
   
   def viewWillAppear(animated)
     super
-    mapView.setRegion lastRegion, animated:NO
+    if crossingToShowOnNextAppearance
+      mapView.setRegion MKCoordinateRegionMakeWithDistance(crossingToShowOnNextAppearance.coordinate, 10_000, 10_000), animated:animated
+      mapView.selectAnnotation crossingToShowOnNextAppearance, animated:animated
+      self.crossingToShowOnNextAppearance = nil
+    else
+      mapView.setRegion lastRegion, animated:animated
+    end
   end
   
   def viewWillDisappear(animated)
-    super
-  
+    super  
     @lastMapType = mapView.mapType
     @lastRegion = mapView.region
-  end
-  
-  ### methods
-  
-  def showCrossing(aCrossing)
-    view # ensure that the view is laoded
-    mapView.setRegion MKCoordinateRegionMakeWithDistance(aCrossing.coordinate, 7000, 7000), animated:NO
-    mapView.selectAnnotation aCrossing, animated:NO
   end
   
   ### map view

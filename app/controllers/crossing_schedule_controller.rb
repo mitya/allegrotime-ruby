@@ -66,11 +66,11 @@ class CrossingScheduleController < UITableViewController
   end
 
   def showMap
+    App.mapController.crossingToShowOnNextAppearance = crossing
     if navigationController.viewControllers.containsObject App.mapController
       navigationController.popToViewController App.mapController, animated:YES
     else
       navigationController.pushViewController App.mapController, animated:YES
     end
-    App.mapController.showCrossing self.crossing
   end
 end
