@@ -14,6 +14,7 @@ class TrainScheduleController < UITableViewController
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
     cell = tableView.dequeue_cell UITableViewCellStyleValue2 do |cell|
       cell.selectionStyle = UITableViewCellSelectionStyleNone
+      cell.textLabel.textColor = Colors.mainCellTextColor
     end
 
     trainIndex = sampleClosing.crossing.closings.indexOfObject sampleClosing

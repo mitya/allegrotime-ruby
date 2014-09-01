@@ -48,6 +48,7 @@ class ModelManager
 
   def currentCrossing=(crossing)
     self.selectedCrossing = crossing.closest? ? nil : crossing
+    NSNotificationCenter.defaultCenter.postNotificationName NXCurrentCrossingChanged, object:crossing
   end
 
   ### methods

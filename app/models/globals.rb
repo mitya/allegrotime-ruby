@@ -12,6 +12,7 @@ LocationStateSearching = 2
 LocationStateSet = 3
 
 NXClosestCrossingChanged = "NXClosestCrossingChangedNotification"
+NXCurrentCrossingChanged = "NXCurrentCrossingChangedNotification"
 NXLogConsoleUpdated = "NXLogConsoleUpdated"
 NXLogConsoleFlushed = "NXLogConsoleFlushed"
 NXModelUpdated = "NXUpdateDataStatus"

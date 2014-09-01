@@ -18,24 +18,19 @@ module Widgets
     label
   end
 
-  def set_gradients_for_cell(cell, color)
-    @@bg_to_text_color_map ||= {
-      :red.color     => :white.color,
-      :yellow.color  => :darkGray.color,
-      :green.color   => :white.color,
-      :blue.color    => :black.color,
-      :gray.color    => :black.color,
-      :clear.color   => :black.color
-    }
-
-    cell.backgroundColor = Colors.cell_gradient_pattern_for_color(color)
-    cell.textLabel.textColor = @@bg_to_text_color_map[color]
-    cell.detailTextLabel.textColor = @@bg_to_text_color_map[color] if cell.detailTextLabel
+  def styleClosingCell(cell, color)
+    cell.backgroundColor = Colors.closingCellBackgroundFor(color)
+    cell.textLabel.textColor = Colors.barTextColorFor(color)
+    cell.detailTextLabel.textColor = Colors.secondaryTextColorFor(color) if cell.detailTextLabel
   end
   
-  def selected_cell_background_view
-    view = UIView.alloc.init
-    view.backgroundColor = Colors.cell_gradient_pattern_for_color(:blue.color)
-    view
-  end  
+  def selectedCellBackgroundView
+    UIView.alloc.init.tap { |v| v.backgroundColor = Colors.closingCellBackgroundFor(:blue.color) }
+  end
+  
+  def styleCellSelectionColors(cell)
+    # cell.selectedBackgroundView = selectedCellBackgroundView
+    # cell.textLabel.highlightedTextColor = :black.color
+    # cell.detailTextLabel.highlightedTextColor = :black.color
+  end
 end

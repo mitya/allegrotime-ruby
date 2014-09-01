@@ -52,9 +52,7 @@ class CrossingListController < UITableViewController
     crossing = Model.crossings[indexPath.row]
 
     cell = tableView.dequeue_cell UITableViewCellStyleSubtitle do |cell|
-      cell.selectedBackgroundView = Widgets.selected_cell_background_view
-      cell.textLabel.highlightedTextColor = :black.color
-      cell.detailTextLabel.highlightedTextColor = :black.color
+      Widgets.styleCellSelectionColors(cell)
     end
 
     cell.textLabel.text = crossing.localizedName

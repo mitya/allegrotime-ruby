@@ -31,20 +31,16 @@ class CrossingScheduleController < UITableViewController
     cell = tableView.dequeue_cell UITableViewCellStyleValue2 do |cell|
       cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
       cell.textLabel.backgroundColor = UIColor.clearColor
-      cell.textLabel.font = UIFont.systemFontOfSize 20
+      cell.textLabel.textColor = Colors.mainCellTextColor
+      cell.textLabel.font = UIFont.systemFontOfSize 18
       cell.detailTextLabel.backgroundColor = UIColor.clearColor
       cell.detailTextLabel.textColor = UIColor.grayColor
     end
 
     closing = crossing.closings.objectAtIndex(indexPath.row)
 
-    if closing.closest?
-      cell.backgroundColor = Colors.cell_gradient_pattern_for_color(closing.color)
-      if closing.color == UIColor.greenColor || closing.color == UIColor.redColor
-        cell.textLabel.textColor = UIColor.whiteColor
-        cell.detailTextLabel.textColor = UIColor.lightTextColor
-      end
-    end
+    
+    Widgets.styleClosingCell(cell, closing.color) if closing.closest?
 
     cell.textLabel.text = closing.toRussia? ? NSString.stringWithFormat("↶ %@", closing.time) : closing.time
     cell.detailTextLabel.text = 'no x'.li(closing.trainNumber)

@@ -13,16 +13,20 @@ class AppDelegate
     Model.init
 
     mainViewController = MainViewController.alloc.init
-    @navigationController = UINavigationController.alloc.initWithRootViewController mainViewController
+    @navigationController = UINavigationController.alloc.initWithRootViewController(mainViewController)
     @navigationController.delegate = self
 
     @window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
     @window.backgroundColor = UIColor.whiteColor
-    @window.rootViewController = self.navigationController
+    @window.rootViewController = navigationController
     @window.makeKeyAndVisible
 
     @perMinuteTimer = NSTimer.scheduledTimerWithTimeInterval 20, target:self, selector:'timerTicked', userInfo:nil, repeats:YES
     @perMinuteTimer.fireDate = Time.next_full_minute_date
+
+    NSNotificationCenter.defaultCenter.addObserver self, selector:'currentCrossingChanged', name:NXCurrentCrossingChanged, object:nil
+
+    updateAppColors
 
     true
   end
@@ -86,12 +90,31 @@ class AppDelegate
   
   def timerTicked
     triggerModelUpdateFor navigationController.visibleViewController
+    updateAppColors
+  end
+  
+  def currentCrossingChanged
+    updateAppColors
   end
   
   def triggerModelUpdateFor(controller)
     if controller.respondsToSelector 'modelUpdated'
       controller.performSelector 'modelUpdated'
     end
+  end
+  
+  def updateAppColors
+    baseColor = Model.currentCrossing.color
+    barBackColor = Colors.barBackColorFor(baseColor)
+    barTextColor = Colors.barTextColorFor(baseColor)
+
+    @window.tintColor = Colors.windowTintColor
+    @navigationController.toolbar.barTintColor = barBackColor
+    @navigationController.toolbar.tintColor = barTextColor
+    @navigationController.navigationBar.barStyle = Colors.barStyleFor(baseColor)
+    @navigationController.navigationBar.barTintColor = barBackColor
+    @navigationController.navigationBar.tintColor = barTextColor
+    @navigationController.navigationBar.setTitleTextAttributes NSForegroundColorAttributeName => barTextColor
   end
   
   ### properties

@@ -134,7 +134,7 @@ class MainViewController < UIViewController
       )
     when Pair.new(MESSAGE_SECTION, 0)
       cell = messageCell
-      Widgets.set_gradients_for_cell(cell, Model.currentCrossing.color)
+      Widgets.styleClosingCell(cell, Model.currentCrossing.color)
       cell.textLabel.adjustsFontSizeToFitWidth = YES
       cell.textLabel.text = Model.currentCrossing.subtitle
     when Pair.new(ACTIONS_SECTION, 0)
