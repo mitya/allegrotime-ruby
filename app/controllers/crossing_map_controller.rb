@@ -4,7 +4,7 @@ class CrossingMapController < UIViewController
   def init
     super
     @lastMapType ||= MKMapTypeStandard
-    @lastRegion ||= MKCoordinateRegionMakeWithDistance Crossing.getCrossingWithName("Парголово").coordinate, 10000, 10000
+    # @lastRegion ||= MKCoordinateRegionMakeWithDistance Crossing.getCrossingWithName("Парголово").coordinate, 10000, 10000
     self
   end
 
@@ -47,11 +47,14 @@ class CrossingMapController < UIViewController
   def viewWillAppear(animated)
     super
     if crossingToShowOnNextAppearance
-      mapView.setRegion MKCoordinateRegionMakeWithDistance(crossingToShowOnNextAppearance.coordinate, 10_000, 10_000), animated:animated
-      mapView.selectAnnotation crossingToShowOnNextAppearance, animated:animated
+      showCrossing crossingToShowOnNextAppearance, animated:animated
       self.crossingToShowOnNextAppearance = nil
-    else
+    elsif lastRegion
       mapView.setRegion lastRegion, animated:animated
+    elsif Model.closestCrossing
+      showCrossing Model.closestCrossing, animated:animated
+    else
+      showCrossing Crossing.getCrossingWithName("Парголово"), animated:animated
     end
   end
   
@@ -68,15 +71,17 @@ class CrossingMapController < UIViewController
   
     crossing = annotation
   
-    pin = mapView.dequeueReusableAnnotationViewWithIdentifier MXDefaultCellID
-    if !pin
-      pin = MKAnnotationView.alloc.initWithAnnotation nil, reuseIdentifier:MXDefaultCellID
-      pin.canShowCallout = YES
-      pin.rightCalloutAccessoryView = UIButton.buttonWithType UIButtonTypeDetailDisclosure
+    av = mapView.dequeueReusableAnnotationViewWithIdentifier MXDefaultCellID
+    if !av
+      av = MKAnnotationView.alloc.initWithAnnotation nil, reuseIdentifier:MXDefaultCellID
+      av.canShowCallout = YES
+      av.leftCalloutAccessoryView = UIImageView.alloc.initWithImage VX.stripeForCrossing(crossing)
+      av.rightCalloutAccessoryView = UIButton.buttonWithType UIButtonTypeDetailDisclosure
     end
-    pin.annotation = crossing
-    pin.image = pinMapping[crossing.color]
-    pin
+    av.annotation = crossing
+    av.leftCalloutAccessoryView.image = VX.stripeForCrossing(crossing)
+    av.image = pinMapping[crossing.color]
+    av
   end
   
   def mapView(mapView, annotationView:view, calloutAccessoryControlTapped:control)
@@ -104,7 +109,8 @@ class CrossingMapController < UIViewController
       next unless Crossing === crossing
       next unless annotationView
       newImage = pinMapping[crossing.color]
-      annotationView.image = newImage if annotationView.image != newImage
+      annotationView.image = newImage
+      annotationView.leftCalloutAccessoryView.image = VX.stripeForCrossing(crossing)
     end
   end
   
@@ -113,6 +119,11 @@ class CrossingMapController < UIViewController
     if userLocation.coordinate.latitude != 0 && userLocation.coordinate.latitude != 0
       mapView.setCenterCoordinate userLocation.coordinate, animated:YES
     end
+  end
+  
+  def showCrossing(crossing, animated:animated)
+    mapView.setRegion MKCoordinateRegionMakeWithDistance(crossing.coordinate, 10_000, 10_000), animated:animated
+    mapView.selectAnnotation crossing, animated:animated    
   end
   
   ### helpers
