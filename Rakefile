@@ -25,14 +25,6 @@ Motion::Project::App.setup do |app|
   # app.info_plist['UIViewControllerBasedStatusBarAppearance'] = 'NO'
 end
 
-task :appicon do
-  input = "originals/images/app_icon.png"
-  sizes = { 57 => 'iPhone', 114 => 'iPhone@2x', 72 => 'iPad', 144 => 'iPad@2x' }
-  sizes.each do |size, device|
-    system "convert #{input} -resize #{size}x#{size} resources/Icon-#{device}.png"
-  end
-end
-
 
 #########################
 
@@ -49,6 +41,14 @@ $gradients = {
 }
 
 namespace :g do
+  task :appicon do
+    input = "originals/images/app_icon.png"
+    sizes = { 57 => 'iPhone', 114 => 'iPhone@2x', 72 => 'iPad', 144 => 'iPad@2x' }
+    sizes.each do |size, device|
+      system "convert '#{input}' -resize #{size}x#{size} resources/Icon-#{device}.png"
+    end
+  end
+
   task :cells_bgr do
     colors = {
       red: %w(f00 c00),
