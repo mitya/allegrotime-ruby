@@ -14,11 +14,11 @@ Motion::Project::App.setup do |app|
   app.version = "2.0"
   app.short_version = "2.0"
   app.sdk_version = '8.0'
-  app.deployment_target = '8.0'
+  app.deployment_target = '7.0'
   app.provisioning_profile = '/Volumes/Vault/Sources/active/_profiles/iOS_Team_Provisioning_Profile_.mobileprovision'
   app.icons = %w(Icon-iPhone.png Icon-iPad.png Icon-iPhone@2x.png Icon-iPad@2x.png)
   app.frameworks += %w(StoreKit AdSupport AVFoundation CoreTelephony SystemConfiguration MessageUI AudioToolbox MapKit CoreLocation CoreData)
-  app.vendor_project 'vendor/GoogleMobileAdsSdkiOS-6.11.1', :static, force_load: false
+  app.vendor_project 'vendor/GoogleMobileAdsSdkiOS-6.12.0', :static, force_load: false
   app.device_family = ENV['IPAD'] == '1' ? [:ipad, :iphone] : [:iphone, :ipad]
 
   # app.interface_orientations = [:portrait, :landscape_left, :landscape_right]
