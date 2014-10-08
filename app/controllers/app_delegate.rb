@@ -49,6 +49,7 @@ class AppDelegate
   def applicationWillTerminate(application)
   end
     
+    
   ### Location Tracking
   
   def locationManager
@@ -80,6 +81,7 @@ class AppDelegate
     NSNotificationCenter.defaultCenter.postNotificationName NXClosestCrossingChanged, object:Model.closestCrossing
   end
   
+  
   ### handlers
   
   def navigationController(navController, willShowViewController:viewController, animated:animated)
@@ -89,7 +91,7 @@ class AppDelegate
   end
   
   def timerTicked
-    triggerModelUpdateFor navigationController.visibleViewController
+    triggerModelUpdateFor navigationController.visibleViewController    
     updateAppColors
   end
   

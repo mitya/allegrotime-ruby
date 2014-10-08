@@ -36,3 +36,7 @@ def _vv(view, color = :green)
   view.layer.borderColor = color.color.CGColor
   view.layer.borderWidth = 1.0
 end
+
+def _log(message)
+  NSLog(message)
+end
