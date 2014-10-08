@@ -23,6 +23,7 @@ Motion::Project::App.setup do |app|
 
   # app.interface_orientations = [:portrait, :landscape_left, :landscape_right]
   # app.info_plist['UIViewControllerBasedStatusBarAppearance'] = 'NO'
+  app.info_plist['NSLocationWhenInUseUsageDescription'] = 'Требуется для определения ближаешего ж/д переезда'
 end
 
 

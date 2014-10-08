@@ -31,10 +31,12 @@ class AppDelegate
     true
   end
 
-  def applicationDidBecomeActive(application)
-    locationManager.startUpdatingLocation if CLLocationManager.locationServicesEnabled
+  def applicationDidBecomeActive(application)    
+    return unless CLLocationManager.locationServicesEnabled
+    locationManager.requestWhenInUseAuthorization if locationManager.respondsToSelector 'requestWhenInUseAuthorization'
+    locationManager.startUpdatingLocation
   end
-
+  
   def applicationWillResignActive(application)
     locationManager.stopUpdatingLocation
   end
@@ -61,6 +63,17 @@ class AppDelegate
       lm
     end    
   end
+  
+  # - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+  #     if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
+  #         [self.locationManager startUpdatingLocation];
+  #     } else if (status == kCLAuthorizationStatusAuthorized) {
+  #         // iOS 7 will redundantly call this line.
+  #         [self.locationManager startUpdatingLocation];
+  #     } else if (status > kCLAuthorizationStatusNotDetermined) {
+  #         ...
+  #     }
+  # }
 
   def locationManager(manager, didUpdateToLocation:newLocation, fromLocation:oldLocation)
     MXWriteToConsole(
@@ -81,6 +94,10 @@ class AppDelegate
     NSNotificationCenter.defaultCenter.postNotificationName NXClosestCrossingChanged, object:Model.closestCrossing
   end
   
+  def startLocationTracking
+    locationManager.startUpdatingLocation
+  end
+    
   
   ### handlers
   
