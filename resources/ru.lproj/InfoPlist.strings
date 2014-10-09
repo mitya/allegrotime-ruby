@@ -1,4 +1,2 @@
-/* Localized versions of Info.plist keys */
-
-CFBundleDisplayName = "AllegroTime";
+CFBundleDisplayName = "АллегроТайм";
 NSLocationWhenInUseUsageDescription = "Требуется для определения ближаешего ж/д переезда";

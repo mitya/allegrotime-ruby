@@ -14,7 +14,7 @@ Motion::Project::App.setup do |app|
   app.version = "2.0"
   app.short_version = "2.0"
   app.sdk_version = '8.0'
-  app.deployment_target = '8.0'
+  app.deployment_target = '7.0'
   app.provisioning_profile = '/Volumes/Vault/Sources/active/_profiles/iOS_Team_Provisioning_Profile_.mobileprovision'
   app.icons = %w(Icon-iPhone.png Icon-iPad.png Icon-iPhone@2x.png Icon-iPad@2x.png)
   app.frameworks += %w(StoreKit AdSupport AVFoundation CoreTelephony SystemConfiguration MessageUI AudioToolbox MapKit CoreLocation CoreData EventKit EventKitUI)
@@ -23,7 +23,6 @@ Motion::Project::App.setup do |app|
 
   # app.interface_orientations = [:portrait, :landscape_left, :landscape_right]
   # app.info_plist['UIViewControllerBasedStatusBarAppearance'] = 'NO'
-  app.info_plist['NSLocationWhenInUseUsageDescription'] = 'Требуется для определения ближаешего ж/д переезда'
 end
 
 
