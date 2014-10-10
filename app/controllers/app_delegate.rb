@@ -21,12 +21,12 @@ class AppDelegate
     @window.rootViewController = navigationController
     @window.makeKeyAndVisible
 
-    @perMinuteTimer = NSTimer.scheduledTimerWithTimeInterval 20, target:self, selector:'timerTicked', userInfo:nil, repeats:YES
-    @perMinuteTimer.fireDate = Time.next_full_minute_date
+    @perMinuteTimer = NSTimer.scheduledTimerWithTimeInterval 5, target:self, selector:'timerTicked', userInfo:nil, repeats:YES
+    # @perMinuteTimer.fireDate = Time.next_full_minute_date
 
     NSNotificationCenter.defaultCenter.addObserver self, selector:'currentCrossingChanged', name:NXCurrentCrossingChanged, object:nil
 
-    updateAppColors
+    updateAppColorsToCurrent
 
     true
   end
@@ -42,18 +42,29 @@ class AppDelegate
   end
 
   def applicationWillEnterForeground(application)
+    activateScreen
     triggerModelUpdateFor navigationController.visibleViewController
   end
   
   def applicationDidEnterBackground(application)
+    deactivateScreen
   end
   
   def applicationWillTerminate(application)
   end
-    
-    
-  ### Location Tracking
+
+  def deactivateScreen
+    navigationController.visibleViewController.performSelectorIfDefined(:deactivateScreen)    
+    updateAppColorsTo(:gray.color)
+  end
   
+  def activateScreen
+    navigationController.visibleViewController.performSelectorIfDefined(:activateScreen)
+    updateAppColorsToCurrent
+  end
+
+  ### Location Tracking
+
   def locationManager
     @locationManager ||= begin
       lm = CLLocationManager.new
@@ -64,16 +75,13 @@ class AppDelegate
     end    
   end
   
-  # - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
-  #     if (status == kCLAuthorizationStatusAuthorizedWhenInUse) {
-  #         [self.locationManager startUpdatingLocation];
-  #     } else if (status == kCLAuthorizationStatusAuthorized) {
-  #         // iOS 7 will redundantly call this line.
-  #         [self.locationManager startUpdatingLocation];
-  #     } else if (status > kCLAuthorizationStatusNotDetermined) {
-  #         ...
-  #     }
-  # }
+  # def locationManager(manager, didChangeAuthorizationStatus:status)
+  #   case status
+  #   when KCLAuthorizationStatusAuthorizedWhenInUse, KCLAuthorizationStatusAuthorized
+  #     locationManager.startUpdatingLocation
+  #   else # status > KCLAuthorizationStatusNotDetermined
+  #   end
+  # end
 
   def locationManager(manager, didUpdateToLocation:newLocation, fromLocation:oldLocation)
     MXWriteToConsole(
@@ -108,32 +116,36 @@ class AppDelegate
   end
   
   def timerTicked
+    puts "tick"
     triggerModelUpdateFor navigationController.visibleViewController    
-    updateAppColors
+    updateAppColorsToCurrent
+    # deactivateScreen
   end
   
   def currentCrossingChanged
-    updateAppColors
+    updateAppColorsToCurrent
   end
   
   def triggerModelUpdateFor(controller)
-    if controller.respondsToSelector 'modelUpdated'
-      controller.performSelector 'modelUpdated'
-    end
+    controller.modelUpdated if controller.respondsToSelector 'modelUpdated'
   end
   
-  def updateAppColors
-    baseColor = Model.currentCrossing.color
+  def updateAppColorsToCurrent
+    updateAppColorsTo(Model.currentCrossing.color)
+  end
+  
+  def updateAppColorsTo(baseColor)
     barBackColor = Colors.barBackColorFor(baseColor)
     barTextColor = Colors.barTextColorFor(baseColor)
-
+    barStyle = Colors.barStyleFor(baseColor)
+    
     @window.tintColor = Colors.windowTintColor
     @navigationController.toolbar.barTintColor = barBackColor
     @navigationController.toolbar.tintColor = barTextColor
-    @navigationController.navigationBar.barStyle = Colors.barStyleFor(baseColor)
+    @navigationController.navigationBar.barStyle = barStyle
     @navigationController.navigationBar.barTintColor = barBackColor
     @navigationController.navigationBar.tintColor = barTextColor
-    @navigationController.navigationBar.setTitleTextAttributes NSForegroundColorAttributeName => barTextColor
+    @navigationController.navigationBar.setTitleTextAttributes NSForegroundColorAttributeName => barTextColor    
   end
   
   ### properties

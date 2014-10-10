@@ -41,6 +41,16 @@ class CrossingListController < UITableViewController
     tableView.reloadData
     tableView.scrollToRowAtIndexPath closestCrossingIndexPath, atScrollPosition:UITableViewScrollPositionMiddle, animated:YES
   end
+  
+  def activateScreen
+    tableView.reloadData
+  end
+  
+  def deactivateScreen
+    tableView.visibleCells.each do |cell|
+      cell.imageView.image = Device.image_named("cell-stripe-gray")
+    end
+  end
 
   ### table view
 

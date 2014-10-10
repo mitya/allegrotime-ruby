@@ -63,7 +63,6 @@ class MainViewController < UIViewController
     self.view.addSubview(tableView)
   end
 
-
   def viewDidLoad
     self.title = "main.title".l
     navigationItem.backBarButtonItem = 
@@ -134,9 +133,9 @@ class MainViewController < UIViewController
       )
     when Pair.new(MESSAGE_SECTION, 0)
       cell = messageCell
-      Widgets.styleClosingCell(cell, Model.currentCrossing.color)
       cell.textLabel.adjustsFontSizeToFitWidth = YES
       cell.textLabel.text = Model.currentCrossing.subtitle
+      Widgets.styleClosingCell(cell, Model.currentCrossing.color)
     when Pair.new(ACTIONS_SECTION, 0)
       cell = showScheduleCell
     when Pair.new(ACTIONS_SECTION, 1)
@@ -229,6 +228,7 @@ class MainViewController < UIViewController
 
   def modelUpdated
     tableView.reloadData
+    puts 'modelUpdated'
   end
 
   def closestCrossingChanged
@@ -275,5 +275,15 @@ class MainViewController < UIViewController
   def showLog
     logController = LogViewController.alloc.init
     navigationController.pushViewController logController, animated:YES
+  end
+  
+  def deactivateScreen
+    puts 'deactivateScreen'
+    Widgets.styleClosingCell(messageCell, :gray.color)
+    puts 'deactivateScreen out'    
+  end
+  
+  def activateScreen    
+    tableView.reloadData
   end
 end

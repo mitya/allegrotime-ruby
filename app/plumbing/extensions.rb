@@ -169,3 +169,9 @@ class UITableView
     cell
   end  
 end
+
+class Object
+  def performSelectorIfDefined(selector)
+    performSelector(selector) if respondsToSelector(selector)
+  end
+end  

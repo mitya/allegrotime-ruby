@@ -80,7 +80,7 @@ class CrossingMapController < UIViewController
     end
     av.annotation = crossing
     av.leftCalloutAccessoryView.image = VX.stripeForCrossing(crossing)
-    av.image = pinMapping[crossing.color]
+    av.image = pinMappingFor(crossing.color)
     av
   end
   
@@ -108,9 +108,23 @@ class CrossingMapController < UIViewController
       annotationView = mapView.viewForAnnotation crossing
       next unless Crossing === crossing
       next unless annotationView
-      newImage = pinMapping[crossing.color]
+      newImage = pinMappingFor(crossing.color)
       annotationView.image = newImage
       annotationView.leftCalloutAccessoryView.image = VX.stripeForCrossing(crossing)
+    end
+  end
+
+  def activateScreen
+    modelUpdated
+  end
+  
+  def deactivateScreen
+    visibleAnnotations = mapView.annotationsInMapRect(mapView.visibleMapRect)
+    visibleAnnotations.each do |annotation|
+      annotationView = mapView.viewForAnnotation(annotation)
+      next unless annotationView      
+      annotationView.image = pinMappingFor(:gray.color)
+      annotationView.leftCalloutAccessoryView.image = Device.image_named("cell-stripe-gray") if annotationView.leftCalloutAccessoryView
     end
   end
   
@@ -128,11 +142,7 @@ class CrossingMapController < UIViewController
   
   ### helpers
   
-  def pinMapping
-    @pinMapping ||= {
-      :green.color  => Device.image_named("crossing-pin-green"),
-      :yellow.color => Device.image_named("crossing-pin-yellow"),
-      :red.color    => Device.image_named("crossing-pin-red")
-    }
+  def pinMappingFor(color)
+    color.mkname ? Device.image_named("crossing-pin-#{color.mkname}") : nil
   end
 end

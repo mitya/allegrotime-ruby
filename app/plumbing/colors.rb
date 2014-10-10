@@ -53,7 +53,8 @@ module Colors
     @@bar_back_color_map ||= {
       :red.color    => UIColor.rgb(216, 0, 0),
       :yellow.color => UIColor.rgb(224, 224, 0),
-      :green.color  => UIColor.rgb(0, 144, 0)
+      :green.color  => UIColor.rgb(0, 144, 0),
+      :gray.color  => UIColor.rgb(142, 142, 147),
     }
     @@bar_back_color_map[color]    
   end
@@ -64,8 +65,8 @@ module Colors
       :yellow.color  => UIColor.rgb(48, 48, 55),
       :green.color   => :white.color,
       :blue.color    => :black.color,
+      :clear.color   => :black.color,
       :gray.color    => :black.color,
-      :clear.color   => :black.color
     }
     @@bar_text_color_map[color]
   end
@@ -78,7 +79,8 @@ module Colors
     @@bar_text_color_map ||= {
       :red.color    => UIColor.lightTextColor,
       :yellow.color => UIColor.lightTextColor,
-      :green.color  => UIColor.lightTextColor
+      :green.color  => UIColor.lightTextColor,
+      :gray.color => UIColor.lightTextColor,      
     }
     @@bar_text_color_map[color]
   end        
