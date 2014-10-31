@@ -66,9 +66,19 @@ module Colors
       :green.color   => :white.color,
       :blue.color    => :black.color,
       :clear.color   => :black.color,
-      :gray.color    => :black.color,
+      :gray.color    => :white.color,
     }
     @@bar_text_color_map[color]
+  end
+  
+  def messageCellColorFor(color)
+    @@message_text_color_map ||= {
+      :red.color     => :white.color,
+      :yellow.color  => UIColor.rgb(48, 48, 55),
+      :green.color   => :white.color,
+      :gray.color    => :black.color,
+    }
+    @@message_text_color_map[color]    
   end
   
   def barStyleFor(color)

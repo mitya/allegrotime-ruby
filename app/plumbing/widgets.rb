@@ -19,9 +19,8 @@ module Widgets
   end
 
   def styleClosingCell(cell, color)
-    p color.mkname
     cell.backgroundColor = Colors.closingCellBackgroundFor(color)
-    cell.textLabel.textColor = Colors.barTextColorFor(color)
+    cell.textLabel.textColor = Colors.messageCellColorFor(color)
     cell.detailTextLabel.textColor = Colors.secondaryTextColorFor(color) if cell.detailTextLabel
   end
   

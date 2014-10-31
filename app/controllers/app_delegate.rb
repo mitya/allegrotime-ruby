@@ -22,7 +22,7 @@ class AppDelegate
     @window.makeKeyAndVisible
 
     @perMinuteTimer = NSTimer.scheduledTimerWithTimeInterval 5, target:self, selector:'timerTicked', userInfo:nil, repeats:YES
-    # @perMinuteTimer.fireDate = Time.next_full_minute_date
+    @perMinuteTimer.fireDate = Time.next_full_minute_date unless DEBUG
 
     NSNotificationCenter.defaultCenter.addObserver self, selector:'currentCrossingChanged', name:NXCurrentCrossingChanged, object:nil
 
@@ -32,33 +32,36 @@ class AppDelegate
   end
 
   def applicationDidBecomeActive(application)    
-    return unless CLLocationManager.locationServicesEnabled
-    locationManager.requestWhenInUseAuthorization if locationManager.respondsToSelector 'requestWhenInUseAuthorization'
-    locationManager.startUpdatingLocation
+    activateScreen
+    if CLLocationManager.locationServicesEnabled
+      locationManager.requestWhenInUseAuthorization if locationManager.respondsToSelector 'requestWhenInUseAuthorization'
+      locationManager.startUpdatingLocation
+    end
+    triggerModelUpdateFor navigationController.visibleViewController
   end
   
   def applicationWillResignActive(application)
     locationManager.stopUpdatingLocation
+    deactivateScreen
   end
 
   def applicationWillEnterForeground(application)
-    activateScreen
-    triggerModelUpdateFor navigationController.visibleViewController
   end
   
   def applicationDidEnterBackground(application)
-    deactivateScreen
   end
   
   def applicationWillTerminate(application)
   end
 
   def deactivateScreen
-    navigationController.visibleViewController.performSelectorIfDefined(:deactivateScreen)    
+    @deactivated = true
+    navigationController.visibleViewController.performSelectorIfDefined(:deactivateScreen)
     updateAppColorsTo(:gray.color)
   end
   
   def activateScreen
+    @deactivated = false
     navigationController.visibleViewController.performSelectorIfDefined(:activateScreen)
     updateAppColorsToCurrent
   end
@@ -114,12 +117,11 @@ class AppDelegate
     navController.setToolbarHidden newControllerHasNoToolbar, animated:animated
     triggerModelUpdateFor viewController if animated
   end
-  
+
   def timerTicked
-    puts "tick"
+    return if @deactivated
     triggerModelUpdateFor navigationController.visibleViewController    
     updateAppColorsToCurrent
-    # deactivateScreen
   end
   
   def currentCrossingChanged
@@ -154,4 +156,3 @@ class AppDelegate
     @mapController ||= CrossingMapController.alloc.init
   end
 end
-

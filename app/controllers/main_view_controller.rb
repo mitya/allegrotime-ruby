@@ -122,7 +122,7 @@ class MainViewController < UIViewController
     case Pair.new(indexPath.section, indexPath.row)
     when Pair.new(STATE_SECTION, 0)
       cell = crossingCell
-      cell.detailTextLabel.text = Model.currentCrossing.localizedName;
+      cell.detailTextLabel.text = Model.currentCrossing.localizedName
     when Pair.new(STATE_SECTION, 1)
       cell = self.stateCell
       nextClosing = Model.currentCrossing.nextClosing
@@ -228,7 +228,6 @@ class MainViewController < UIViewController
 
   def modelUpdated
     tableView.reloadData
-    puts 'modelUpdated'
   end
 
   def closestCrossingChanged
@@ -278,9 +277,8 @@ class MainViewController < UIViewController
   end
   
   def deactivateScreen
-    puts 'deactivateScreen'
     Widgets.styleClosingCell(messageCell, :gray.color)
-    puts 'deactivateScreen out'    
+    messageCell.textLabel.text = "—"
   end
   
   def activateScreen    
