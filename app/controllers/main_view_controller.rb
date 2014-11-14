@@ -142,8 +142,6 @@ class MainViewController < UIViewController
       cell = showMapCell
     end
 
-    # cell.textLabel.text = ""
-
     cell
   end
 
@@ -206,15 +204,15 @@ class MainViewController < UIViewController
   end
 
   def adViewDidReceiveAd(adView)
-    if !adViewLoaded
-      adView.frame = adView.frame.change(y: view.bounds.height)
-      UIView.animateWithDuration 0.25, animations: -> do
-        adView.hidden = NO
-        adView.frame = adView.frame.change(y: view.bounds.height - adView.frame.height)
-        tableView.frame = tableView.frame.change(height: view.bounds.height - adView.frame.height)
-      end
-      @adViewLoaded = YES
-    end
+    # if !adViewLoaded
+    #   adView.frame = adView.frame.change(y: view.bounds.height)
+    #   UIView.animateWithDuration 0.25, animations: -> do
+    #     adView.hidden = NO
+    #     adView.frame = adView.frame.change(y: view.bounds.height - adView.frame.height)
+    #     tableView.frame = tableView.frame.change(height: view.bounds.height - adView.frame.height)
+    #   end
+    #   @adViewLoaded = YES
+    # end
   end
 
   def adView(view, didFailToReceiveAdWithError:error)
