@@ -142,6 +142,8 @@ class MainViewController < UIViewController
       cell = showMapCell
     end
 
+    # cell.textLabel.text = ""
+
     cell
   end
 
@@ -278,7 +280,7 @@ class MainViewController < UIViewController
   
   def deactivateScreen
     Widgets.styleClosingCell(messageCell, :gray.color)
-    messageCell.textLabel.text = "—"
+    messageCell.textLabel.text = ""
   end
   
   def activateScreen    

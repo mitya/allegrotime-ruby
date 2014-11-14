@@ -8,15 +8,21 @@ begin
 rescue LoadError
 end
 
+ENV['device_name'] ||= 'iPhone 5s'
+
 Motion::Project::App.setup do |app|
   app.name = 'AllegroTime2'
   app.identifier = "name.sokurenko.AllegroTime2"
   app.version = "2.0"
   app.short_version = "2.0"
   app.sdk_version = '8.1'
-  app.deployment_target = '7.1'
+  app.deployment_target = '7.0'
+  # app.codesign_certificate = "iPhone Distribution: Iconoclast Labs LLC"
   app.provisioning_profile = '/Volumes/Vault/Sources/active/_profiles/iOS_Team_Provisioning_Profile_.mobileprovision'
-  app.icons = %w(Icon-iPhone.png Icon-iPad.png Icon-iPhone@2x.png Icon-iPad@2x.png)
+  app.icons = %w(
+    appicon-60@2x.png appicon-60@3x.png appicon-76.png appicon-76@2x.png
+    appicon-Small-40.png appicon-Small-40@2x.png appicon-Small.png appicon-Small@2x.png appicon-Small@3x.png
+  )
   app.frameworks += %w(StoreKit AdSupport AVFoundation CoreTelephony SystemConfiguration MessageUI AudioToolbox MapKit CoreLocation CoreData EventKit EventKitUI)
   app.vendor_project 'vendor/GoogleMobileAdsSdkiOS-6.12.0', :static, force_load: false
   app.device_family = ENV['IPAD'] == '1' ? [:ipad, :iphone] : [:iphone, :ipad]
