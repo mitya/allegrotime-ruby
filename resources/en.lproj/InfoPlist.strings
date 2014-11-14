@@ -1,4 +1,2 @@
-/* Localized versions of Info.plist keys */
-
-CFBundleDisplayName = "AllegroTime En";
-NSLocationWhenInUseUsageDescription = "This is required to find the closest railroad crossing";
+CFBundleDisplayName = "AllegroTime";
+NSLocationWhenInUseUsageDescription = "This is required to locate the closest railroad crossing";
