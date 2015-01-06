@@ -8,7 +8,7 @@ begin
 rescue LoadError
 end
 
-ENV['device_name'] ||= 'iPhone 5s'
+ENV['device_name'] ||= 'iPhone 6' # 'iPhone 5s 7.1' 'iPhone 5s'
 
 Motion::Project::App.setup do |app|
   app.name = 'AllegroTime2'
@@ -25,7 +25,7 @@ Motion::Project::App.setup do |app|
   )
   app.frameworks += %w(StoreKit AdSupport AVFoundation CoreTelephony SystemConfiguration MessageUI AudioToolbox MapKit CoreLocation CoreData EventKit EventKitUI)
   app.vendor_project 'vendor/GoogleMobileAdsSdkiOS-6.12.0', :static, force_load: false
-  app.device_family = ENV['IPAD'] == '1' ? [:ipad, :iphone] : [:iphone, :ipad]
+  app.device_family = [:iphone, :ipad]
 
   # app.interface_orientations = [:portrait, :landscape_left, :landscape_right]
   # app.info_plist['UIViewControllerBasedStatusBarAppearance'] = 'NO'
