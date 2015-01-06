@@ -33,4 +33,8 @@ module Widgets
     # cell.textLabel.highlightedTextColor = :black.color
     # cell.detailTextLabel.highlightedTextColor = :black.color
   end
+
+  def stripeForCrossing(crossing)
+    Device.image_named("cell-stripe-#{crossing.color.mkname}")
+  end
 end

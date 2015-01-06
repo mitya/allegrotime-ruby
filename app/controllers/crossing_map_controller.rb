@@ -75,11 +75,11 @@ class CrossingMapController < UIViewController
     if !av
       av = MKAnnotationView.alloc.initWithAnnotation nil, reuseIdentifier:MXDefaultCellID
       av.canShowCallout = YES
-      av.leftCalloutAccessoryView = UIImageView.alloc.initWithImage VX.stripeForCrossing(crossing)
+      av.leftCalloutAccessoryView = UIImageView.alloc.initWithImage Widgets.stripeForCrossing(crossing)
       av.rightCalloutAccessoryView = UIButton.buttonWithType UIButtonTypeDetailDisclosure
     end
     av.annotation = crossing
-    av.leftCalloutAccessoryView.image = VX.stripeForCrossing(crossing)
+    av.leftCalloutAccessoryView.image = Widgets.stripeForCrossing(crossing)
     av.image = pinMappingFor(crossing.color)
     av
   end
@@ -110,7 +110,7 @@ class CrossingMapController < UIViewController
       next unless annotationView
       newImage = pinMappingFor(crossing.color)
       annotationView.image = newImage
-      annotationView.leftCalloutAccessoryView.image = VX.stripeForCrossing(crossing)
+      annotationView.leftCalloutAccessoryView.image = Widgets.stripeForCrossing(crossing)
     end
   end
 

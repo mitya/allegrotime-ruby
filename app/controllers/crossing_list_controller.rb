@@ -67,7 +67,7 @@ class CrossingListController < UITableViewController
 
     cell.textLabel.text = crossing.localizedName
     cell.detailTextLabel.text = crossing.subtitle
-    cell.imageView.image = VX.stripeForCrossing(crossing)
+    cell.imageView.image = Widgets.stripeForCrossing(crossing)
 
     if accessoryType == UITableViewCellAccessoryCheckmark
       cell.accessoryType = crossing.current? ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone
