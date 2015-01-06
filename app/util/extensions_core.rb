@@ -85,7 +85,8 @@ class NSString
 end
 
 
-class Array
+# must be NSArray
+class NSArray
   def firstObject
     return nil if count == 0
     objectAtIndex 0
