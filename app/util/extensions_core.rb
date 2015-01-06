@@ -13,38 +13,40 @@ end
 
 
 class Time
-  def self.minutes_since_midnight
-    calendar = NSCalendar.currentCalendar
+  class << self
+    def minutes_since_midnight
+      calendar = NSCalendar.currentCalendar
 
-    now = NSDate.date
-    nowParts = calendar.components NSHourCalendarUnit | NSMinuteCalendarUnit, fromDate:now
+      now = NSDate.date
+      nowParts = calendar.components NSHourCalendarUnit | NSMinuteCalendarUnit, fromDate:now
 
-    hours = nowParts.hour;
-    minutes = nowParts.minute;
-    hours * 60 + minutes;    
-  end
+      hours = nowParts.hour;
+      minutes = nowParts.minute;
+      hours * 60 + minutes;    
+    end
   
-  def self.timestamp_string
-    now = NSDate.date
-    dateFormatter = NSDateFormatter.alloc.init
-    dateFormatter.setDateFormat "HH:mm:ss.SSS"
-    dateFormatter.stringFromDate now
-  end
+    def timestamp_string
+      now = NSDate.date
+      dateFormatter = NSDateFormatter.alloc.init
+      dateFormatter.setDateFormat "HH:mm:ss.SSS"
+      dateFormatter.stringFromDate now
+    end
   
-  def self.format_date(date, format)
-    dateFormatter = NSDateFormatter.alloc.init
-    dateFormatter.setDateFormat format
-    dateFormatter.stringFromDate date
-  end
+    def format_date(date, format)
+      dateFormatter = NSDateFormatter.alloc.init
+      dateFormatter.setDateFormat format
+      dateFormatter.stringFromDate date
+    end
   
-  def self.time_till_full_minute
-    dateComponents = NSCalendar.currentCalendar.components NSSecondCalendarUnit, fromDate:NSDate.date
-    60 - dateComponents.second
-  end
+    def time_till_full_minute
+      dateComponents = NSCalendar.currentCalendar.components NSSecondCalendarUnit, fromDate:NSDate.date
+      60 - dateComponents.second
+    end
 
-  def self.next_full_minute_date
-    NSDate.dateWithTimeIntervalSinceNow time_till_full_minute
-  end  
+    def next_full_minute_date
+      NSDate.dateWithTimeIntervalSinceNow time_till_full_minute
+    end  
+  end
 end
 
 
