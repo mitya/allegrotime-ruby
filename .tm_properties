@@ -1,1 +1,1 @@
-exclude = {build,originals,vendor}
+exclude = {build,originals,vendor,tmp,Gemfile.lock}
