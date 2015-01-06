@@ -1,4 +1,7 @@
 class Closing
+  DirectionToFinland = 1
+  DirectionToRussia = 2
+
   ### properties
 
   attr_accessor :time, :crossing, :direction, :trainTime
@@ -8,7 +11,7 @@ class Closing
   end
 
   def toRussia?
-    direction == ClosingDirectionToRussia
+    direction == DirectionToRussia
   end
 
   def trainNumber
@@ -17,9 +20,9 @@ class Closing
   end
 
   def directionCode
-    if (direction == ClosingDirectionToFinland) then "FIN"
-    elsif direction == ClosingDirectionToRussia then "RUS"
-                                                else "N/A"
+    if    direction == DirectionToFinland then "FIN"
+    elsif direction == DirectionToRussia  then "RUS"
+                                          else "N/A"
     end
   end
 

@@ -14,8 +14,8 @@ class LogViewController < UIViewController
     table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
     view.addSubview table
 
-    NSNotificationCenter.defaultCenter.addObserver self, selector:'consoleUpdated', name:NXLogConsoleUpdated, object:nil
-    NSNotificationCenter.defaultCenter.addObserver self, selector:'consoleFlushed', name:NXLogConsoleFlushed, object:nil
+    NSNotificationCenter.defaultCenter.addObserver self, selector:'consoleUpdated', name:NXDefaultCellIDLogConsoleUpdated, object:nil
+    NSNotificationCenter.defaultCenter.addObserver self, selector:'consoleFlushed', name:NXDefaultCellIDLogConsoleFlushed, object:nil
 
     swipeRecognizer = UISwipeGestureRecognizer.alloc.initWithTarget self, action:'recognizedSwipe:'
     swipeRecognizer.direction = UISwipeGestureRecognizerDirectionRight
@@ -56,9 +56,9 @@ class LogViewController < UIViewController
     console = MXGetConsole()
     message = console.objectAtIndex (console.count - 1 - indexPath.row)
 
-    cell = tableView.dequeueReusableCellWithIdentifier MXDefaultCellID
+    cell = tableView.dequeueReusableCellWithIdentifier NXDefaultCellID
     if !cell
-      cell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleDefault, reuseIdentifier:MXDefaultCellID
+      cell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleDefault, reuseIdentifier:NXDefaultCellID
       cell.selectionStyle = UITableViewCellSelectionStyleGray;
       cell.textLabel.font = UIFont.systemFontOfSize 12
       cell.textLabel.numberOfLines = 0

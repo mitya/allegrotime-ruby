@@ -1,7 +1,7 @@
 class UIColor
-  def mkname
-    @@mkcolor_names ||= { :red.color => "red", :yellow.color => "yellow", :green.color => "green", :gray.color => "gray" }
-    @@mkcolor_names[self]
+  def api_name
+    @@api_color_names ||= { :red.color => "red", :yellow.color => "yellow", :green.color => "green", :gray.color => "gray" }
+    @@api_color_names[self]
   end
   
   class << self
@@ -79,7 +79,7 @@ end
 
 class UITableView
   def dequeue_cell(style, &configurator)
-    cell = UITableViewCell.alloc.initWithStyle style, reuseIdentifier:MXDefaultCellID
+    cell = UITableViewCell.alloc.initWithStyle style, reuseIdentifier:NXDefaultCellID
     configurator.call(cell) if configurator
     cell
   end  

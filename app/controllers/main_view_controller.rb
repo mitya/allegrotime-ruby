@@ -33,25 +33,25 @@ class MainViewController < UIViewController
   def loadView
     self.view = UIView.alloc.init
     
-    self.crossingCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleValue1, reuseIdentifier:MXDefaultCellID
+    self.crossingCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleValue1, reuseIdentifier:NXDefaultCellID
     crossingCell.textLabel.text = 'main.crossing_cell'.l
     crossingCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
     
-    self.stateCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleSubtitle, reuseIdentifier:MXDefaultCellID
+    self.stateCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleSubtitle, reuseIdentifier:NXDefaultCellID
     stateCell.textLabel.textAlignment = NSTextAlignmentCenter
     stateCell.detailTextLabel.textAlignment = NSTextAlignmentCenter
     stateCell.detailTextLabel.textColor = :darkGray.color
     stateCell.selectionStyle = UITableViewCellSelectionStyleNone
     
-    self.messageCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleDefault, reuseIdentifier:MXDefaultCellID
+    self.messageCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleDefault, reuseIdentifier:NXDefaultCellID
     messageCell.selectionStyle = UITableViewCellSelectionStyleNone
     messageCell.textLabel.textAlignment = NSTextAlignmentCenter
     
-    self.showScheduleCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleDefault, reuseIdentifier:MXDefaultCellID
+    self.showScheduleCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleDefault, reuseIdentifier:NXDefaultCellID
     showScheduleCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
     showScheduleCell.textLabel.text = 'main.show_schedule'.l
     
-    self.showMapCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleDefault, reuseIdentifier:MXDefaultCellID
+    self.showMapCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleDefault, reuseIdentifier:NXDefaultCellID
     showMapCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
     showMapCell.textLabel.text = 'main.show_map'.l
     
@@ -68,7 +68,7 @@ class MainViewController < UIViewController
     navigationItem.backBarButtonItem = 
       UIBarButtonItem.alloc.initWithTitle "main.backbutton".l, style:UIBarButtonItemStyleBordered, target:nil, action:nil
 
-    NSNotificationCenter.defaultCenter.addObserver self, selector:'closestCrossingChanged', name:NXClosestCrossingChanged, object:nil
+    NSNotificationCenter.defaultCenter.addObserver self, selector:'closestCrossingChanged', name:NXDefaultCellIDClosestCrossingChanged, object:nil
 
     setupInfoButton
     setupLogConsoleGesture
@@ -128,7 +128,7 @@ class MainViewController < UIViewController
       nextClosing = Model.currentCrossing.nextClosing
       cell.textLabel.text = "main.allegro will pass at $time".li(Format.munutes_as_hhmm(nextClosing.trainTime))
       cell.detailTextLabel.text = "main.crossing $closes at $time".li(
-          Model.currentCrossing.state == CrossingStateClosed ? "closed".l : "will be closed".l,
+          Model.currentCrossing.state == Crossing::StateClosed ? "closed".l : "will be closed".l,
           Format.munutes_as_hhmm(nextClosing.closingTime)
       )
     when Pair.new(MESSAGE_SECTION, 0)

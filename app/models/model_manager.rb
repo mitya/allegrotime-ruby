@@ -1,20 +1,3 @@
-ClosingDirectionToFinland = 1
-ClosingDirectionToRussia = 2
-
-CrossingStateClear = 0
-CrossingStateSoon = 1
-CrossingStateVerySoon = 2
-CrossingStateClosing = 3
-CrossingStateClosed = 4
-CrosingsStateJustOpened = 5
-
-StateColorGreen = 0
-StateColorYellow = 1
-StateColorRed = 2
-
-PREVIOUS_TRAIN_LAG_TIME = 5
-CLOSING_TIME = 10
-
 class ModelManager
   ### properties
 
@@ -48,7 +31,7 @@ class ModelManager
 
   def currentCrossing=(crossing)
     self.selectedCrossing = crossing.closest? ? nil : crossing
-    NSNotificationCenter.defaultCenter.postNotificationName NXCurrentCrossingChanged, object:crossing
+    NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDCurrentCrossingChanged, object:crossing
   end
   
   def reverseCrossings
@@ -90,14 +73,14 @@ class ModelManager
       crossing.closings = NSMutableArray.arrayWithCapacity(8)
 
       lastDatumIndex = 3
-      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 1), direction:ClosingDirectionToFinland
-      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 2), direction:ClosingDirectionToRussia
-      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 3), direction:ClosingDirectionToFinland
-      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 4), direction:ClosingDirectionToRussia
-      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 5), direction:ClosingDirectionToFinland
-      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 6), direction:ClosingDirectionToRussia
-      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 7), direction:ClosingDirectionToFinland
-      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 8), direction:ClosingDirectionToRussia
+      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 1), direction:Closing::DirectionToFinland
+      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 2), direction:Closing::DirectionToRussia
+      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 3), direction:Closing::DirectionToFinland
+      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 4), direction:Closing::DirectionToRussia
+      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 5), direction:Closing::DirectionToFinland
+      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 6), direction:Closing::DirectionToRussia
+      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 7), direction:Closing::DirectionToFinland
+      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 8), direction:Closing::DirectionToRussia
 
       @crossings.addObject crossing
     end

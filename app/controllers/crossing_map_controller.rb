@@ -71,9 +71,9 @@ class CrossingMapController < UIViewController
   
     crossing = annotation
   
-    av = mapView.dequeueReusableAnnotationViewWithIdentifier MXDefaultCellID
+    av = mapView.dequeueReusableAnnotationViewWithIdentifier NXDefaultCellID
     if !av
-      av = MKAnnotationView.alloc.initWithAnnotation nil, reuseIdentifier:MXDefaultCellID
+      av = MKAnnotationView.alloc.initWithAnnotation nil, reuseIdentifier:NXDefaultCellID
       av.canShowCallout = YES
       av.leftCalloutAccessoryView = UIImageView.alloc.initWithImage Widgets.stripeForCrossing(crossing)
       av.rightCalloutAccessoryView = UIButton.buttonWithType UIButtonTypeDetailDisclosure
@@ -143,6 +143,6 @@ class CrossingMapController < UIViewController
   ### helpers
   
   def pinMappingFor(color)
-    color.mkname ? Device.image_named("crossing-pin-#{color.mkname}") : nil
+    color.api_name ? Device.image_named("crossing-pin-#{color.api_name}") : nil
   end
 end

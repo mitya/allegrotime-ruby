@@ -35,6 +35,6 @@ module Widgets
   end
 
   def stripeForCrossing(crossing)
-    Device.image_named("cell-stripe-#{crossing.color.mkname}")
+    Device.image_named("cell-stripe-#{crossing.color.api_name}")
   end
 end

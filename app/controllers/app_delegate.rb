@@ -1,8 +1,3 @@
-DEBUG = true
-YES = true
-NO = false
-NULL = nil
-
 class AppDelegate
   attr_accessor :window, :locationManager, :perMinuteTimer, :mapController, :navigationController
 
@@ -24,7 +19,7 @@ class AppDelegate
     @perMinuteTimer = NSTimer.scheduledTimerWithTimeInterval 5, target:self, selector:'timerTicked', userInfo:nil, repeats:YES
     @perMinuteTimer.fireDate = Time.next_full_minute_date unless DEBUG
 
-    NSNotificationCenter.defaultCenter.addObserver self, selector:'currentCrossingChanged', name:NXCurrentCrossingChanged, object:nil
+    NSNotificationCenter.defaultCenter.addObserver self, selector:'currentCrossingChanged', name:NXDefaultCellIDCurrentCrossingChanged, object:nil
 
     updateAppColorsToCurrent
 
@@ -94,7 +89,7 @@ class AppDelegate
     newClosestCrossing = Model.crossingClosestTo(newLocation)
     if newClosestCrossing != Model.closestCrossing
       Model.closestCrossing = newClosestCrossing
-      NSNotificationCenter.defaultCenter.postNotificationName NXClosestCrossingChanged, object:Model.closestCrossing
+      NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDClosestCrossingChanged, object:Model.closestCrossing
     end
   end
 
@@ -102,7 +97,7 @@ class AppDelegate
     MXWriteToConsole("locationManager:didFailWithError: %@", error)
   
     Model.closestCrossing = nil
-    NSNotificationCenter.defaultCenter.postNotificationName NXClosestCrossingChanged, object:Model.closestCrossing
+    NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDClosestCrossingChanged, object:Model.closestCrossing
   end
   
   def startLocationTracking

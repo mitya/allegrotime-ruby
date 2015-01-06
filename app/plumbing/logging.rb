@@ -50,11 +50,11 @@ def MXWriteToConsole(format, *args)
   #   formattedMessage = [NSString stringWithFormat:@"%@ %@\n", Time.mk_format_date([NSDate date], @"HH:mm:ss"), formattedMessage];
   #   [MXGetConsole() addObject:formattedMessage];
   # 
-  #   [NSNotificationCenter.defaultCenter postNotificationName:NXLogConsoleUpdated object:$mx_logging_buffer];
+  #   [NSNotificationCenter.defaultCenter postNotificationName:NXDefaultCellIDLogConsoleUpdated object:$mx_logging_buffer];
   # 
   #   if ($mx_logging_buffer.count > 200)
   #     [$mx_logging_buffer removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, 50)]];
-  #     [NSNotificationCenter.defaultCenter postNotificationName:NXLogConsoleFlushed object:$mx_logging_buffer];
+  #     [NSNotificationCenter.defaultCenter postNotificationName:NXDefaultCellIDLogConsoleFlushed object:$mx_logging_buffer];
   #   end
   # #endif
 end

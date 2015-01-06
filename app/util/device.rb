@@ -5,6 +5,7 @@ module Device
     UIImage.imageNamed "images/#{filename}.png"
   end
   
+  # 'ru' or 'en'
   def language
     'lang'.l
   end

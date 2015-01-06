@@ -1,4 +1,14 @@
 class Crossing
+  PREVIOUS_TRAIN_LAG_TIME = 5
+  CLOSING_TIME = 10
+
+  StateClear = 0
+  StateSoon = 1
+  StateVerySoon = 2
+  StateClosing = 3
+  StateClosed = 4
+  StateJustOpened = 5
+
   ### properties
 
   attr_accessor :name, :latitude, :longitude, :closings, :distance
@@ -12,28 +22,28 @@ class Crossing
     currentTime = Time.minutes_since_midnight
     trainTime = currentClosing.trainTime
 
-    return CrossingStateClear if currentTime > trainTime + PREVIOUS_TRAIN_LAG_TIME # next train will be tomorrow
-    return CrosingsStateJustOpened if currentTime >= trainTime && currentTime <= trainTime + PREVIOUS_TRAIN_LAG_TIME
-    return CrossingStateClosed if (currentTime >= trainTime - CLOSING_TIME && currentTime < trainTime)
+    return StateClear if currentTime > trainTime + PREVIOUS_TRAIN_LAG_TIME # next train will be tomorrow
+    return StateJustOpened if currentTime >= trainTime && currentTime <= trainTime + PREVIOUS_TRAIN_LAG_TIME
+    return StateClosed if (currentTime >= trainTime - CLOSING_TIME && currentTime < trainTime)
 
     timeTillClosing = trainTime - CLOSING_TIME - currentTime
 
-    return CrossingStateClear    if timeTillClosing > 60
-    return CrossingStateSoon     if timeTillClosing > 20
-    return CrossingStateVerySoon if timeTillClosing > 5
-    return CrossingStateClosing  if timeTillClosing > 0
+    return StateClear    if timeTillClosing > 60
+    return StateSoon     if timeTillClosing > 20
+    return StateVerySoon if timeTillClosing > 5
+    return StateClosing  if timeTillClosing > 0
 
-    return CrossingStateClosed
+    return StateClosed
   end
 
   def color
     case state
-    when CrossingStateClear      then UIColor.greenColor
-    when CrossingStateSoon       then UIColor.greenColor
-    when CrossingStateVerySoon   then UIColor.yellowColor
-    when CrossingStateClosing    then UIColor.redColor
-    when CrossingStateClosed     then UIColor.redColor
-    when CrosingsStateJustOpened then UIColor.yellowColor
+    when StateClear      then UIColor.greenColor
+    when StateSoon       then UIColor.greenColor
+    when StateVerySoon   then UIColor.yellowColor
+    when StateClosing    then UIColor.redColor
+    when StateClosed     then UIColor.redColor
+    when StateJustOpened then UIColor.yellowColor
                                  else UIColor.greenColor
     end
   end
@@ -52,11 +62,11 @@ class Crossing
 
   def subtitle
     case state
-    when CrossingStateClear, CrossingStateSoon, CrossingStateVerySoon, CrossingStateClosing
+    when StateClear, StateSoon, StateVerySoon, StateClosing
       minutesTillClosing == 0 ? 'crossing.just_closed'.l : 'crossing.will be closed in X mins'.li(Format.minutes_as_text(minutesTillClosing))
-    when CrossingStateClosed
+    when StateClosed
       minutesTillOpening == 0 ? 'crossing.just_opened'.l : 'crossing.will be opened in X mins'.li(Format.minutes_as_text(minutesTillOpening))
-    when CrosingsStateJustOpened
+    when StateJustOpened
       minutesSinceOpening == 0 ? 'crossing.just_opened'.l : 'crossing.opened X min ago'.li(Format.minutes_as_text(minutesSinceOpening))
     else
       nil
