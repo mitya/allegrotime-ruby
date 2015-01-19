@@ -81,7 +81,7 @@
   <editor content-size="{721, 937}" vertical-scrollbar-visible-width="15" is-spellchecking-enabled="yes">
     <drawer palette-height="376"/>
     <note-split-view height="132"/>
-    <selected-rows ids="mPb9QO2SVL-"/>
+    <selected-rows ids="aVhGVrV0w6z"/>
   </editor>
   <columns>
     <column id="dTpN3JwYpBn" type="text" width="18" minimum-width="18" maximum-width="18" text-export-width="1" is-note-column="yes">
@@ -182,421 +182,9 @@
             </text>
           </values>
         </item>
-        <item id="ikdUT6gGZui">
-          <values>
-            <null/>
-          </values>
-        </item>
-        <item id="kVh5qonjAeK" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>стартовый скрин</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="lHBTQqq4Smz" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>иконки</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="frNzy9i6xU1" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>иконка для аппстора</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="pYRju8cRbGo" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>скриншоты</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="nGt256zoduP" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>локализация сообщения для геолокации</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="gEzzAuThhIj" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>тест на 6 / 6+</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="mda1GQz3NG9" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>проверить геошнягу</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="k_0uZHH6yqF" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>обновить adMob</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="hqM6MFXHeKP" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>пересмотреть структуру модулей — Colors, Widgets, Model, App</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="eb8gcKMdgE4" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>серый экран для бэкграунда</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="oyg8zAf-NBh" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>запрос на геопозицию</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="nN0KsaZo-wH" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>вопрос по превью приложения</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="bIdZ7ok9ixN" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>x обновлять иконку или бейдж приложения</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="mOD9n5IgKT3" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>обновить adMob</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="dTkvCEvzK6n" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>поправить координаты переездов</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="l_Orjv59q-X" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>обновить расписание Удельной, Поклонногорской, Шувалово, Белоострова</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="ftEUYCptM8C" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>icon grid1</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="j4za9OUS4DQ" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>x обновлять превью приложения</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="mKf6fWmtrdb" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>use custom background view for red/green/yellow markers</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="lFKpAhyjOLn" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>перестроить полоски с фонами (скриптом)</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="m_wVkppDpSl" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>центрировать выбранный переезд на карте</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="a0BCYjEalgX" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>отсортировать расписание обратных поездов наоборот</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="p_75AtQ4z4x" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>х поменять текстовый маркер на иконку для обратных поездов</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="kV495CV94AR" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>tint color</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="nl-nuIj9Elz" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>new admob sdk</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="n1RJHSxDznU" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>капитализировать глобальные объекты</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="bbhd5dJNojq" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>использовать стандартную подсветку ячеек</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="f_AsBOrRUYp" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>х иконка ближайшего переезда</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="pNodBwNZGk7" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>не выбирается переезд</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="jnYTRhuie4Z" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>select current crossing button</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="b-ehqcB6eKb" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>х parallax for the central cell </lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="oQ70-mOQG73" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>translate crossings</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="asYCUyX6xox" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>english strings</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="dOL1FoAjNkv" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>build cells programmatically</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="a6qFlh07D9F" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>new icon</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="arxIN8eIGqM" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>main view bg</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
-        <item id="kE7Q7-7lcK4" state="checked">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>yellow background for info</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
       </children>
     </item>
-    <item id="e_IxIeTXRC6" expanded="yes" state="indeterminate">
+    <item id="e_IxIeTXRC6" state="indeterminate">
       <values>
         <text>
           <p>
@@ -653,7 +241,42 @@
         </item>
       </children>
     </item>
-    <item id="l_bOBAgFvYI" expanded="yes" state="indeterminate">
+    <item id="bhhsqbzqNBP" expanded="yes">
+      <values>
+        <text>
+          <p>
+            <run>
+              <lit>Improvements</lit>
+            </run>
+          </p>
+        </text>
+      </values>
+      <children>
+        <item id="aVhGVrV0w6z">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>Tab-based UI – Status, Map, Schedule</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="bv7GJdJk-L_">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>Rework main screen to use labels instead of the table view</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+      </children>
+    </item>
+    <item id="l_bOBAgFvYI" state="indeterminate">
       <values>
         <text>
           <p>
@@ -675,17 +298,6 @@
             </text>
           </values>
         </item>
-        <item id="iPm4kJn0rPl">
-          <values>
-            <text>
-              <p>
-                <run>
-                  <lit>align table view footer to the center</lit>
-                </run>
-              </p>
-            </text>
-          </values>
-        </item>
         <item id="ezFrO8z1yfe" state="checked">
           <values>
             <text>
@@ -699,7 +311,7 @@
         </item>
       </children>
     </item>
-    <item id="cwqbLPWu9wE" expanded="yes">
+    <item id="cwqbLPWu9wE">
       <values>
         <text>
           <p>
@@ -710,7 +322,31 @@
         </text>
       </values>
       <children>
-        <item id="iUwJNdmARc5">
+        <item id="lsEw8cWUDAD">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>iAd в дополнение к AdMob</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+      </children>
+    </item>
+    <item id="fJ3-K1Xv5a0">
+      <values>
+        <text>
+          <p>
+            <run>
+              <lit>Kunstkamera</lit>
+            </run>
+          </p>
+        </text>
+      </values>
+      <children>
+        <item id="gYl0wD7Q5E3">
           <values>
             <text>
               <p>
@@ -721,12 +357,432 @@
             </text>
           </values>
         </item>
-        <item id="lsEw8cWUDAD">
+        <item id="iJLt3juvExY">
           <values>
             <text>
               <p>
                 <run>
-                  <lit>iAd в дополнение к AdMob</lit>
+                  <lit>align table view footer to the center</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+      </children>
+    </item>
+    <item id="kqEKsmCjzjh">
+      <values>
+        <text>
+          <p>
+            <run>
+              <lit>Done</lit>
+            </run>
+          </p>
+        </text>
+      </values>
+      <children>
+        <item id="l7ThlBXhxvL" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>стартовый скрин</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="bDIrC_dUuCE" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>иконки</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="aPbEyPsNOc7" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>иконка для аппстора</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="pFUzgJZIZIZ" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>скриншоты</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="jd4CulXKAH8" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>локализация сообщения для геолокации</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="mBzQ0JIeNlW" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>тест на 6 / 6+</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="dHkxllT0xvr" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>проверить геошнягу</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="kiyqahdUFdL" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>обновить adMob</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="eK5NejEXO-o" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>пересмотреть структуру модулей — Colors, Widgets, Model, App</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="hWtgRG6PbKW" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>серый экран для бэкграунда</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="cjwEANPZyrk" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>запрос на геопозицию</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="jMqIgJorV-C" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>вопрос по превью приложения</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="mGdhYHTxyyZ" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>x обновлять иконку или бейдж приложения</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="e2kv0DO2k9B" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>обновить adMob</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="oGvsHT5EU8F" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>поправить координаты переездов</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="lO-TMlG3rmN" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>обновить расписание Удельной, Поклонногорской, Шувалово, Белоострова</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="hwkIix0KmYO" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>icon grid1</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="mQ0UZaF_gte" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>x обновлять превью приложения</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="mN9OW7vozm0" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>use custom background view for red/green/yellow markers</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="dSDOoA-g2gb" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>перестроить полоски с фонами (скриптом)</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="nP5UTdm3H9k" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>центрировать выбранный переезд на карте</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="aQ6WMW6RljK" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>отсортировать расписание обратных поездов наоборот</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="mHIt9QS4ZzL" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>х поменять текстовый маркер на иконку для обратных поездов</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="gmF6bZasBml" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>tint color</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="la6S8uMMRft" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>new admob sdk</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="hOYopibIuRd" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>капитализировать глобальные объекты</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="bHn7-88yb18" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>использовать стандартную подсветку ячеек</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="aGFjPQq4mIr" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>х иконка ближайшего переезда</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="ieZsrICpSgu" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>не выбирается переезд</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="irgddamUUmH" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>select current crossing button</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="giwGuj1WdIV" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>х parallax for the central cell </lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="j0F3oWUeoYA" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>translate crossings</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="iTc6pKK39K-" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>english strings</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="acEzKIWrAOV" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>build cells programmatically</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="bHxgi3uzOAQ" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>new icon</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="fKnzbRh_RBX" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>main view bg</lit>
+                </run>
+              </p>
+            </text>
+          </values>
+        </item>
+        <item id="lvdndM6Uw_0" state="checked">
+          <values>
+            <text>
+              <p>
+                <run>
+                  <lit>yellow background for info</lit>
                 </run>
               </p>
             </text>
