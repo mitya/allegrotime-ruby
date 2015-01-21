@@ -1,4 +1,4 @@
-DEBUG = NSBundle.mainBundle.objectForInfoDictionaryKey('DebugModeEnabled') == 'YES'
+DEBUG = NSBundle.mainBundle.objectForInfoDictionaryKey('DebugModeEnabled') == true
 YES = true
 NO = false
 NULL = nil

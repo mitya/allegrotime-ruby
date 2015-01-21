@@ -23,7 +23,8 @@ Motion::Project::App.setup do |app|
   app.frameworks += %w(StoreKit AdSupport AVFoundation CoreTelephony SystemConfiguration MessageUI AudioToolbox MapKit CoreLocation CoreData EventKit EventKitUI)
   app.vendor_project 'vendor/GoogleMobileAdsSdkiOS-6.12.0', :static, force_load: false
   app.device_family = [:iphone, :ipad]
-  app.info_plist['DebugModeEnabled'] = 'YES'
+  app.info_plist['DebugModeEnabled'] = true
+  app.info_plist['UIStatusBarHidden'] = true
 end
 
 
