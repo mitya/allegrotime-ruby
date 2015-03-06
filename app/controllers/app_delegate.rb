@@ -1,6 +1,6 @@
 class AppDelegate
   attr_accessor :window, :locationManager, :perMinuteTimer
-  attr_accessor :navigationController, :tabbarController
+  attr_accessor :navigationController, :tabBarController
   attr_accessor :mainController, :listController, :mapController
 
   def application(application, didFinishLaunchingWithOptions:launchOptions)
@@ -21,19 +21,20 @@ class AppDelegate
     @listController = CrossingListController.alloc.initWithStyle UITableViewStyleGrouped
     @mapController = CrossingMapController.alloc.init    
     
-    @tabbarController = UITabBarController.new.tap do |tbc|
+    @tabBarController = UITabBarController.new.tap do |tbc|
       tabItemControllers = [@mainController, @listController, @mapController]
       tbc.viewControllers = tabItemControllers.map { |c| UINavigationController.alloc.initWithRootViewController(c, withDelegate:self) }
       tbc.delegate = self
       tbc.selectedIndex = 0
     end
-    @tabbarController.tabBar.translucent = NO
-    @tabbarController.tabBar.tintColor = UIColor.blackColor
+    @tabBarController.tabBar.translucent = NO
+    @tabBarController.tabBar.tintColor = UIColor.blackColor
 
     @mapController.navigationController.toolbarHidden = NO
+    @mapController.navigationController.toolbar.translucent = NO
     @mapController.navigationController.toolbar.tintColor = UIColor.grayColor
 
-    @window.rootViewController = @tabbarController
+    @window.rootViewController = @tabBarController
     @window.makeKeyAndVisible
 
     @perMinuteTimer = NSTimer.scheduledTimerWithTimeInterval 5, target:self, selector:'timerTicked', userInfo:nil, repeats:YES
@@ -154,8 +155,8 @@ class AppDelegate
     end
     UINavigationBar.appearance.setTitleTextAttributes NSForegroundColorAttributeName => barTextColor
     
-    # if @tabbarController.selectedViewController.is_a?(UINavigationController)
-    #   navigationController = @tabbarController.selectedViewController
+    # if @tabBarController.selectedViewController.is_a?(UINavigationController)
+    #   navigationController = @tabBarController.selectedViewController
     #   navigationController.toolbar.barTintColor = barBackColor
     #   navigationController.toolbar.tintColor = barTextColor
     #   navigationController.navigationBar.barStyle = barStyle
@@ -168,6 +169,6 @@ class AppDelegate
   
   
   def visibleViewController
-    @tabbarController
+    @tabBarController
   end
 end

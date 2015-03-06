@@ -53,6 +53,9 @@ class CrossingMapController < UIViewController
     else
       showCrossing Crossing.getCrossingWithName("Парголово"), animated:animated
     end
+
+    navigationController.toolbar.translucent = YES
+    tabBarController.tabBar.translucent = YES
   end
   
   def viewDidAppear(animated)
@@ -67,6 +70,9 @@ class CrossingMapController < UIViewController
     super  
     @lastMapType = mapView.mapType
     @lastRegion = mapView.region
+    
+    navigationController.toolbar.translucent = NO
+    tabBarController.tabBar.translucent = NO
   end
   
 
@@ -95,7 +101,7 @@ class CrossingMapController < UIViewController
     crossing = view.annotation
     
     App.listController.navigationController.popToViewController App.listController, animated:NO
-    App.tabbarController.selectedViewController = App.listController.navigationController
+    tabBarController.selectedViewController = App.listController.navigationController
     UIView.animateWithDuration(0.3,
       animations: lambda { App.listController.selectCrossing(crossing, animated:NO) },
       completion: lambda { |finished| App.listController.showScheduleForCrossing(crossing, animated:YES) }
