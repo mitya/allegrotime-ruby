@@ -1,7 +1,7 @@
 class CrossingListController < UITableViewController
   attr_accessor :target, :action, :accessoryType
 
-  def init
+  def initWithStyle(tableViewStyle)
     super
     self.title = "crossings.title".l
     self.tabBarItem = UITabBarItem.alloc.initWithTitle("Schedule", image:Device.image_named("ti-clock"), tag:1)
@@ -103,18 +103,20 @@ class CrossingListController < UITableViewController
     end
   end
 
+  def tableView(tableView, titleForHeaderInSection:section)
+    Model.closestCrossing ? 'crossings.closest'.li(Model.closestCrossing.localizedName) : 'crossings.closest_undefined'.l
+  end
+  
   def tableView(tableView, viewForHeaderInSection:section)
-    label = Widgets.style_label_as_in_table_view_footer(UILabel.new)
-    label.text = Model.closestCrossing ? 
-        'crossings.closest'.li(Model.closestCrossing.localizedName) :
-        'crossings.closest_undefined'.l
+    label = Widgets.labelAsInTableViewFooter
+    label.text = tableView(tableView, titleForHeaderInSection:section)
     label
   end
 
   def tableView(tableView, heightForHeaderInSection:section)
-    30
+    TABLE_VIEW_HEADER_HEIGHT
   end
-  
+
   
   
   def showScheduleForCrossing(crossing)

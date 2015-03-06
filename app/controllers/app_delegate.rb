@@ -18,7 +18,7 @@ class AppDelegate
     @window.tintColor = Colors.windowTintColor
 
     @mainController = MainViewController.alloc.init
-    @listController = CrossingListController.alloc.init
+    @listController = CrossingListController.alloc.initWithStyle UITableViewStyleGrouped
     @mapController = CrossingMapController.alloc.init
     
     @tabbarController = UITabBarController.new.tap do |tbc|

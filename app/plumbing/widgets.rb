@@ -8,7 +8,8 @@ module Widgets
     spinner
   end
   
-  def style_label_as_in_table_view_footer(label)
+  def labelAsInTableViewFooter
+    label = UILabel.alloc.init
     label.backgroundColor = UIColor.clearColor
     label.font = UIFont.systemFontOfSize 15
     label.textColor = UIColor.colorWithRed 0.298039, green:0.337255, blue:0.423529, alpha:1

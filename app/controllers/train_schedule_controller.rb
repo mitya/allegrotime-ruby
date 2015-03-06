@@ -8,7 +8,7 @@ class TrainScheduleController < UITableViewController
     @crossings = @sampleClosing.toRussia?? Model.reverseCrossings : Model.crossings
   end
 
-  ### table view
+
 
   def tableView(tableView, numberOfRowsInSection:section)
     Model.crossings.count
@@ -28,13 +28,17 @@ class TrainScheduleController < UITableViewController
     cell
   end
 
+  def tableView(tableView, titleForHeaderInSection:section)
+    sampleClosing.toRussia? ? 'schedule.hel_spb'.l : 'schedule.spb_hel'.l
+  end
+
   def tableView(tableView, viewForHeaderInSection:section)
-    label = Widgets.style_label_as_in_table_view_footer UILabel.new
-    label.text = sampleClosing.toRussia? ? 'schedule.hel_spb'.l : 'schedule.spb_hel'.l
+    label = Widgets.labelAsInTableViewFooter
+    label.text = tableView(tableView, titleForHeaderInSection:section)
     label
   end
 
   def tableView(tableView, heightForHeaderInSection:section)
-    30
+    TABLE_VIEW_HEADER_HEIGHT
   end
 end
