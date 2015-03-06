@@ -32,10 +32,12 @@ class MainViewController < UIViewController
 
   def loadView
     self.view = UIView.alloc.init
-    
+
     self.crossingCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleValue1, reuseIdentifier:NXDefaultCellID
     crossingCell.textLabel.text = 'main.crossing_cell'.l
     crossingCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
+    crossingCell.detailTextLabel.font = UIFont.boldSystemFontOfSize(17)
+    crossingCell.detailTextLabel.color = UIColor.blackColor
     
     self.stateCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleSubtitle, reuseIdentifier:NXDefaultCellID
     stateCell.textLabel.textAlignment = NSTextAlignmentCenter
@@ -65,8 +67,7 @@ class MainViewController < UIViewController
 
   def viewDidLoad
     self.title = "main.title".l
-    navigationItem.backBarButtonItem = 
-      UIBarButtonItem.alloc.initWithTitle "main.backbutton".l, style:UIBarButtonItemStyleBordered, target:nil, action:nil
+    navigationItem.backBarButtonItem = UIBarButtonItem.alloc.initWithTitle "main.backbutton".l, style:UIBarButtonItemStyleBordered, target:nil, action:nil
 
     NSNotificationCenter.defaultCenter.addObserver self, selector:'closestCrossingChanged', name:NXDefaultCellIDClosestCrossingChanged, object:nil
 
