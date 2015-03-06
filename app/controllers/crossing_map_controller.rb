@@ -3,8 +3,9 @@ class CrossingMapController < UIViewController
 
   def init
     super
-    @lastMapType ||= MKMapTypeStandard
-    # @lastRegion ||= MKCoordinateRegionMakeWithDistance Crossing.getCrossingWithName("Парголово").coordinate, 10000, 10000
+    self.title = 'map.title'.l
+    self.tabBarItem = UITabBarItem.alloc.initWithTitle("Map", image:Device.image_named("ti-pin"), tag:1)
+    self.lastMapType ||= MKMapTypeStandard
     self
   end
 
@@ -20,8 +21,6 @@ class CrossingMapController < UIViewController
   def viewDidLoad
     super
   
-    self.title = 'map.title'.l
-
     segmentedControl = UISegmentedControl.alloc.initWithItems ['map.standard'.l, 'map.hybrid'.l, 'map.satellite'.l]
     segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar
     segmentedControl.selectedSegmentIndex = lastMapType
@@ -46,6 +45,10 @@ class CrossingMapController < UIViewController
   
   def viewWillAppear(animated)
     super
+    
+    puts 'viewWillAppear'
+    p crossingToShowOnNextAppearance
+    
     if crossingToShowOnNextAppearance
       showCrossing crossingToShowOnNextAppearance, animated:animated
       self.crossingToShowOnNextAppearance = nil
@@ -64,7 +67,7 @@ class CrossingMapController < UIViewController
     @lastRegion = mapView.region
   end
   
-  ### map view
+
   
   def mapView(aMapView, viewForAnnotation:annotation)
     return nil unless annotation.isKindOfClass Crossing
@@ -93,7 +96,7 @@ class CrossingMapController < UIViewController
     navigationController.pushViewController scheduleController, animated:YES
   end
   
-  ### callbacks
+
   
   def changeMapType(segment)
     mapView.mapType = case segment.selectedSegmentIndex
@@ -140,7 +143,7 @@ class CrossingMapController < UIViewController
     mapView.selectAnnotation crossing, animated:animated    
   end
   
-  ### helpers
+
   
   def pinMappingFor(color)
     color.api_name ? Device.image_named("crossing-pin-#{color.api_name}") : nil

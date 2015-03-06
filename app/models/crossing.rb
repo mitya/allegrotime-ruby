@@ -156,7 +156,13 @@ class Crossing
     closings.addObject closing
   end
 
-  ### static
+
+
+  def inspect
+    "{#{name}}"
+  end
+
+
 
   def self.crossingWithName(name, latitude:lat, longitude:lng)
     crossing = new

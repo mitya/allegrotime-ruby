@@ -81,5 +81,12 @@ namespace :g do
       `convert -size 30x88 xc:transparent -fill radial-gradient:##{color_string.first}-##{color_string.last} -draw 'rectangle 16,0 30,88' #{$images}/cell-stripe-#{color_name}@2x.png`
     end
   end  
+  
+  desc "Converts originals to resources"
+  task :convert do
+    `convert originals/images/i8-clock-100.png -resize 50x50 resources/images/ti-clock@2x.png`
+    `convert originals/images/i8-pin-100.png   -resize 50x50 resources/images/ti-pin@2x.png`
+    `convert originals/images/i8-info-100.png  -resize 50x50 resources/images/ti-info@2x.png`
+  end
 end
 

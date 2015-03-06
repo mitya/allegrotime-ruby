@@ -8,23 +8,14 @@ class MainViewController < UIViewController
   MESSAGE_SECTION = 1
   ACTIONS_SECTION = 2
 
-  # table_view do
-  #   group :state do
-  #     cell :crossing, :value1, accessory: 'disclosure', action: 'showCrossingListToChangeCurrent'
-  #     cell :state, :default, text_alignment: 'center', detail_alignment: 'center', color: 'darkGray', selection: 'none'
-  #   end
-  #
-  #   group :message do
-  #     cell :message, :default, text_alignment: 'center', selection: 'none'
-  #   end
-  #
-  #   group :actions do
-  #     cell :show_schedule, :default, accessory: 'disclosure', action: 'showScheduleForCrossing'
-  #     cell :show_map, :default, accessory: 'disclosure', action: 'showMap'
-  #   end
-  # end
 
-  ### lifecycle
+
+  def init
+    super
+    self.title = "main.title".l
+    self.tabBarItem = UITabBarItem.alloc.initWithTitle("Status", image:Device.image_named("ti-info"), tag:1)
+    self
+  end
 
   def dealloc
     NSNotificationCenter.defaultCenter.removeObserver self
@@ -66,7 +57,6 @@ class MainViewController < UIViewController
   end
 
   def viewDidLoad
-    self.title = "main.title".l
     navigationItem.backBarButtonItem = UIBarButtonItem.alloc.initWithTitle "main.backbutton".l, style:UIBarButtonItemStyleBordered, target:nil, action:nil
 
     NSNotificationCenter.defaultCenter.addObserver self, selector:'closestCrossingChanged', name:NXDefaultCellIDClosestCrossingChanged, object:nil
@@ -105,7 +95,7 @@ class MainViewController < UIViewController
     end
   end
 
-  ### table view stuff
+
 
   def numberOfSectionsInTableView(tableView)
     3
@@ -159,7 +149,7 @@ class MainViewController < UIViewController
     end
   end
 
-  ### banner
+
 
   def setupAdView
     self.adView = GADBannerView.alloc.initWithAdSize Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape
@@ -220,7 +210,7 @@ class MainViewController < UIViewController
     Log.warn "adView:didFailToReceiveAdWithError: #{error.description}"
   end
 
-  ### handlers
+
 
   def recognizedSwipe(recognizer)
     point = recognizer.locationInView view
@@ -282,7 +272,7 @@ class MainViewController < UIViewController
     messageCell.textLabel.text = ""
   end
   
-  def activateScreen    
+  def activateScreen
     tableView.reloadData
   end
 end

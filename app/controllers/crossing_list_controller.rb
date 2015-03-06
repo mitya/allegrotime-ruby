@@ -1,9 +1,14 @@
 class CrossingListController < UITableViewController
   attr_accessor :target, :action, :accessoryType
 
-  def viewDidLoad
+  def init
+    super
     self.title = "crossings.title".l
+    self.tabBarItem = UITabBarItem.alloc.initWithTitle("Schedule", image:Device.image_named("ti-clock"), tag:1)
+    self
+  end
 
+  def viewDidLoad
     if Model.closestCrossing
       navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithImage(Device.image_named("bb-define_location"), 
           style:UIBarButtonItemStylePlain, target:self, action:'selectClosestCrossing')
@@ -16,7 +21,7 @@ class CrossingListController < UITableViewController
     tableView.scrollToRowAtIndexPath currentRowIndex, atScrollPosition:UITableViewScrollPositionMiddle, animated:YES
   end
   
-  ### handlers
+
 
   def modelUpdated
     tableView.reloadData
@@ -52,7 +57,7 @@ class CrossingListController < UITableViewController
     end
   end
 
-  ### table view
+
 
   def tableView(tableView, numberOfRowsInSection:section)
     Model.crossings.count
@@ -90,9 +95,11 @@ class CrossingListController < UITableViewController
       cell.accessoryType = UITableViewCellAccessoryCheckmark
     end
 
-    if target && action
-      crossing = Model.crossings.objectAtIndex indexPath.row
+    crossing = Model.crossings.objectAtIndex indexPath.row
+    if target && action      
       target.performSelector action, withObject:crossing
+    else
+      showScheduleForCrossing(crossing)
     end
   end
 
@@ -106,5 +113,13 @@ class CrossingListController < UITableViewController
 
   def tableView(tableView, heightForHeaderInSection:section)
     30
+  end
+  
+  
+  
+  def showScheduleForCrossing(crossing)
+    scheduleController = CrossingScheduleController.alloc.initWithStyle UITableViewStyleGrouped
+    scheduleController.crossing = crossing;
+    navigationController.pushViewController scheduleController, animated:YES
   end
 end

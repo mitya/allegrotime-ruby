@@ -1,5 +1,7 @@
 class AppDelegate
-  attr_accessor :window, :locationManager, :perMinuteTimer, :mapController, :navigationController
+  attr_accessor :window, :locationManager, :perMinuteTimer
+  attr_accessor :navigationController, :tabbarController
+  attr_accessor :mainController, :listController, :mapController
 
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     Object.const_set :App, self
@@ -7,13 +9,28 @@ class AppDelegate
 
     Model.init
 
-    mainViewController = MainViewController.alloc.init
-    @navigationController = UINavigationController.alloc.initWithRootViewController(mainViewController)
-    @navigationController.delegate = self
+    # @mainViewController = MainViewController.new
+    # @navigationController = UINavigationController.alloc.initWithRootViewController(@mainViewController)
+    # @navigationController.delegate = self
 
     @window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
-    @window.backgroundColor = UIColor.whiteColor
-    @window.rootViewController = navigationController
+    # @window.backgroundColor = UIColor.whiteColor
+    @window.tintColor = Colors.windowTintColor
+
+    @mainController = MainViewController.alloc.init
+    @listController = CrossingListController.alloc.init
+    @mapController = CrossingMapController.alloc.init
+    
+    @tabbarController = UITabBarController.new.tap do |tbc|
+      tabItemControllers = [@mainController, @listController, @mapController]
+      tbc.viewControllers = tabItemControllers.map { |c| UINavigationController.alloc.initWithRootViewController(c, withDelegate:self) }
+      tbc.delegate = self
+      tbc.selectedIndex = 0
+    end
+    @tabbarController.tabBar.translucent = NO
+    @tabbarController.tabBar.tintColor = UIColor.blackColor
+
+    @window.rootViewController = @tabbarController
     @window.makeKeyAndVisible
 
     @perMinuteTimer = NSTimer.scheduledTimerWithTimeInterval 5, target:self, selector:'timerTicked', userInfo:nil, repeats:YES
@@ -32,7 +49,7 @@ class AppDelegate
       locationManager.requestWhenInUseAuthorization if locationManager.respondsToSelector 'requestWhenInUseAuthorization'
       locationManager.startUpdatingLocation
     end
-    triggerModelUpdateFor navigationController.visibleViewController
+    triggerModelUpdateFor visibleViewController
   end
   
   def applicationWillResignActive(application)
@@ -40,28 +57,19 @@ class AppDelegate
     deactivateScreen
   end
 
-  def applicationWillEnterForeground(application)
-  end
-  
-  def applicationDidEnterBackground(application)
-  end
-  
-  def applicationWillTerminate(application)
-  end
-
   def deactivateScreen
     @deactivated = true
-    navigationController.visibleViewController.performSelectorIfDefined(:deactivateScreen)
+    # navigationController.visibleViewController.performSelectorIfDefined(:deactivateScreen)
     updateAppColorsTo(:gray.color)
   end
   
   def activateScreen
     @deactivated = false
-    navigationController.visibleViewController.performSelectorIfDefined(:activateScreen)
+    # navigationController.visibleViewController.performSelectorIfDefined(:activateScreen)
     updateAppColorsToCurrent
   end
 
-  ### Location Tracking
+
 
   def locationManager
     @locationManager ||= begin
@@ -105,7 +113,6 @@ class AppDelegate
   end
     
   
-  ### handlers
   
   def navigationController(navController, willShowViewController:viewController, animated:animated)
     newControllerHasNoToolbar = viewController.toolbarItems.nil? || viewController.toolbarItems.count == 0
@@ -115,7 +122,7 @@ class AppDelegate
 
   def timerTicked
     return if @deactivated
-    triggerModelUpdateFor navigationController.visibleViewController    
+    triggerModelUpdateFor visibleViewController
     updateAppColorsToCurrent
   end
   
@@ -136,18 +143,28 @@ class AppDelegate
     barTextColor = Colors.barTextColorFor(baseColor)
     barStyle = Colors.barStyleFor(baseColor)
     
-    @window.tintColor = Colors.windowTintColor
-    @navigationController.toolbar.barTintColor = barBackColor
-    @navigationController.toolbar.tintColor = barTextColor
-    @navigationController.navigationBar.barStyle = barStyle
-    @navigationController.navigationBar.barTintColor = barBackColor
-    @navigationController.navigationBar.tintColor = barTextColor
-    @navigationController.navigationBar.setTitleTextAttributes NSForegroundColorAttributeName => barTextColor    
+  
+    [UINavigationBar, UIToolbar, UISearchBar].each do |bar|
+      bar.appearance.barTintColor = barBackColor
+      bar.appearance.tintColor = barTextColor
+      bar.appearance.barStyle = barStyle
+    end
+    UINavigationBar.appearance.setTitleTextAttributes NSForegroundColorAttributeName => barTextColor
+    
+    # if @tabbarController.selectedViewController.is_a?(UINavigationController)
+    #   navigationController = @tabbarController.selectedViewController
+    #   navigationController.toolbar.barTintColor = barBackColor
+    #   navigationController.toolbar.tintColor = barTextColor
+    #   navigationController.navigationBar.barStyle = barStyle
+    #   navigationController.navigationBar.barTintColor = barBackColor
+    #   navigationController.navigationBar.tintColor = barTextColor
+    #   navigationController.navigationBar.setTitleTextAttributes NSForegroundColorAttributeName => barTextColor
+    # end
   end
+
   
-  ### properties
   
-  def mapController
-    @mapController ||= CrossingMapController.alloc.init
+  def visibleViewController
+    @tabbarController
   end
 end

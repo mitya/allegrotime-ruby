@@ -5,7 +5,7 @@ class CrossingScheduleController < UITableViewController
     self.title = self.crossing.localizedName
   end
 
-  ### table view
+
 
   def numberOfSectionsInTableView(tableView)
     2
@@ -59,18 +59,14 @@ class CrossingScheduleController < UITableViewController
     navigationController.pushViewController trainScheduleController, animated:YES
   end
 
-  ### handlers
+
 
   def modelUpdated
     tableView.reloadData
   end
 
-  def showMap
+  def showMap    
     App.mapController.crossingToShowOnNextAppearance = crossing
-    if navigationController.viewControllers.containsObject App.mapController
-      navigationController.popToViewController App.mapController, animated:YES
-    else
-      navigationController.pushViewController App.mapController, animated:YES
-    end
+    App.tabbarController.selectedIndex = 2
   end
 end
