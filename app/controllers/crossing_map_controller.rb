@@ -46,19 +46,21 @@ class CrossingMapController < UIViewController
   def viewWillAppear(animated)
     super
     
-    puts 'viewWillAppear'
-    p crossingToShowOnNextAppearance
-    
-    if crossingToShowOnNextAppearance
-      showCrossing crossingToShowOnNextAppearance, animated:animated
-      self.crossingToShowOnNextAppearance = nil
-    elsif lastRegion
+    if lastRegion
       mapView.setRegion lastRegion, animated:animated
     elsif Model.closestCrossing
       showCrossing Model.closestCrossing, animated:animated
     else
       showCrossing Crossing.getCrossingWithName("Парголово"), animated:animated
     end
+  end
+  
+  def viewDidAppear(animated)
+    super
+    if crossingToShowOnNextAppearance
+      showCrossing crossingToShowOnNextAppearance, animated:YES
+      self.crossingToShowOnNextAppearance = nil
+    end    
   end
   
   def viewWillDisappear(animated)
@@ -91,9 +93,13 @@ class CrossingMapController < UIViewController
     return unless view.annotation.isKindOfClass Crossing
   
     crossing = view.annotation
-    scheduleController = CrossingScheduleController.alloc.initWithStyle UITableViewStyleGrouped
-    scheduleController.crossing = crossing
-    navigationController.pushViewController scheduleController, animated:YES
+    
+    App.listController.navigationController.popToViewController App.listController, animated:NO
+    App.tabbarController.selectedViewController = App.listController.navigationController
+    UIView.animateWithDuration(0.3,
+      animations: lambda { App.listController.selectCrossing(crossing, animated:NO) },
+      completion: lambda { |finished| App.listController.showScheduleForCrossing(crossing, animated:YES) }
+    )
   end
   
 

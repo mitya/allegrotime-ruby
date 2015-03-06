@@ -67,6 +67,6 @@ class CrossingScheduleController < UITableViewController
 
   def showMap    
     App.mapController.crossingToShowOnNextAppearance = crossing
-    App.tabbarController.selectedIndex = 2
+    App.tabbarController.selectedViewController = App.mapController.navigationController
   end
 end

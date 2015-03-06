@@ -15,12 +15,15 @@ class CrossingListController < UITableViewController
     end
   end
 
-  def viewDidAppear(animated)
+  def viewWillAppear(animated)
     super
-    currentRowIndex = NSIndexPath.indexPathForRow Model.currentCrossing.index, inSection:0
-    tableView.scrollToRowAtIndexPath currentRowIndex, atScrollPosition:UITableViewScrollPositionMiddle, animated:YES
+    
+    if !@initialScrollDone
+      scrollToCrossing Model.currentCrossing, animated:NO
+      @initialScrollDone = true
+    end
   end
-  
+
 
 
   def modelUpdated
@@ -99,7 +102,7 @@ class CrossingListController < UITableViewController
     if target && action      
       target.performSelector action, withObject:crossing
     else
-      showScheduleForCrossing(crossing)
+      showScheduleForCrossing(crossing, animated:YES)
     end
   end
 
@@ -119,9 +122,22 @@ class CrossingListController < UITableViewController
 
   
   
-  def showScheduleForCrossing(crossing)
+  def scrollToCrossing(crossing, animated:animated)
+    crossingIndex = NSIndexPath.indexPathForRow crossing.index, inSection:0
+    puts "scrolling #{crossing.inspect} #{crossingIndex.inspect}"
+    tableView.scrollToRowAtIndexPath crossingIndex, atScrollPosition:UITableViewScrollPositionMiddle, animated:animated
+  end
+  
+  def showScheduleForCrossing(crossing, animated:animated)
+    puts "show #{crossing.inspect}"
     scheduleController = CrossingScheduleController.alloc.initWithStyle UITableViewStyleGrouped
-    scheduleController.crossing = crossing;
-    navigationController.pushViewController scheduleController, animated:YES
+    scheduleController.crossing = crossing
+    navigationController.pushViewController scheduleController, animated:animated
+  end
+  
+  def selectCrossing(crossing, animated:animated)
+    crossingIndex = NSIndexPath.indexPathForRow crossing.index, inSection:0
+    puts "selecting #{crossing.inspect} #{crossingIndex.inspect}"
+    tableView.selectRowAtIndexPath crossingIndex, animated:animated, scrollPosition:UITableViewScrollPositionMiddle
   end
 end

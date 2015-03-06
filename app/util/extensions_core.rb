@@ -114,3 +114,10 @@ class NSArray
     nil
   end
 end
+
+
+class NSIndexPath
+  def inspect
+    "{#{section}, #{row}}"
+  end  
+end
