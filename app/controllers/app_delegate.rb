@@ -19,7 +19,7 @@ class AppDelegate
 
     @mainController = MainViewController.alloc.init
     @listController = CrossingListController.alloc.initWithStyle UITableViewStyleGrouped
-    @mapController = CrossingMapController.alloc.init
+    @mapController = CrossingMapController.alloc.init    
     
     @tabbarController = UITabBarController.new.tap do |tbc|
       tabItemControllers = [@mainController, @listController, @mapController]
@@ -29,6 +29,9 @@ class AppDelegate
     end
     @tabbarController.tabBar.translucent = NO
     @tabbarController.tabBar.tintColor = UIColor.blackColor
+
+    @mapController.navigationController.toolbarHidden = NO
+    @mapController.navigationController.toolbar.tintColor = UIColor.grayColor
 
     @window.rootViewController = @tabbarController
     @window.makeKeyAndVisible
@@ -144,7 +147,7 @@ class AppDelegate
     barStyle = Colors.barStyleFor(baseColor)
     
   
-    [UINavigationBar, UIToolbar, UISearchBar].each do |bar|
+    [UINavigationBar, UISearchBar].each do |bar|
       bar.appearance.barTintColor = barBackColor
       bar.appearance.tintColor = barTextColor
       bar.appearance.barStyle = barStyle
