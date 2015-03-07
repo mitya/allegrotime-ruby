@@ -1,5 +1,6 @@
 "lang" = "en";
 "main.title" = "AllegroTime";
+"main.tab" = "Status";
 "main.backbutton" = "Status";
 "main.allegro will pass at $time" = "Allegro will pass in %@";
 "main.crossing $closes at $time" = "Crossing %@ в %@";
@@ -11,6 +12,7 @@
 "closed" = "closed";
 "will be closed" = "will be closed";
 "map.title" = "Map";
+"map.tab" = "Map";
 "map.standard" = "Standard";
 "map.hybrid" = "Hybrid";
 "map.satellite" = "Satellite";
@@ -21,6 +23,7 @@
 "crossing.will be opened in X mins" = "Will be opened in %@";
 "crossing.opened X min ago" = "Was opened %@ ago";
 "crossings.title" = "Crossings";
+"crossings.tab" = "Schedule";
 "crossings.closest" = "The nearest is %@";
 "crossings.closest_undefined" = "The nearest crossing is not identified";
 "schedule.train_no" = "Train #%@";

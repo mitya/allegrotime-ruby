@@ -4,8 +4,8 @@ class CrossingMapController < UIViewController
   def init
     super
     self.title = 'map.title'.l
-    self.tabBarItem = UITabBarItem.alloc.initWithTitle("Map", image:Device.image_named("ti-pin"), tag:1)
-    self.lastMapType ||= MKMapTypeStandard
+    self.tabBarItem = UITabBarItem.alloc.initWithTitle("map.tab".l, image:Device.image_named("ti-map"), selectedImage:Device.image_named("ti-map-filled"))    
+    self.lastMapType ||= MKMapTypeHybrid
     self
   end
 
@@ -53,9 +53,6 @@ class CrossingMapController < UIViewController
     else
       showCrossing Crossing.getCrossingWithName("Парголово"), animated:animated
     end
-
-    navigationController.toolbar.translucent = YES
-    tabBarController.tabBar.translucent = YES
   end
   
   def viewDidAppear(animated)
@@ -70,9 +67,6 @@ class CrossingMapController < UIViewController
     super  
     @lastMapType = mapView.mapType
     @lastRegion = mapView.region
-    
-    navigationController.toolbar.translucent = NO
-    tabBarController.tabBar.translucent = NO
   end
   
 

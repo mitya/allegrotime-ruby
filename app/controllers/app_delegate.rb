@@ -28,7 +28,7 @@ class AppDelegate
       tbc.selectedIndex = 0
     end
     @tabBarController.tabBar.translucent = NO
-    @tabBarController.tabBar.tintColor = UIColor.blackColor
+    @tabBarController.tabBar.tintColor = UIColor.darkGrayColor
 
     @mapController.navigationController.toolbarHidden = NO
     @mapController.navigationController.toolbar.translucent = NO

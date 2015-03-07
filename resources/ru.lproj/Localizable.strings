@@ -1,5 +1,6 @@
 "lang" = "ru";
 "main.title" = "АллегроТайм";
+"main.tab" = "Статус";
 "main.backbutton" = "Статус";
 "main.allegro will pass at $time" = "Аллегро пройдет в %@";
 "main.crossing $closes at $time" = "Переезд %@ в %@";
@@ -11,6 +12,7 @@
 "closed" = "закрыли";
 "will be closed" = "закроют";
 "map.title" = "Карта";
+"map.tab" = "Карта";
 "map.standard" = "Стандарт";
 "map.hybrid" = "Гибрид";
 "map.satellite" = "Спутник";
@@ -21,6 +23,7 @@
 "crossing.will be opened in X mins" = "Откроют через %@";
 "crossing.opened X min ago" = "Открыли %@ назад";
 "crossings.title" = "Переезды";
+"crossings.tab" = "Расписание";
 "crossings.closest" = "Ближайший — %@";
 "crossings.closest_undefined" = "Ближайший переезд не определен";
 "schedule.train_no" = "Поезд №%@";

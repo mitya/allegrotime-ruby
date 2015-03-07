@@ -4,8 +4,7 @@ class CrossingListController < UITableViewController
   def initWithStyle(tableViewStyle)
     super
     self.title = "crossings.title".l
-    # self.tabBarItem = UITabBarItem.alloc.initWithTitle("Schedule", image:Device.image_named("schedule"), tag:1)
-    self.tabBarItem = UITabBarItem.alloc.initWithTitle("Schedule", image:Device.image_named("ti-schedule"), selectedImage:Device.image_named("ti-schedule-filled"))
+    self.tabBarItem = UITabBarItem.alloc.initWithTitle("crossings.tab".l, image:Device.image_named("ti-schedule"), selectedImage:Device.image_named("ti-schedule-filled"))
     self
   end
 
