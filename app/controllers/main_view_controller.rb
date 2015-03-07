@@ -13,7 +13,10 @@ class MainViewController < UIViewController
   def init
     super
     self.title = "main.title".l
-    self.tabBarItem = UITabBarItem.alloc.initWithTitle("Status", image:Device.image_named("ti-info"), tag:1)
+    # self.tabBarItem = UITabBarItem.alloc.initWithTitle("Status", image:Device.image_named("ti-info"), tag:1)
+    # self.tabBarItem = UITabBarItem.alloc.initWithTitle("Status", image:Device.image_named("info"), tag:1)
+    # self.tabBarItem = UITabBarItem.alloc.initWithTitle("Schedule", image:Device.image_named("ti-clock"), tag:0)
+    self.tabBarItem = UITabBarItem.alloc.initWithTitle("Status", image:Device.image_named("ti-info"), selectedImage:Device.image_named("ti-info-filled"))
     self
   end
 
