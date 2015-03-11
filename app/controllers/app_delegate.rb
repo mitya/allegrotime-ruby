@@ -40,7 +40,7 @@ class AppDelegate
   end
 
   def applicationDidBecomeActive(application)    
-    activateScreen
+    screenActivated
     if CLLocationManager.locationServicesEnabled
       locationManager.requestWhenInUseAuthorization if locationManager.respondsToSelector 'requestWhenInUseAuthorization'
       locationManager.startUpdatingLocation
@@ -50,18 +50,18 @@ class AppDelegate
   
   def applicationWillResignActive(application)
     locationManager.stopUpdatingLocation
-    deactivateScreen
+    screenDeactivated
   end
 
-  def deactivateScreen
+  def screenDeactivated
     @activate = false
-    tabBarController.selectedViewController.visibleViewController.performSelectorIfDefined(:deactivateScreen)
+    tabBarController.selectedViewController.visibleViewController.performSelectorIfDefined(:screenDeactivated)
     updateAppColorsTo(:gray.color)
   end
   
-  def activateScreen
+  def screenActivated
     @active = true
-    tabBarController.selectedViewController.visibleViewController.performSelectorIfDefined(:activateScreen)
+    tabBarController.selectedViewController.visibleViewController.performSelectorIfDefined(:screenActivated)
     updateAppColorsToCurrent
   end
 

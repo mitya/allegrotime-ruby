@@ -3,7 +3,7 @@ class CrossingMapController < UIViewController
 
   def init() super
     self.title = 'map.title'.l
-    self.tabBarItem = UITabBarItem.alloc.initWithTitle("map.tab".l, image:Device.image_named("ti-map"), selectedImage:Device.image_named("ti-map-filled"))    
+    self.tabBarItem = UITabBarItem.alloc.initWithTitle "map.tab".l, image:Device.image_named("ti-map"), selectedImage:Device.image_named("ti-map-filled")
     self.lastMapType ||= MKMapTypeHybrid
     self
   end
@@ -17,7 +17,7 @@ class CrossingMapController < UIViewController
     self.view = mapView
   end
   
-  def viewDidLoad() super  
+  def viewDidLoad() super
     navigationItem.titleView = segmentedControl
     navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithImage \
         Device.image_named("bb-location"), style:UIBarButtonItemStyleBordered, target:self, action:'showUserLocation'
@@ -25,7 +25,7 @@ class CrossingMapController < UIViewController
     mapView.addAnnotations Model.crossings
   end
   
-  def viewWillAppear(animated) super    
+  def viewWillAppear(animated) super
     if lastRegion
       mapView.setRegion lastRegion, animated:animated
     elsif Model.closestCrossing
@@ -97,11 +97,11 @@ class CrossingMapController < UIViewController
     end
   end
 
-  def activateScreen
+  def screenActivated
     modelUpdated
   end
   
-  def deactivateScreen
+  def screenDeactivated
     visibleAnnotations = mapView.annotationsInMapRect(mapView.visibleMapRect)
     visibleAnnotations.each do |annotation|
       annotationView = mapView.viewForAnnotation(annotation)

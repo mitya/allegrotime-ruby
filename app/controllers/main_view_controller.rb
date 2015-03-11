@@ -10,8 +10,7 @@ class MainViewController < UIViewController
 
 
 
-  def init
-    super
+  def init() super
     self.title = "main.title".l
     self.tabBarItem = UITabBarItem.alloc.initWithTitle("main.tab".l, image:Device.image_named("ti-semaphore"), selectedImage:Device.image_named("ti-semaphore-filled"))
     self
@@ -40,14 +39,6 @@ class MainViewController < UIViewController
     messageCell.selectionStyle = UITableViewCellSelectionStyleNone
     messageCell.textLabel.textAlignment = NSTextAlignmentCenter
     
-    self.showScheduleCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleDefault, reuseIdentifier:NXDefaultCellID
-    showScheduleCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
-    showScheduleCell.textLabel.text = 'main.show_schedule'.l
-    
-    self.showMapCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleDefault, reuseIdentifier:NXDefaultCellID
-    showMapCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
-    showMapCell.textLabel.text = 'main.show_map'.l
-    
     self.tableView = UITableView.alloc.initWithFrame view.bounds, style:UITableViewStyleGrouped
     tableView.delegate = self
     tableView.dataSource = self
@@ -56,20 +47,30 @@ class MainViewController < UIViewController
     self.view.addSubview(tableView)
   end
 
-  def viewDidLoad
-    navigationItem.backBarButtonItem = UIBarButtonItem.alloc.initWithTitle "main.backbutton".l, style:UIBarButtonItemStyleBordered, target:nil, action:nil
-
+  def viewDidLoad() super
     NSNotificationCenter.defaultCenter.addObserver self, selector:'closestCrossingChanged', name:NXDefaultCellIDClosestCrossingChanged, object:nil
 
-    setupInfoButton
-    setupLogConsoleGesture
+    navigationItem.backBarButtonItem = UIBarButtonItem.alloc.initWithTitle "main.backbutton".l, style:UIBarButtonItemStyleBordered, target:nil, action:nil
+
+
+    # setup info button
+    infoButton = UIButton.buttonWithType UIButtonTypeInfoLight
+    infoButton.addTarget self, action:'showInfo', forControlEvents:UIControlEventTouchUpInside
+    navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithCustomView infoButton
+        
+    # setup log console gestures
+    if DEBUG
+      swipeRecognizer = UISwipeGestureRecognizer.alloc.initWithTarget self, action:'recognizedSwipe:'
+      swipeRecognizer.direction = UISwipeGestureRecognizerDirectionLeft
+      view.addGestureRecognizer swipeRecognizer
+    end
+    
     setupAdView
 
     self.adTimer = NSTimer.scheduledTimerWithTimeInterval GAD_REFRESH_PERIOD, target:self, selector:'adTimerTicked', userInfo:nil, repeats:YES
   end
 
-  def viewWillAppear(animated)
-    super
+  def viewWillAppear(animated) super
     requestAdViewIfDelayed
   end
 
@@ -81,40 +82,25 @@ class MainViewController < UIViewController
     tableView.frame = tableView.frame.change(height: view.bounds.height - adView.frame.height)
   end
 
-  def setupInfoButton 
-    infoButton = UIButton.buttonWithType UIButtonTypeInfoLight
-    infoButton.addTarget self, action:'showInfo', forControlEvents:UIControlEventTouchUpInside
-    navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithCustomView infoButton
-  end
-
-  def setupLogConsoleGesture
-    if DEBUG
-      swipeRecognizer = UISwipeGestureRecognizer.alloc.initWithTarget self, action:'recognizedSwipe:'
-      swipeRecognizer.direction = UISwipeGestureRecognizerDirectionLeft
-      view.addGestureRecognizer swipeRecognizer
-    end
-  end
-
 
 
   def numberOfSectionsInTableView(tableView)
-    3
+    2
   end
 
   def tableView(tableView, numberOfRowsInSection:section)
     case section
       when STATE_SECTION then 2
       when MESSAGE_SECTION then 1
-      when ACTIONS_SECTION then 2
     end
   end
 
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
-    case Pair.new(indexPath.section, indexPath.row)
-    when Pair.new(STATE_SECTION, 0)
+    case indexPath
+    when NSIndexPath.indexPathForRow(0, inSection:STATE_SECTION)
       cell = crossingCell
       cell.detailTextLabel.text = Model.currentCrossing.localizedName
-    when Pair.new(STATE_SECTION, 1)
+    when NSIndexPath.indexPathForRow(1, inSection:STATE_SECTION)
       cell = self.stateCell
       nextClosing = Model.currentCrossing.nextClosing
       cell.textLabel.text = "main.allegro will pass at $time".li(Format.munutes_as_hhmm(nextClosing.trainTime))
@@ -122,22 +108,17 @@ class MainViewController < UIViewController
           Model.currentCrossing.state == Crossing::StateClosed ? "closed".l : "will be closed".l,
           Format.munutes_as_hhmm(nextClosing.closingTime)
       )
-    when Pair.new(MESSAGE_SECTION, 0)
+    when NSIndexPath.indexPathForRow(0, inSection:MESSAGE_SECTION)
       cell = messageCell
       cell.textLabel.adjustsFontSizeToFitWidth = YES
       cell.textLabel.text = Model.currentCrossing.subtitle
       Widgets.styleClosingCell(cell, Model.currentCrossing.color)
-    when Pair.new(ACTIONS_SECTION, 0)
-      cell = showScheduleCell
-    when Pair.new(ACTIONS_SECTION, 1)
-      cell = showMapCell
-    end
-
-    cell
+    end    
+    return cell
   end
 
   def tableView(tableView, titleForFooterInSection:section)
-    return "main.footer".l if section == ACTIONS_SECTION
+    return "main.footer".l if section == MESSAGE_SECTION
     return nil
   end
 
@@ -189,7 +170,7 @@ class MainViewController < UIViewController
       if navigationController.visibleViewController == self
         requestAdView
       else
-        @adViewRequestPending = YES;
+        @adViewRequestPending = YES
       end
     end
   end
@@ -224,36 +205,24 @@ class MainViewController < UIViewController
   def closestCrossingChanged
     tableView.reloadData
   end
-
-  def showInfo
-    aboutController = AboutController.alloc.init
-    navigationController.pushViewController aboutController, animated:YES
+  
+  def screenDeactivated
+    Widgets.styleClosingCell(messageCell, :gray.color)
+    messageCell.textLabel.text = ""
   end
-
-  def showMap
-    navigationController.pushViewController App.mapController, animated:YES
+  
+  def screenActivated
+    tableView.reloadData
   end
-
-  def showCrossingListForSchedule
-    crossingsController = CrossingListController.alloc.initWithStyle UITableViewStyleGrouped
-    crossingsController.target = self
-    crossingsController.action = 'showScheduleForCrossing:'
-    crossingsController.accessoryType = UITableViewCellAccessoryDisclosureIndicator
-    navigationController.pushViewController crossingsController, animated:YES
-  end
+  
+    
 
   def showCrossingListToChangeCurrent
     crossingsController = CrossingListController.alloc.initWithStyle UITableViewStyleGrouped
-    crossingsController.target = self;
+    crossingsController.target = self
     crossingsController.action = 'changeCurrentCrossing:'
-    crossingsController.accessoryType = UITableViewCellAccessoryCheckmark;
+    crossingsController.accessoryType = UITableViewCellAccessoryCheckmark
     navigationController.pushViewController crossingsController, animated:YES
-  end
-
-  def showScheduleForCrossing(crossing)
-    scheduleController = CrossingScheduleController.alloc.initWithStyle UITableViewStyleGrouped
-    scheduleController.crossing = crossing;
-    navigationController.pushViewController scheduleController, animated:YES
   end
 
   def changeCurrentCrossing(crossing)
@@ -261,18 +230,14 @@ class MainViewController < UIViewController
     navigationController.popViewControllerAnimated YES
     tableView.reloadData
   end
+
+  def showInfo
+    aboutController = AboutController.alloc.init
+    navigationController.pushViewController aboutController, animated:YES
+  end
   
   def showLog
     logController = LogViewController.alloc.init
     navigationController.pushViewController logController, animated:YES
-  end
-  
-  def deactivateScreen
-    Widgets.styleClosingCell(messageCell, :gray.color)
-    messageCell.textLabel.text = ""
-  end
-  
-  def activateScreen
-    tableView.reloadData
   end
 end
