@@ -15,7 +15,7 @@ Motion::Project::App.setup do |app|
   app.identifier = "name.sokurenko.AllegroTime2"
   app.version = "2.0"
   app.short_version = "2.0"
-  app.sdk_version = '8.1'
+  app.sdk_version = '8.2'
   app.deployment_target = '7.0'
   # app.codesign_certificate = "iPhone Distribution: Iconoclast Labs LLC"
   app.provisioning_profile = '/Volumes/Vault/Sources/active/_profiles/iOS_Team_Provisioning_Profile_.mobileprovision'

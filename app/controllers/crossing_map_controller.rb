@@ -1,8 +1,7 @@
 class CrossingMapController < UIViewController
  attr_accessor :mapView, :pinMapping, :timer, :lastRegion, :lastMapType, :crossingToShowOnNextAppearance
 
-  def init
-    super
+  def init() super
     self.title = 'map.title'.l
     self.tabBarItem = UITabBarItem.alloc.initWithTitle("map.tab".l, image:Device.image_named("ti-map"), selectedImage:Device.image_named("ti-map-filled"))    
     self.lastMapType ||= MKMapTypeHybrid
@@ -10,42 +9,23 @@ class CrossingMapController < UIViewController
   end
 
   def loadView
-    self.mapView = MKMapView.alloc.init
-    mapView.showsUserLocation = CLLocationManager.locationServicesEnabled
-    mapView.delegate = self
-    mapView.mapType = lastMapType
-
+    self.mapView = MKMapView.alloc.init.tap do |mv|
+      mv.showsUserLocation = CLLocationManager.locationServicesEnabled
+      mv.delegate = self
+      mv.mapType = lastMapType
+    end
     self.view = mapView
   end
   
-  def viewDidLoad
-    super
-  
-    segmentedControl = UISegmentedControl.alloc.initWithItems ['map.standard'.l, 'map.hybrid'.l, 'map.satellite'.l]
-    segmentedControl.segmentedControlStyle = UISegmentedControlStyleBar
-    segmentedControl.selectedSegmentIndex = lastMapType
-    segmentedControl.addTarget self, action:'changeMapType:', forControlEvents:UIControlEventValueChanged
-  
-    navigationItem.backBarButtonItem = UIBarButtonItem.alloc.initWithTitle "Карта", style:UIBarButtonItemStylePlain, target:nil, action:nil
-  
-    itemsForToolbar = [
-        UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace, target:nil, action:nil),
-        UIBarButtonItem.alloc.initWithCustomView(segmentedControl),
-        UIBarButtonItem.alloc.initWithBarButtonSystemItem(UIBarButtonSystemItemFlexibleSpace, target:nil, action:nil)
-      ]
-    if mapView.showsUserLocation
-      userLocationButton = UIBarButtonItem.alloc.initWithImage Device.image_named("bb-location"), style:UIBarButtonItemStyleBordered, 
-          target:self, action:'showUserLocation'
-      itemsForToolbar.insertObject userLocationButton, atIndex:0
-    end
-    self.toolbarItems = itemsForToolbar
+  def viewDidLoad() super  
+    navigationItem.titleView = segmentedControl
+    navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithImage \
+        Device.image_named("bb-location"), style:UIBarButtonItemStyleBordered, target:self, action:'showUserLocation'
   
     mapView.addAnnotations Model.crossings
   end
   
-  def viewWillAppear(animated)
-    super
-    
+  def viewWillAppear(animated) super    
     if lastRegion
       mapView.setRegion lastRegion, animated:animated
     elsif Model.closestCrossing
@@ -55,16 +35,14 @@ class CrossingMapController < UIViewController
     end
   end
   
-  def viewDidAppear(animated)
-    super
+  def viewDidAppear(animated) super
     if crossingToShowOnNextAppearance
       showCrossing crossingToShowOnNextAppearance, animated:YES
       self.crossingToShowOnNextAppearance = nil
     end    
   end
   
-  def viewWillDisappear(animated)
-    super  
+  def viewWillDisappear(animated) super
     @lastMapType = mapView.mapType
     @lastRegion = mapView.region
   end
@@ -105,11 +83,7 @@ class CrossingMapController < UIViewController
 
   
   def changeMapType(segment)
-    mapView.mapType = case segment.selectedSegmentIndex
-      when 0 then MKMapTypeStandard
-      when 1 then MKMapTypeHybrid
-      when 2 then MKMapTypeSatellite
-    end
+    mapView.mapType = segment.selectedSegmentIndex
   end
   
   def modelUpdated
@@ -138,9 +112,9 @@ class CrossingMapController < UIViewController
   end
   
   def showUserLocation
-    userLocation = mapView.userLocation
-    if userLocation.coordinate.latitude != 0 && userLocation.coordinate.latitude != 0
-      mapView.setCenterCoordinate userLocation.coordinate, animated:YES
+    coordinate = mapView.userLocation.location && mapView.userLocation.location.coordinate
+    if coordinate && coordinate.latitude != 0 && coordinate.latitude != 0
+      mapView.setCenterCoordinate coordinate, animated:YES
     end
   end
   
@@ -153,5 +127,14 @@ class CrossingMapController < UIViewController
   
   def pinMappingFor(color)
     color.api_name ? Device.image_named("crossing-pin-#{color.api_name}") : nil
+  end
+  
+  def segmentedControl
+    @segmentedControl ||= begin
+      sc = UISegmentedControl.alloc.initWithItems ['map.standard'.l, 'map.satellite'.l, 'map.hybrid'.l]
+      sc.segmentedControlStyle = UISegmentedControlStyleBar
+      sc.selectedSegmentIndex = lastMapType
+      sc.addTarget self, action:'changeMapType:', forControlEvents:UIControlEventValueChanged
+    end
   end
 end

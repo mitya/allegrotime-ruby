@@ -9,10 +9,6 @@ class AppDelegate
 
     Model.init
 
-    # @mainViewController = MainViewController.new
-    # @navigationController = UINavigationController.alloc.initWithRootViewController(@mainViewController)
-    # @navigationController.delegate = self
-
     @window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
     # @window.backgroundColor = UIColor.whiteColor
     @window.tintColor = Colors.windowTintColor
@@ -29,10 +25,6 @@ class AppDelegate
     end
     @tabBarController.tabBar.translucent = NO
     @tabBarController.tabBar.tintColor = UIColor.darkGrayColor
-
-    @mapController.navigationController.toolbarHidden = NO
-    @mapController.navigationController.toolbar.translucent = NO
-    @mapController.navigationController.toolbar.tintColor = UIColor.grayColor
 
     @window.rootViewController = @tabBarController
     @window.makeKeyAndVisible
@@ -62,14 +54,14 @@ class AppDelegate
   end
 
   def deactivateScreen
-    @deactivated = true
-    # navigationController.visibleViewController.performSelectorIfDefined(:deactivateScreen)
+    @activate = false
+    tabBarController.selectedViewController.visibleViewController.performSelectorIfDefined(:deactivateScreen)
     updateAppColorsTo(:gray.color)
   end
   
   def activateScreen
-    @deactivated = false
-    # navigationController.visibleViewController.performSelectorIfDefined(:activateScreen)
+    @active = true
+    tabBarController.selectedViewController.visibleViewController.performSelectorIfDefined(:activateScreen)
     updateAppColorsToCurrent
   end
 
@@ -125,7 +117,7 @@ class AppDelegate
   end
 
   def timerTicked
-    return if @deactivated
+    return unless @active
     triggerModelUpdateFor visibleViewController
     updateAppColorsToCurrent
   end
@@ -147,13 +139,12 @@ class AppDelegate
     barTextColor = Colors.barTextColorFor(baseColor)
     barStyle = Colors.barStyleFor(baseColor)
     
-  
-    [UINavigationBar, UISearchBar].each do |bar|
-      bar.appearance.barTintColor = barBackColor
-      bar.appearance.tintColor = barTextColor
-      bar.appearance.barStyle = barStyle
+    [@mainController.navigationController].each do |navController|
+      navController.navigationBar.barTintColor = barBackColor
+      navController.navigationBar.tintColor = barTextColor
+      navController.navigationBar.barStyle = barStyle
+      navController.navigationBar.setTitleTextAttributes NSForegroundColorAttributeName => barTextColor
     end
-    UINavigationBar.appearance.setTitleTextAttributes NSForegroundColorAttributeName => barTextColor
     
     # if @tabBarController.selectedViewController.is_a?(UINavigationController)
     #   navigationController = @tabBarController.selectedViewController
