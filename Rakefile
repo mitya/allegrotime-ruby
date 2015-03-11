@@ -30,6 +30,7 @@ end
 
 #########################
 
+task d: :device
 
 $images = "tmp"
 $sources = "originals/images"
@@ -75,7 +76,7 @@ namespace :g do
   end
 
   task :stripes do
-    gradients = { red: %w(f00 e00), green: %w(0c0 0b0), yellow: %w(ff0 ee0), gray: %w(999 888) }
+    gradients = { red: %w(f00 e00), green: %w(0c0 0b0), yellow: %w(ffff00 f4f400), gray: %w(999 888) }
     gradients.each_pair do |color_name, color_string| 
       `convert -size 15x44 xc:transparent -fill radial-gradient:##{color_string.first}-##{color_string.last} -draw 'rectangle 8,0 15,44' #{$images}/cell-stripe-#{color_name}.png`
       `convert -size 30x88 xc:transparent -fill radial-gradient:##{color_string.first}-##{color_string.last} -draw 'rectangle 16,0 30,88' #{$images}/cell-stripe-#{color_name}@2x.png`

@@ -1,6 +1,6 @@
 class MainViewController < UIViewController
   attr_accessor :tableView
-  attr_accessor :crossingCell, :stateCell, :messageCell, :showScheduleCell, :showMapCell
+  attr_accessor :crossingCell, :stateCell, :messageCell
   attr_accessor :stateCellTopLabel, :stateCellBottomLabel
   attr_accessor :adView, :adTimer, :adViewLoaded
 
@@ -123,10 +123,9 @@ class MainViewController < UIViewController
   end
 
   def tableView(table, didSelectRowAtIndexPath:indexPath)
+    tableView.deselectRowAtIndexPath(indexPath, animated:YES)
     case tableView.cellForRowAtIndexPath(indexPath)
       when crossingCell then showCrossingListToChangeCurrent
-      when showScheduleCell then showCrossingListForSchedule
-      when showMapCell then showMap
     end
   end
 
@@ -217,7 +216,7 @@ class MainViewController < UIViewController
   
     
 
-  def showCrossingListToChangeCurrent
+  def showCrossingListToChangeCurrent    
     crossingsController = CrossingListController.alloc.initWithStyle UITableViewStyleGrouped
     crossingsController.target = self
     crossingsController.action = 'changeCurrentCrossing:'

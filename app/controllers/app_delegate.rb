@@ -11,7 +11,7 @@ class AppDelegate
 
     @window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
     # @window.backgroundColor = UIColor.whiteColor
-    @window.tintColor = Colors.windowTintColor
+    # @window.tintColor = Colors.windowTintColor
 
     @mainController = MainViewController.alloc.init
     @listController = CrossingListController.alloc.initWithStyle UITableViewStyleGrouped
@@ -24,7 +24,6 @@ class AppDelegate
       tbc.selectedIndex = 0
     end
     @tabBarController.tabBar.translucent = NO
-    @tabBarController.tabBar.tintColor = UIColor.darkGrayColor
 
     @window.rootViewController = @tabBarController
     @window.makeKeyAndVisible
@@ -135,25 +134,15 @@ class AppDelegate
   end
   
   def updateAppColorsTo(baseColor)
-    barBackColor = Colors.barBackColorFor(baseColor)
-    barTextColor = Colors.barTextColorFor(baseColor)
-    barStyle = Colors.barStyleFor(baseColor)
-    
-    [@mainController.navigationController].each do |navController|
-      navController.navigationBar.barTintColor = barBackColor
-      navController.navigationBar.tintColor = barTextColor
-      navController.navigationBar.barStyle = barStyle
-      navController.navigationBar.setTitleTextAttributes NSForegroundColorAttributeName => barTextColor
-    end
-    
-    # if @tabBarController.selectedViewController.is_a?(UINavigationController)
-    #   navigationController = @tabBarController.selectedViewController
-    #   navigationController.toolbar.barTintColor = barBackColor
-    #   navigationController.toolbar.tintColor = barTextColor
-    #   navigationController.navigationBar.barStyle = barStyle
-    #   navigationController.navigationBar.barTintColor = barBackColor
-    #   navigationController.navigationBar.tintColor = barTextColor
-    #   navigationController.navigationBar.setTitleTextAttributes NSForegroundColorAttributeName => barTextColor
+    # barBackColor = Colors.barBackColorFor(baseColor)
+    # barTextColor = Colors.barTextColorFor(baseColor)
+    # barStyle = Colors.barStyleFor(baseColor)
+    #
+    # [@mainController.navigationController].each do |navController|
+    #   navController.navigationBar.barTintColor = barBackColor
+    #   navController.navigationBar.tintColor = barTextColor
+    #   navController.navigationBar.barStyle = barStyle
+    #   navController.navigationBar.setTitleTextAttributes NSForegroundColorAttributeName => barTextColor
     # end
   end
 

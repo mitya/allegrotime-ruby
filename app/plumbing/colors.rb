@@ -6,7 +6,7 @@ module Colors
   end
   
   def windowTintColor
-    UIColor.systemGray
+    UIColor.darkGrayColor
   end
   
   def barBackColorFor(color)
