@@ -106,12 +106,10 @@ class CrossingListController < UITableViewController
 
   def scrollToCrossing(crossing, animated:animated)
     crossingIndex = NSIndexPath.indexPathForRow crossing.index, inSection:0
-    puts "scrolling #{crossing.inspect} #{crossingIndex.inspect}"
     tableView.scrollToRowAtIndexPath crossingIndex, atScrollPosition:UITableViewScrollPositionMiddle, animated:animated
   end
 
   def showScheduleForCrossing(crossing, animated:animated)
-    puts "show #{crossing.inspect}"
     scheduleController = CrossingScheduleController.alloc.initWithStyle UITableViewStyleGrouped
     scheduleController.crossing = crossing
     navigationController.pushViewController scheduleController, animated:animated

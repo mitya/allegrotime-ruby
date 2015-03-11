@@ -10,7 +10,6 @@ class AppDelegate
     Model.init
 
     @window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
-    # @window.backgroundColor = UIColor.whiteColor
     # @window.tintColor = Colors.windowTintColor
 
     @mainController = MainViewController.alloc.init
