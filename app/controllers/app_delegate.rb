@@ -9,23 +9,24 @@ class AppDelegate
 
     Model.init
 
-    @window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
-    # @window.tintColor = Colors.windowTintColor
+    UINavigationBar.appearance.translucent = NO
+    UITabBar.appearance.translucent = NO
 
-    @mainController = MainViewController.alloc.init
+    # @mainController = MainViewController.alloc.init
+    @mainController = StatusViewController.alloc.init
     @listController = CrossingListController.alloc.initWithStyle UITableViewStyleGrouped
-    @mapController = CrossingMapController.alloc.init    
-    
+    @mapController = CrossingMapController.alloc.init
     @tabBarController = UITabBarController.new.tap do |tbc|
       tabItemControllers = [@mainController, @listController, @mapController]
       tbc.viewControllers = tabItemControllers.map { |c| UINavigationController.alloc.initWithRootViewController(c, withDelegate:self) }
       tbc.delegate = self
       tbc.selectedIndex = 0
     end
-    @tabBarController.tabBar.translucent = NO
 
+    @window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
     @window.rootViewController = @tabBarController
     @window.makeKeyAndVisible
+    # @window.tintColor = Colors.windowTintColor
 
     @perMinuteTimer = NSTimer.scheduledTimerWithTimeInterval 5, target:self, selector:'timerTicked', userInfo:nil, repeats:YES
     @perMinuteTimer.fireDate = Time.next_full_minute_date unless DEBUG
@@ -37,7 +38,7 @@ class AppDelegate
     true
   end
 
-  def applicationDidBecomeActive(application)    
+  def applicationDidBecomeActive(application)
     screenActivated
     if CLLocationManager.locationServicesEnabled
       locationManager.requestWhenInUseAuthorization if locationManager.respondsToSelector 'requestWhenInUseAuthorization'
@@ -45,7 +46,7 @@ class AppDelegate
     end
     triggerModelUpdateFor visibleViewController
   end
-  
+
   def applicationWillResignActive(application)
     locationManager.stopUpdatingLocation
     screenDeactivated
@@ -56,7 +57,7 @@ class AppDelegate
     tabBarController.selectedViewController.visibleViewController.performSelectorIfDefined(:screenDeactivated)
     updateAppColorsTo(:gray.color)
   end
-  
+
   def screenActivated
     @active = true
     tabBarController.selectedViewController.visibleViewController.performSelectorIfDefined(:screenActivated)
@@ -72,9 +73,9 @@ class AppDelegate
       lm.desiredAccuracy = KCLLocationAccuracyHundredMeters
       lm.distanceFilter = 100
       lm
-    end    
+    end
   end
-  
+
   # def locationManager(manager, didChangeAuthorizationStatus:status)
   #   case status
   #   when KCLAuthorizationStatusAuthorizedWhenInUse, KCLAuthorizationStatusAuthorized
@@ -85,7 +86,7 @@ class AppDelegate
 
   def locationManager(manager, didUpdateToLocation:newLocation, fromLocation:oldLocation)
     MXWriteToConsole(
-      "didUpdateToLocation acc=%.f dist=%.f %@", 
+      "didUpdateToLocation acc=%.f dist=%.f %@",
       newLocation.horizontalAccuracy, newLocation.distanceFromLocation(oldLocation), Model.closestCrossing.localizedName)
 
     newClosestCrossing = Model.crossingClosestTo(newLocation)
@@ -97,17 +98,17 @@ class AppDelegate
 
   def locationManager(manager, didFailWithError:error)
     MXWriteToConsole("locationManager:didFailWithError: %@", error)
-  
+
     Model.closestCrossing = nil
     NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDClosestCrossingChanged, object:Model.closestCrossing
   end
-  
+
   def startLocationTracking
     locationManager.startUpdatingLocation
   end
-    
-  
-  
+
+
+
   def navigationController(navController, willShowViewController:viewController, animated:animated)
     newControllerHasNoToolbar = viewController.toolbarItems.nil? || viewController.toolbarItems.count == 0
     navController.setToolbarHidden newControllerHasNoToolbar, animated:animated
@@ -119,19 +120,19 @@ class AppDelegate
     triggerModelUpdateFor visibleViewController
     updateAppColorsToCurrent
   end
-  
+
   def currentCrossingChanged
     updateAppColorsToCurrent
   end
-  
+
   def triggerModelUpdateFor(controller)
     controller.modelUpdated if controller.respondsToSelector 'modelUpdated'
   end
-  
+
   def updateAppColorsToCurrent
     updateAppColorsTo(Model.currentCrossing.color)
   end
-  
+
   def updateAppColorsTo(baseColor)
     # barBackColor = Colors.barBackColorFor(baseColor)
     # barTextColor = Colors.barTextColorFor(baseColor)
@@ -145,8 +146,8 @@ class AppDelegate
     # end
   end
 
-  
-  
+
+
   def visibleViewController
     @tabBarController
   end
