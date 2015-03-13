@@ -156,6 +156,9 @@ class Crossing
     closings.addObject closing
   end
 
+  def closed?
+    state == Crossing::StateClosed
+  end
 
 
   def inspect

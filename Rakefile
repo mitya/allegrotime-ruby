@@ -20,7 +20,7 @@ Motion::Project::App.setup do |app|
   # app.codesign_certificate = "iPhone Distribution: Iconoclast Labs LLC"
   app.provisioning_profile = '/Volumes/Vault/Sources/active/_profiles/iOS_Team_Provisioning_Profile_.mobileprovision'
   app.icons = %w(Icon-60 Icon-76 Icon-Small-40 Icon-Small)
-  app.frameworks += %w(StoreKit AdSupport AVFoundation CoreTelephony SystemConfiguration MessageUI AudioToolbox MapKit CoreLocation CoreData EventKit EventKitUI)
+  app.frameworks += %w(StoreKit AdSupport QuartzCore AVFoundation CoreTelephony SystemConfiguration MessageUI AudioToolbox MapKit CoreLocation CoreData EventKit EventKitUI)
   app.vendor_project 'vendor/GoogleMobileAdsSdkiOS-6.12.0', :static, force_load: false
   app.device_family = [:iphone, :ipad]
   app.info_plist['DebugModeEnabled'] = true

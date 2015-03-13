@@ -3,14 +3,12 @@
 "main.tab" = "Status";
 "main.backbutton" = "Status";
 "main.allegro will pass at $time" = "Allegro will pass in %@";
-"main.crossing $closes at $time" = "Crossing %@ в %@";
-"main.footer" = "Only Allegro-related closing are displayed. The crossing can be closed earlier or be opened later because of the regular suburban trains";
+"main.crossing $closes at $time" = "Crossing %@ at %@";
+"main.footer" = "Only Allegro-related closings are displayed. The crossing can be closed earlier or can be opened later because of the regular suburban trains";
 "main.show_schedule" = "Allegro Schedule";
 "main.show_map" = "Crossings Map";
 "main.crossing_cell" = "Crossing";
 "about.title" = "About";
-"closed" = "closed";
-"will be closed" = "will be closed";
 "map.title" = "Map";
 "map.tab" = "Map";
 "map.standard" = "Standard";
@@ -32,7 +30,8 @@
 "schedule.spb_hel" = "From Saint Petersburg to Helsinki";
 "x km" = "%@ km";
 "no x" = "#%@";
-
+"closed" = "closed";
+"will be closed" = "will be closed";
 
 
 

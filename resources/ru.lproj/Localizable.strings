@@ -9,8 +9,6 @@
 "main.show_map" = "Карта переездов";
 "main.crossing_cell" = "Переезд";
 "about.title" = "О программе";
-"closed" = "закрыли";
-"will be closed" = "закроют";
 "map.title" = "Карта";
 "map.tab" = "Карта";
 "map.standard" = "Стандарт";
@@ -32,3 +30,5 @@
 "schedule.spb_hel" = "Из Санкт-Петербурга в Хельсинки";
 "x km" = "%@ км";
 "no x" = "№%@";
+"closed" = "закрыли";
+"will be closed" = "закроют";

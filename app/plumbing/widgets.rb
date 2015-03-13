@@ -25,6 +25,11 @@ module Widgets
     cell.detailTextLabel.textColor = Colors.secondaryTextColorFor(color) if cell.detailTextLabel
   end
   
+  def styleClosingLabel(label, color)
+    label.backgroundColor = Colors.closingCellBackgroundFor(color)
+    label.textColor = Colors.messageCellColorFor(color)
+  end
+  
   def selectedCellBackgroundView
     UIView.alloc.init.tap { |v| v.backgroundColor = Colors.closingCellBackgroundFor(:blue.color) }
   end

@@ -15,7 +15,8 @@ class AppDelegate
     # @mainController = MainViewController.alloc.init
     @mainController = StatusViewController.alloc.init
     @listController = CrossingListController.alloc.initWithStyle UITableViewStyleGrouped
-    @mapController = CrossingMapController.alloc.init
+    # @mapController = CrossingMapController.alloc.init
+    @mapController = MainViewController.alloc.init
     @tabBarController = UITabBarController.new.tap do |tbc|
       tabItemControllers = [@mainController, @listController, @mapController]
       tbc.viewControllers = tabItemControllers.map { |c| UINavigationController.alloc.initWithRootViewController(c, withDelegate:self) }
