@@ -18,4 +18,11 @@ module Device
     $device_is_iphone != nil ? $device_is_iphone : $device_is_iphone = 
       UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone
   end
+  
+  def roundedCornersFor(view, withRadius:radius, width:width, color:color)
+    view.layer.cornerRadius = radius
+    view.layer.borderColor = color.CGColor
+    view.layer.borderWidth = width
+    view.layer.masksToBounds = true     
+  end
 end
