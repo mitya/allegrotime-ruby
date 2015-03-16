@@ -32,9 +32,18 @@ end
 
 task d: :device
 
-$images = "tmp"
+$images = "resources/images"
 $sources = "originals/images"
 $gradients = { red: %w(f00 e00), green: %w(0c0 0b0), yellow: %w(ff0 ee0), gray: %w(ccc eee) }
+
+def retina_sh
+  (1..3).each do |scale|
+    suffix = scale == 1 ? '' : "@#{scale}x"
+    command = yield scale, suffix
+    puts command
+    system command
+  end
+end
 
 namespace :g do
   task :appicon do
@@ -45,21 +54,13 @@ namespace :g do
     end
   end
 
-  task :cells_bgr do
-    colors = { red: %w(f00 c00), green: %w(0a0 080), yellow: %w(ff0 dd0), gray: %w(eee ddd), blue: %w(daeafa e0f0ff) }
-    basename = "cell-bg"
-    height = 45
+  task :cell_bgs do
+    colors = { red: %w(f00 c00), green: %w(0a0 080), yellow: %w(ff0 dd0), gray: %w(eee ddd) }
+    height = 70
   
     colors.each_pair do |name, color|
       gradient = "gradient:##{color.first}-##{color.last}"
-      system %[convert -size 1x#{height} #{gradient} #{$images}/#{basename}-#{name}.png]
-      system %[convert -size 1x#{height*2} #{gradient} #{$images}/#{basename}-#{name}@2x.png]
-    end  
-
-    colors.each_pair do |name, color| 
-      gradient = "radial-gradient:##{color.last}-##{color.first}"
-      system %[convert -size 1x#{height} #{gradient} #{$images}/#{basename}r-#{name}.png]
-      system %[convert -size 1x#{height*2} #{gradient} #{$images}/#{basename}r-#{name}@2x.png]
+      retina_sh { |x, sx| %[convert -size 1x#{height*x} #{gradient} #{$images}/cell-bg-#{height}-#{name}#{sx}.png] }
     end
   end
 
@@ -70,16 +71,14 @@ namespace :g do
       source = "#{$sources}/#{basename}-#{color}.png"
       `convert #{source} -fuzz 15% -transparent "rgb(213, 250, 128)" #{source}`
       `convert #{source} -background transparent -gravity north -extent 200x400 #{source}`
-      `convert #{source} -resize 30x60 #{$images}/#{basename}-#{color}.png`
-      `convert #{source} -resize 60x120 #{$images}/#{basename}-#{color}@2x.png`
+      retina_sh { |x, sx| %[convert #{source} -resize #{30*x}x#{60*x} #{$images}/#{basename}-#{color}#{sx}.png] }
     end 
   end
 
   task :stripes do
     gradients = { red: %w(f00 e00), green: %w(0c0 0b0), yellow: %w(ffff00 f4f400), gray: %w(999 888) }
     gradients.each_pair do |color_name, color_string| 
-      `convert -size 15x44 xc:transparent -fill radial-gradient:##{color_string.first}-##{color_string.last} -draw 'rectangle 8,0 15,44' #{$images}/cell-stripe-#{color_name}.png`
-      `convert -size 30x88 xc:transparent -fill radial-gradient:##{color_string.first}-##{color_string.last} -draw 'rectangle 16,0 30,88' #{$images}/cell-stripe-#{color_name}@2x.png`
+      retina_sh { |x, sx| %[convert -size #{15*x}x#{44*x} xc:transparent -fill radial-gradient:##{color_string.first}-##{color_string.last} -draw 'rectangle #{8*x},0 #{15*x},#{44*x}' #{$images}/cell-stripe-#{color_name}#{sx}.png] }
     end
   end  
   

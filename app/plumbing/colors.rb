@@ -57,11 +57,10 @@ module Colors
   
   def closingCellBackgroundFor(color)
     @@closing_cell_backgrounds ||= {
-      :red.color    => UIColor.colorWithPatternImage(Device.image_named("cell-bg-red")),
-      :yellow.color => UIColor.colorWithPatternImage(Device.image_named("cell-bg-yellow")),
-      :green.color  => UIColor.colorWithPatternImage(Device.image_named("cell-bg-green")),
-      :blue.color   => UIColor.colorWithPatternImage(Device.image_named("cell-bg-blue")),
-      :gray.color   => UIColor.colorWithPatternImage(Device.image_named("cell-bg-gray")),
+      :red.color    => UIColor.colorWithPatternImage(Device.image_named("cell-bg-70-red")),
+      :yellow.color => UIColor.colorWithPatternImage(Device.image_named("cell-bg-70-yellow")),
+      :green.color  => UIColor.colorWithPatternImage(Device.image_named("cell-bg-70-green")),
+      :gray.color   => UIColor.colorWithPatternImage(Device.image_named("cell-bg-70-gray")),
       :clear.color  => UIColor.clearColor
     }
     @@closing_cell_backgrounds[color]

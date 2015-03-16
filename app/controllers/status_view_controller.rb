@@ -7,6 +7,7 @@ class StatusViewController < UIViewController
 
   def loadView
     self.view = StatusView.alloc.initWithFrame(CGRectZero)
+    self.view.delegate = self
   end
 
   def viewDidLoad() super
@@ -139,20 +140,23 @@ class StatusViewController < UIViewController
   end
 
 
+  def statusViewCrossingLabelTouched
+    showCrossingListToChangeCurrent
+  end
 
-  # def showCrossingListToChangeCurrent
-  #   crossingsController = CrossingListController.alloc.initWithStyle UITableViewStyleGrouped
-  #   crossingsController.target = self
-  #   crossingsController.action = 'changeCurrentCrossing:'
-  #   crossingsController.accessoryType = UITableViewCellAccessoryCheckmark
-  #   navigationController.pushViewController crossingsController, animated:YES
-  # end
-  #
-  # def changeCurrentCrossing(crossing)
-  #   Model.currentCrossing = crossing
-  #   navigationController.popViewControllerAnimated YES
-  #   tableView.reloadData
-  # end
+  def showCrossingListToChangeCurrent
+    crossingsController = CrossingListController.alloc.initWithStyle UITableViewStyleGrouped
+    crossingsController.target = self
+    crossingsController.action = 'changeCurrentCrossing:'
+    crossingsController.accessoryType = UITableViewCellAccessoryCheckmark
+    navigationController.pushViewController crossingsController, animated:YES
+  end
+
+  def changeCurrentCrossing(crossing)
+    Model.currentCrossing = crossing
+    navigationController.popViewControllerAnimated YES
+    reloadData
+  end
 
   def showInfo
     aboutController = AboutController.alloc.init
