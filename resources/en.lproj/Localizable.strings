@@ -2,7 +2,7 @@
 "main.title" = "AllegroTime";
 "main.tab" = "Status";
 "main.backbutton" = "Status";
-"main.allegro will pass at $time" = "Allegro will pass in %@";
+"main.allegro will pass at $time" = "Allegro will pass at %@";
 "main.crossing $closes at $time" = "Crossing %@ at %@";
 "main.footer" = "Only Allegro-related closings are displayed. The crossing can be closed earlier or can be opened later because of the regular suburban trains";
 "main.show_schedule" = "Allegro Schedule";
