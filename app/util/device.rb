@@ -23,6 +23,10 @@ module Device
       UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone
   end
   
+  def ipad?
+    !iphone?
+  end
+  
   def landscapePhone?
     iphone? && landscape?
   end

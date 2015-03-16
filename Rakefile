@@ -9,6 +9,7 @@ rescue LoadError
 end
 
 ENV['device_name'] ||= 'iPhone 6' # 'iPhone 5s 7.1' 'iPhone 5s'
+# ENV['device_name'] = 'iPad Air'
 
 Motion::Project::App.setup do |app|
   app.name = 'AllegroTime2'

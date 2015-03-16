@@ -145,7 +145,6 @@ class MainViewController < UIViewController
   end
 
   def requestAdView
-    puts 'requesting ad'
     adRequest = GADRequest.request
     adRequest.testDevices = [ GAD_TESTING_IPHONE_ID, GAD_TESTING_IPAD_ID ]
 
@@ -174,7 +173,6 @@ class MainViewController < UIViewController
   end
 
   def adViewDidReceiveAd(adView)
-    puts 'receive an ad'
     if !adViewLoaded
       adView.frame = adView.frame.change(y: view.bounds.height)
       UIView.animateWithDuration 0.25, animations: -> do

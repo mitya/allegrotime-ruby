@@ -11,13 +11,11 @@ class StatusViewController < UIViewController
   def loadView
     self.statusView = StatusView.alloc.initWithFrame(UIScreen.mainScreen.bounds)
     self.statusView.delegate = self
-    self.view = UIView.alloc.init
-    self.view.addSubview(statusView)
+    self.view = statusView
   end
 
   def viewDidLoad() super
     NSNotificationCenter.defaultCenter.addObserver self, selector:'closestCrossingChanged', name:NXDefaultCellIDClosestCrossingChanged, object:nil
-
     navigationItem.backBarButtonItem = UIBarButtonItem.alloc.initWithTitle "main.backbutton".l, style:UIBarButtonItemStyleBordered, target:nil, action:nil
 
     # setup info button
@@ -31,87 +29,12 @@ class StatusViewController < UIViewController
       swipeRecognizer.direction = UISwipeGestureRecognizerDirectionLeft
       view.addGestureRecognizer swipeRecognizer
     end
-
-    setupAdView
-
-    # self.adTimer = NSTimer.scheduledTimerWithTimeInterval GAD_REFRESH_PERIOD, target:self, selector:'adTimerTicked', userInfo:nil, repeats:YES
   end
 
   def viewWillAppear(animated) super
     reloadData
-    # requestAdViewIfDelayed
+    statusView.requestAdIfNeeded
   end
-
-  def willAnimateRotationToInterfaceOrientation(orientation, duration:duration)
-    adSize = Device.portrait?(orientation) ? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape
-    adView.adSize = adSize
-    y = view.frame.height - CGSizeFromGADAdSize(adSize).height
-    adView.frame = CGRectMake(0, y, adView.frame.width, adView.frame.height)
-    statusView.frame = statusView.frame.change(height: view.bounds.height - adView.bounds.height, width: Device.screenWidth)
-  end
-
-
-
-  def setupAdView
-    self.adView = GADBannerView.alloc.initWithAdSize Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape
-    adView.adUnitID = Device.iphone? ? GAD_IPHONE_AD_UNIT_ID : GAD_IPAD_AD_UNIT_ID
-    adView.rootViewController = self
-    adView.backgroundColor = UIColor.clearColor
-    adView.delegate = self
-    adView.hidden = YES
-    adView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin
-    adView.origin = CGPointMake(0, App.window.bounds.height - adView.bounds.height)
-
-    view.addSubview adView
-    requestAdView
-  end
-
-  def requestAdView
-    puts "request"
-    adRequest = GADRequest.request
-    adRequest.testDevices = [ GAD_TESTING_IPHONE_ID, GAD_TESTING_IPAD_ID ]
-
-    if location = App.locationManager.location
-      adRequest.setLocationWithLatitude location.coordinate.latitude, longitude:location.coordinate.longitude, accuracy:location.horizontalAccuracy
-    end
-
-    adView.loadRequest adRequest
-  end
-
-  def requestAdViewIfDelayed
-    if @adViewRequestPending
-      @adViewRequestPending = NO
-      requestAdView
-    end
-  end
-
-  def adTimerTicked
-    if adViewLoaded
-      if navigationController.visibleViewController == self
-        requestAdView
-      else
-        @adViewRequestPending = YES
-      end
-    end
-  end
-
-  def adViewDidReceiveAd(adView)
-    puts "got it"    
-    if !adViewLoaded
-      adView.frame = adView.frame.change(y: view.bounds.height)
-      UIView.animateWithDuration 0.25, animations: -> do
-        adView.hidden = NO
-        adView.frame = adView.frame.change(y: view.bounds.height - adView.frame.height)
-        statusView.frame = statusView.frame.change(height: view.bounds.height - adView.frame.height)
-      end
-      @adViewLoaded = YES
-    end
-  end
-
-  def adView(view, didFailToReceiveAdWithError:error)
-    Log.warn "adView:didFailToReceiveAdWithError: #{error.description}"
-  end
-
 
 
   def recognizedSwipe(recognizer)

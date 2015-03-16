@@ -1,6 +1,7 @@
 class StatusView < UIView
   attr_accessor :delegate
   attr_accessor :crossingLabel, :messageLabel, :footnoteLabel, :trainStatusLabel, :crossingStatusLabel
+  attr_accessor :adView
 
   TopM = 35 * 2
   TopM_LS = 35
@@ -17,7 +18,7 @@ class StatusView < UIView
 
   def initWithFrame(frame) super
     self.backgroundColor = UIColor.hex 0xefeff4
-    NSNotificationCenter.defaultCenter.addObserver self, selector:'onRotation', name:UIApplicationWillChangeStatusBarOrientationNotification, object:nil
+    NSNotificationCenter.defaultCenter.addObserver self, selector:'deviceRotated', name:UIApplicationWillChangeStatusBarOrientationNotification, object:nil
 
     @crossingLabel = UILabel.alloc.initWithFrame(CGRectZero).tap do |l|
       l.text = "Poklonnogorskaya"
@@ -84,20 +85,28 @@ class StatusView < UIView
       l.shadowColor = UIColor.colorWithWhite 1, alpha:1
       l.shadowOffset = CGSizeMake(0, 1)
       l.translatesAutoresizingMaskIntoConstraints = NO
-      l.textAlignment = NSTextAlignmentJustified
+      l.textAlignment = Device.ipad?? NSTextAlignmentCenter : NSTextAlignmentJustified
     end
 
+    @adView = GADBannerView.alloc.initWithAdSize(Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape).tap do |av|
+      av.backgroundColor = UIColor.clearColor
+      av.alpha = 0.0
+      av.translatesAutoresizingMaskIntoConstraints = NO
+    end
+
+    @adViewController = StatusAdViewController.new(@adView)
+    
     addSubview @crossingLabel
     addSubview @messageLabel
     addSubview @crossingStatusLabel
     addSubview @trainStatusLabel
     addSubview @footnoteLabel
+    addSubview @adView
 
     setStaticConstraints
     setNeedsUpdateConstraints
-
-    # layer.borderColor = UIColor.greenColor.CGColor
-    # layer.borderWidth = 1
+    
+    @adViewController.requestAd
 
     return self
   end
@@ -106,9 +115,11 @@ class StatusView < UIView
     NSNotificationCenter.defaultCenter.removeObserver self
   end
 
+
   def layoutSubviews
     @crossingLabelArrow.frame = CGRectMake Device.screenWidth - ArrowRM, (RowH-ArrowH)/2, ArrowW, ArrowH
     @footnoteLabel.hidden = Device.landscapePhone?
+    @adView.adSize = Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape  
     super
   end
 
@@ -129,14 +140,14 @@ class StatusView < UIView
     removeConstraints @dynamicConstraints if @dynamicConstraints
     @dynamicConstraints = [
       NSLayoutConstraint.constraintsWithVisualFormat("V:[message(MessageH)]", options:0, metrics:currentMetrics, views:views),
-      NSLayoutConstraint.constraintsWithVisualFormat("V:|-TopM-[crossing][message][crossingStatus][trainStatus]-FootnoteTM-[footnote]", options:0, metrics:currentMetrics, views:views),
+      NSLayoutConstraint.constraintsWithVisualFormat("V:|-TopM-[crossing][message][crossingStatus][trainStatus][ad]-FootnoteTM-[footnote]", options:0, metrics:currentMetrics, views:views),
     ].flatten
     addConstraints @dynamicConstraints
     super
   end
 
 
-  def onRotation
+  def deviceRotated
     setNeedsUpdateConstraints
   end
 
@@ -171,7 +182,8 @@ class StatusView < UIView
       'message' => @messageLabel,
       'footnote' => @footnoteLabel,
       'trainStatus' => @trainStatusLabel,
-      'crossingStatus' => @crossingStatusLabel
+      'crossingStatus' => @crossingStatusLabel,
+      'ad' => @adView,
     }
   end
 
@@ -201,8 +213,52 @@ class StatusView < UIView
       m
     end
   end
+
+
+  def requestAdIfNeeded
+    @adViewController.requestAdIfNeeded
+  end
 end
 
 
-# addConstraint NSLayoutConstraint.constraintWithItem @crossingLabel, attribute:NSLayoutAttributeHeight, relatedBy:NSLayoutRelationEqual, \
-#     toItem:@messageLabel, attribute:NSLayoutAttributeHeight, multiplier:2, constant:0.0
+class StatusAdViewController 
+  attr_accessor :adView
+  
+  def initialize(adView)
+    @adView = adView
+    @adView.delegate = self
+    @adView.adUnitID = Device.iphone? ? GAD_IPHONE_AD_UNIT_ID : GAD_IPAD_AD_UNIT_ID
+    @adView.rootViewController = App.mainController    
+    @adTimer = NSTimer.scheduledTimerWithTimeInterval GAD_REFRESH_PERIOD, target:self, selector:'adTimerTicked', userInfo:nil, repeats:YES
+  end
+  
+  def requestAd
+    adRequest = GADRequest.request
+    adRequest.testDevices = [ GAD_TESTING_IPHONE_ID, GAD_TESTING_IPAD_ID ]
+    if loc = App.locationManager.location
+      adRequest.setLocationWithLatitude loc.coordinate.latitude, longitude:loc.coordinate.longitude, accuracy:loc.horizontalAccuracy 
+    end
+    adView.loadRequest adRequest
+  end
+
+  def requestAdIfNeeded
+    requestAd if @adRequestPending
+    @adRequestPending = NO
+  end
+
+  def adTimerTicked
+    if adView.window
+       requestAd
+    else
+       @adRequestPending = YES
+    end
+  end
+
+  def adViewDidReceiveAd(adView)
+    UIView.animateWithDuration 1.5, animations: -> { adView.alpha = 1.0 }
+  end
+  
+  def adView(view, didFailToReceiveAdWithError:error)
+    Log.warn "failed receiving ad: #{error.description}"
+  end  
+end
