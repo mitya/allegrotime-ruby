@@ -26,8 +26,8 @@ class MainViewController < UIViewController
     self.crossingCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleValue1, reuseIdentifier:NXDefaultCellID
     crossingCell.textLabel.text = 'main.crossing_cell'.l
     crossingCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
-    crossingCell.detailTextLabel.font = UIFont.boldSystemFontOfSize(17)
-    crossingCell.detailTextLabel.color = UIColor.blackColor
+    # crossingCell.detailTextLabel.font = UIFont.boldSystemFontOfSize(17)
+    # crossingCell.detailTextLabel.color = UIColor.blackColor
     
     self.stateCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleSubtitle, reuseIdentifier:NXDefaultCellID
     stateCell.textLabel.textAlignment = NSTextAlignmentCenter

@@ -25,4 +25,16 @@ module Device
     view.layer.borderWidth = width
     view.layer.masksToBounds = true     
   end
+  
+  def screenSize
+    UIScreen.mainScreen.bounds
+  end
+
+  def screenWidth
+    screenSize.width
+  end
+
+  def screenHeight
+    screenSize.height
+  end
 end

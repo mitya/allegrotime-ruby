@@ -18,7 +18,7 @@ Motion::Project::App.setup do |app|
   app.sdk_version = '8.2'
   app.deployment_target = '7.0'
   # app.codesign_certificate = "iPhone Distribution: Iconoclast Labs LLC"
-  app.provisioning_profile = '/Volumes/Vault/Sources/active/_profiles/iOS_Team_Provisioning_Profile_.mobileprovision'
+  app.provisioning_profile = '/Volumes/Vault/Sources/active/_etc/iOS_Team.mobileprovision'
   app.icons = %w(Icon-60 Icon-76 Icon-Small-40 Icon-Small)
   app.frameworks += %w(StoreKit AdSupport QuartzCore AVFoundation CoreTelephony SystemConfiguration MessageUI AudioToolbox MapKit CoreLocation CoreData EventKit EventKitUI)
   app.vendor_project 'vendor/GoogleMobileAdsSdkiOS-6.12.0', :static, force_load: false
