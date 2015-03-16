@@ -3,15 +3,21 @@ class StatusView < UIView
   attr_accessor :crossingLabel, :messageLabel, :footnoteLabel, :trainStatusLabel, :crossingStatusLabel
 
   TopM = 35 * 2
+  TopM_LS = 35
   RowH = 44
   MessageH = 70
+  MessageH_LS = 44
   SmallRowH = 28
   ArrowH = 13
   ArrowW = 8
   ArrowRM = 23
   CrossingLabelTag = 500
 
-  def initWithFrame(frame) super
+  def initWithFrame(frame) super    
+    self.backgroundColor = UIColor.hex 0xefeff4
+    
+    NSNotificationCenter.defaultCenter.addObserver self, selector:'onRotation', name:UIApplicationWillChangeStatusBarOrientationNotification, object:nil
+    
     @crossingLabel = UILabel.alloc.initWithFrame(CGRectZero).tap do |l|
       l.text = "Poklonnogorskaya"
       l.textAlignment = NSTextAlignmentCenter
@@ -51,10 +57,6 @@ class StatusView < UIView
       l.translatesAutoresizingMaskIntoConstraints = NO
       l.backgroundColor = UIColor.whiteColor
       l.color = UIColor.grayShade(0.4)
-      border = UIView.alloc.initWithFrame(CGRectMake 0, 0, UIScreen.mainScreen.bounds.size.width, 0.5)
-      border.backgroundColor = UIColor.grayShade(0.8)
-      border.autoresizingMask = UIViewAutoresizingFlexibleWidth
-      l.addSubview border
       border = UIView.alloc.initWithFrame(CGRectMake 0, 27.5, UIScreen.mainScreen.bounds.size.width, 0.5)
       border.backgroundColor = UIColor.grayShade(0.8)
       border.autoresizingMask = UIViewAutoresizingFlexibleWidth      
@@ -68,6 +70,10 @@ class StatusView < UIView
       l.color = UIColor.grayShade(0.4)
       l.translatesAutoresizingMaskIntoConstraints = NO
       l.backgroundColor = UIColor.whiteColor      
+      border = UIView.alloc.initWithFrame(CGRectMake 0, 27.5, UIScreen.mainScreen.bounds.size.width, 0.5)
+      border.backgroundColor = UIColor.grayShade(0.8)
+      border.autoresizingMask = UIViewAutoresizingFlexibleWidth      
+      l.addSubview border
     end
 
     @footnoteLabel = UILabel.alloc.initWithFrame(CGRectZero).tap do |l|
@@ -80,39 +86,57 @@ class StatusView < UIView
       l.translatesAutoresizingMaskIntoConstraints = NO
       l.textAlignment = NSTextAlignmentJustified
     end
-
+    
     addSubview @crossingLabel
     addSubview @messageLabel
-    addSubview @trainStatusLabel
     addSubview @crossingStatusLabel
+    addSubview @trainStatusLabel          
     addSubview @footnoteLabel
 
-    @viewMap = { 'crossing' => @crossingLabel, 'message' => @messageLabel, 'footnote' => @footnoteLabel,
-        'trainStatus' => @trainStatusLabel, 'crossingStatus' => @crossingStatusLabel }
-    @metrics = { 'padding' => 20, 'labelHeight' => 50, 'labelWidth' => 280, 'RowH' => RowH, 'SmallRowH' => SmallRowH, 'TopM' => TopM, 'MessageH' => MessageH }
+    setStaticConstraints
+    setNeedsUpdateConstraints
 
-    addConstraints NSLayoutConstraint.constraintsWithVisualFormat "V:[crossing(RowH)]", options:0, metrics:@metrics, views:@viewMap
-    addConstraints NSLayoutConstraint.constraintsWithVisualFormat "V:[message(MessageH)]", options:0, metrics:@metrics, views:@viewMap
-    addConstraints NSLayoutConstraint.constraintsWithVisualFormat "V:[crossingStatus(SmallRowH)]", options:0, metrics:@metrics, views:@viewMap
-    addConstraints NSLayoutConstraint.constraintsWithVisualFormat "V:[trainStatus(SmallRowH)]", options:0, metrics:@metrics, views:@viewMap
-    
-    addConstraints NSLayoutConstraint.constraintsWithVisualFormat "V:|-TopM-[crossing][message][trainStatus][crossingStatus]-70-[footnote]", options:0, metrics:@metrics, views:@viewMap
-    addConstraints NSLayoutConstraint.constraintsWithVisualFormat "H:|[crossing]|", options:0, metrics:@metrics, views:@viewMap
-    addConstraints NSLayoutConstraint.constraintsWithVisualFormat "H:|[message]|", options:0, metrics:@metrics, views:@viewMap
-    addConstraints NSLayoutConstraint.constraintsWithVisualFormat "H:|[trainStatus]|", options:0, metrics:@metrics, views:@viewMap
-    addConstraints NSLayoutConstraint.constraintsWithVisualFormat "H:|[crossingStatus]|", options:0, metrics:@metrics, views:@viewMap
-    addConstraints NSLayoutConstraint.constraintsWithVisualFormat "H:|-[footnote]-|", options:0, metrics:@metrics, views:@viewMap
-
-    # addConstraint NSLayoutConstraint.constraintWithItem @crossingLabel, attribute:NSLayoutAttributeHeight, relatedBy:NSLayoutRelationEqual, \
-    #     toItem:@messageLabel, attribute:NSLayoutAttributeHeight, multiplier:2, constant:0.0
-
-    self.backgroundColor = UIColor.hex 0xefeff4
-    self
+    return self
+  end
+  
+  def dealloc
+    NSNotificationCenter.defaultCenter.removeObserver self
   end
 
   def layoutSubviews
+    puts 'layoutSubviews'
     @crossingLabelArrow.frame = CGRectMake Device.screenWidth - ArrowRM, (RowH-ArrowH)/2, ArrowW, ArrowH
+    @footnoteLabel.hidden = Device.landscapePhone?  
     super
+  end
+
+  def setStaticConstraints
+    addConstraints [
+      NSLayoutConstraint.constraintsWithVisualFormat("H:|[crossing]|", options:0, metrics:defaultMetrics, views:views),
+      NSLayoutConstraint.constraintsWithVisualFormat("H:|[message]|", options:0, metrics:defaultMetrics, views:views),
+      NSLayoutConstraint.constraintsWithVisualFormat("H:|[trainStatus]|", options:0, metrics:defaultMetrics, views:views),
+      NSLayoutConstraint.constraintsWithVisualFormat("H:|[crossingStatus]|", options:0, metrics:defaultMetrics, views:views),
+      NSLayoutConstraint.constraintsWithVisualFormat("H:|-[footnote]-|", options:0, metrics:defaultMetrics, views:views),
+      NSLayoutConstraint.constraintsWithVisualFormat("V:[crossingStatus(SmallRowH)]", options:0, metrics:defaultMetrics, views:views),
+      NSLayoutConstraint.constraintsWithVisualFormat("V:[trainStatus(SmallRowH)]", options:0, metrics:defaultMetrics, views:views),
+      NSLayoutConstraint.constraintsWithVisualFormat("V:[crossing(RowH)]", options:0, metrics:defaultMetrics, views:views)
+    ].flatten
+  end
+  
+  def updateConstraints
+    puts 'updateConstraints'
+    removeConstraints @dynamicConstraints if @dynamicConstraints
+    @dynamicConstraints = [
+      NSLayoutConstraint.constraintsWithVisualFormat("V:[message(MessageH)]", options:0, metrics:currentMetrics, views:views),
+      NSLayoutConstraint.constraintsWithVisualFormat("V:|-TopM-[crossing][message][crossingStatus][trainStatus]-70-[footnote]", options:0, metrics:currentMetrics, views:views),
+    ].flatten    
+    addConstraints @dynamicConstraints 
+    super
+  end
+
+
+  def onRotation
+    setNeedsUpdateConstraints
   end
 
   def touchesBegan(touches, withEvent:event)
@@ -138,4 +162,44 @@ class StatusView < UIView
   def touchesCancelled(touches, withEvent:event)
     puts "touchesCancelled is never called?"
   end
+  
+  
+  def views
+    @views ||= { 
+      'crossing' => @crossingLabel,
+      'message' => @messageLabel,
+      'footnote' => @footnoteLabel,
+      'trainStatus' => @trainStatusLabel,
+      'crossingStatus' => @crossingStatusLabel 
+    }
+  end
+  
+  def currentMetrics
+    Device.landscapePhone?? landscapeMetrics : defaultMetrics
+  end
+  
+  def defaultMetrics
+    @defaultMetrics ||= {
+      'padding' => 20, 
+      'labelHeight' => 50, 
+      'labelWidth' => 280, 
+      'RowH' => RowH, 
+      'SmallRowH' => SmallRowH, 
+      'TopM' => TopM,
+      'MessageH' => MessageH
+    }
+  end
+  
+  def landscapeMetrics
+    @landscapeMetrics ||= begin
+      m = @defaultMetrics.dup
+      m['MessageH'] = MessageH_LS
+      m['TopM'] = TopM_LS
+      m
+    end
+  end  
 end
+
+
+# addConstraint NSLayoutConstraint.constraintWithItem @crossingLabel, attribute:NSLayoutAttributeHeight, relatedBy:NSLayoutRelationEqual, \
+#     toItem:@messageLabel, attribute:NSLayoutAttributeHeight, multiplier:2, constant:0.0

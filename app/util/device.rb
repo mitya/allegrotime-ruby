@@ -13,10 +13,18 @@ module Device
   def portrait?(orientation = UIApplication.sharedApplication.statusBarOrientation)
      orientation == UIInterfaceOrientationPortrait || orientation == UIInterfaceOrientationPortraitUpsideDown
   end  
+  
+  def landscape?
+    !portrait?
+  end
 
   def iphone?
     $device_is_iphone != nil ? $device_is_iphone : $device_is_iphone = 
       UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPhone
+  end
+  
+  def landscapePhone?
+    iphone? && landscape?
   end
   
   def roundedCornersFor(view, withRadius:radius, width:width, color:color)
@@ -36,5 +44,9 @@ module Device
 
   def screenHeight
     screenSize.height
+  end
+  
+  def currentTimeInMunutes
+    Time.now.to_i / 60
   end
 end

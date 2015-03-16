@@ -32,10 +32,11 @@ class StatusViewController < UIViewController
     # self.adTimer = NSTimer.scheduledTimerWithTimeInterval GAD_REFRESH_PERIOD, target:self, selector:'adTimerTicked', userInfo:nil, repeats:YES
   end
 
-  # def viewWillAppear(animated) super
-  #   requestAdViewIfDelayed
-  # end
-  #
+  def viewWillAppear(animated) super
+    reloadData
+    # requestAdViewIfDelayed
+  end
+
   # def willAnimateRotationToInterfaceOrientation(orientation, duration:duration)
   #   adSize = Device.portrait?(orientation) ? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape
   #   adView.adSize = adSize
@@ -46,15 +47,6 @@ class StatusViewController < UIViewController
 
 
 
-  # def tableView(table, didSelectRowAtIndexPath:indexPath)
-  #   tableView.deselectRowAtIndexPath(indexPath, animated:YES)
-  #   case tableView.cellForRowAtIndexPath(indexPath)
-  #     when crossingCell then showCrossingListToChangeCurrent
-  #   end
-  # end
-  #
-  #
-  #
   # def setupAdView
   #   self.adView = GADBannerView.alloc.initWithAdSize Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape
   #   adView.adUnitID = Device.iphone? ? GAD_IPHONE_AD_UNIT_ID : GAD_IPAD_AD_UNIT_ID
@@ -170,11 +162,11 @@ class StatusViewController < UIViewController
 
   def reloadData
     crossing = Model.currentCrossing
-
+    
     view.crossingLabel.text = crossing.localizedName
-    view.crossingStatusLabel.text = "main.allegro will pass at $time".li(Format.munutes_as_hhmm(crossing.nextClosing.trainTime))
-    view.trainStatusLabel.text = "main.crossing $closes at $time".li \
+    view.crossingStatusLabel.text = "main.crossing $closes at $time".li \
         crossing.closed? ? "closed".l : "will be closed".l, Format.munutes_as_hhmm(crossing.nextClosing.closingTime)
+    view.trainStatusLabel.text = "main.allegro will pass at $time".li(Format.munutes_as_hhmm(crossing.nextClosing.trainTime))
     view.messageLabel.text = crossing.subtitle
     view.messageLabel.backgroundColor = Colors.closingCellBackgroundFor(crossing.color)
     view.messageLabel.textColor = Colors.messageCellColorFor(crossing.color)

@@ -27,10 +27,11 @@ class AppDelegate
     @window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
     @window.rootViewController = @tabBarController
     @window.makeKeyAndVisible
-    # @window.tintColor = Colors.windowTintColor
+    @window.tintColor = Colors.windowTintColor
 
-    @perMinuteTimer = NSTimer.scheduledTimerWithTimeInterval 5, target:self, selector:'timerTicked', userInfo:nil, repeats:YES
+    @perMinuteTimer = NSTimer.scheduledTimerWithTimeInterval 1, target:self, selector:'timerTicked', userInfo:nil, repeats:YES
     @perMinuteTimer.fireDate = Time.next_full_minute_date unless DEBUG
+    @lastFireTime = 0
 
     NSNotificationCenter.defaultCenter.addObserver self, selector:'currentCrossingChanged', name:NXDefaultCellIDCurrentCrossingChanged, object:nil
 
@@ -45,7 +46,7 @@ class AppDelegate
       locationManager.requestWhenInUseAuthorization if locationManager.respondsToSelector 'requestWhenInUseAuthorization'
       locationManager.startUpdatingLocation
     end
-    triggerModelUpdateFor visibleViewController
+    triggerModelUpdate
   end
 
   def applicationWillResignActive(application)
@@ -55,13 +56,13 @@ class AppDelegate
 
   def screenDeactivated
     @activate = false
-    tabBarController.selectedViewController.visibleViewController.performSelectorIfDefined(:screenDeactivated)
+    visibleViewController.performSelectorIfDefined(:screenDeactivated)
     updateAppColorsTo(:gray.color)
   end
 
   def screenActivated
     @active = true
-    tabBarController.selectedViewController.visibleViewController.performSelectorIfDefined(:screenActivated)
+    visibleViewController.performSelectorIfDefined(:screenActivated)
     updateAppColorsToCurrent
   end
 
@@ -113,21 +114,23 @@ class AppDelegate
   def navigationController(navController, willShowViewController:viewController, animated:animated)
     newControllerHasNoToolbar = viewController.toolbarItems.nil? || viewController.toolbarItems.count == 0
     navController.setToolbarHidden newControllerHasNoToolbar, animated:animated
-    triggerModelUpdateFor viewController if animated
+    triggerModelUpdate if animated
   end
 
   def timerTicked
-    return unless @active
-    triggerModelUpdateFor visibleViewController
-    updateAppColorsToCurrent
+    if @active && @lastFireTime != Device.currentTimeInMunutes
+      puts "timer goes #{visibleViewController}"
+      @lastFireTime = Device.currentTimeInMunutes
+      triggerModelUpdate      
+    end
   end
 
   def currentCrossingChanged
     updateAppColorsToCurrent
   end
 
-  def triggerModelUpdateFor(controller)
-    controller.modelUpdated if controller.respondsToSelector 'modelUpdated'
+  def triggerModelUpdate
+    visibleViewController.performSelectorIfDefined :modelUpdated
   end
 
   def updateAppColorsToCurrent
@@ -147,9 +150,7 @@ class AppDelegate
     # end
   end
 
-
-
   def visibleViewController
-    @tabBarController
+    tabBarController.selectedViewController.visibleViewController
   end
 end
