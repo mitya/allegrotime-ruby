@@ -11,13 +11,14 @@ class StatusView < UIView
   ArrowH = 13
   ArrowW = 8
   ArrowRM = 23
+  FootnoteTM = 70
+  FootnoteTM_LS = 5
   CrossingLabelTag = 500
 
-  def initWithFrame(frame) super    
+  def initWithFrame(frame) super
     self.backgroundColor = UIColor.hex 0xefeff4
-    
     NSNotificationCenter.defaultCenter.addObserver self, selector:'onRotation', name:UIApplicationWillChangeStatusBarOrientationNotification, object:nil
-    
+
     @crossingLabel = UILabel.alloc.initWithFrame(CGRectZero).tap do |l|
       l.text = "Poklonnogorskaya"
       l.textAlignment = NSTextAlignmentCenter
@@ -37,7 +38,6 @@ class StatusView < UIView
 
       arrow = UIImageView.alloc.initWithImage UIImage.imageNamed("images/i-disclosure.png").imageWithRenderingMode(UIImageRenderingModeAlwaysTemplate)
       arrow.tintColor = UIColor.grayShade(0.78)
-      arrow.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin
       l.addSubview arrow
       @crossingLabelArrow = arrow
     end
@@ -59,20 +59,20 @@ class StatusView < UIView
       l.color = UIColor.grayShade(0.4)
       border = UIView.alloc.initWithFrame(CGRectMake 0, 27.5, UIScreen.mainScreen.bounds.size.width, 0.5)
       border.backgroundColor = UIColor.grayShade(0.8)
-      border.autoresizingMask = UIViewAutoresizingFlexibleWidth      
-      l.addSubview border      
+      border.autoresizingMask = UIViewAutoresizingFlexibleWidth
+      l.addSubview border
     end
-    
+
     @trainStatusLabel = UILabel.alloc.initWithFrame(CGRectZero).tap do |l|
       l.text = "train status"
       l.textAlignment = NSTextAlignmentCenter
       l.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
       l.color = UIColor.grayShade(0.4)
       l.translatesAutoresizingMaskIntoConstraints = NO
-      l.backgroundColor = UIColor.whiteColor      
+      l.backgroundColor = UIColor.whiteColor
       border = UIView.alloc.initWithFrame(CGRectMake 0, 27.5, UIScreen.mainScreen.bounds.size.width, 0.5)
       border.backgroundColor = UIColor.grayShade(0.8)
-      border.autoresizingMask = UIViewAutoresizingFlexibleWidth      
+      border.autoresizingMask = UIViewAutoresizingFlexibleWidth
       l.addSubview border
     end
 
@@ -86,27 +86,29 @@ class StatusView < UIView
       l.translatesAutoresizingMaskIntoConstraints = NO
       l.textAlignment = NSTextAlignmentJustified
     end
-    
+
     addSubview @crossingLabel
     addSubview @messageLabel
     addSubview @crossingStatusLabel
-    addSubview @trainStatusLabel          
+    addSubview @trainStatusLabel
     addSubview @footnoteLabel
 
     setStaticConstraints
     setNeedsUpdateConstraints
 
+    # layer.borderColor = UIColor.greenColor.CGColor
+    # layer.borderWidth = 1
+
     return self
   end
-  
+
   def dealloc
     NSNotificationCenter.defaultCenter.removeObserver self
   end
 
   def layoutSubviews
-    puts 'layoutSubviews'
     @crossingLabelArrow.frame = CGRectMake Device.screenWidth - ArrowRM, (RowH-ArrowH)/2, ArrowW, ArrowH
-    @footnoteLabel.hidden = Device.landscapePhone?  
+    @footnoteLabel.hidden = Device.landscapePhone?
     super
   end
 
@@ -122,15 +124,14 @@ class StatusView < UIView
       NSLayoutConstraint.constraintsWithVisualFormat("V:[crossing(RowH)]", options:0, metrics:defaultMetrics, views:views)
     ].flatten
   end
-  
+
   def updateConstraints
-    puts 'updateConstraints'
     removeConstraints @dynamicConstraints if @dynamicConstraints
     @dynamicConstraints = [
       NSLayoutConstraint.constraintsWithVisualFormat("V:[message(MessageH)]", options:0, metrics:currentMetrics, views:views),
-      NSLayoutConstraint.constraintsWithVisualFormat("V:|-TopM-[crossing][message][crossingStatus][trainStatus]-70-[footnote]", options:0, metrics:currentMetrics, views:views),
-    ].flatten    
-    addConstraints @dynamicConstraints 
+      NSLayoutConstraint.constraintsWithVisualFormat("V:|-TopM-[crossing][message][crossingStatus][trainStatus]-FootnoteTM-[footnote]", options:0, metrics:currentMetrics, views:views),
+    ].flatten
+    addConstraints @dynamicConstraints
     super
   end
 
@@ -146,7 +147,7 @@ class StatusView < UIView
       @crossingLabel.backgroundColor = UIColor.grayShade(0.85)
     end
   end
-  
+
   def touchesEnded(touches, withEvent:event)
     touch = touches.anyObject
     if touch.view.tag == CrossingLabelTag
@@ -162,42 +163,44 @@ class StatusView < UIView
   def touchesCancelled(touches, withEvent:event)
     puts "touchesCancelled is never called?"
   end
-  
-  
+
+
   def views
-    @views ||= { 
+    @views ||= {
       'crossing' => @crossingLabel,
       'message' => @messageLabel,
       'footnote' => @footnoteLabel,
       'trainStatus' => @trainStatusLabel,
-      'crossingStatus' => @crossingStatusLabel 
+      'crossingStatus' => @crossingStatusLabel
     }
   end
-  
+
   def currentMetrics
     Device.landscapePhone?? landscapeMetrics : defaultMetrics
   end
-  
+
   def defaultMetrics
     @defaultMetrics ||= {
-      'padding' => 20, 
-      'labelHeight' => 50, 
-      'labelWidth' => 280, 
-      'RowH' => RowH, 
-      'SmallRowH' => SmallRowH, 
+      'padding' => 20,
+      'labelHeight' => 50,
+      'labelWidth' => 280,
+      'RowH' => RowH,
+      'SmallRowH' => SmallRowH,
       'TopM' => TopM,
-      'MessageH' => MessageH
+      'MessageH' => MessageH,
+      'FootnoteTM' => FootnoteTM,
     }
   end
-  
+
   def landscapeMetrics
     @landscapeMetrics ||= begin
       m = @defaultMetrics.dup
       m['MessageH'] = MessageH_LS
       m['TopM'] = TopM_LS
+      m['FootnoteTM'] = FootnoteTM_LS
       m
     end
-  end  
+  end
 end
 
 

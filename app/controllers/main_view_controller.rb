@@ -26,8 +26,6 @@ class MainViewController < UIViewController
     self.crossingCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleValue1, reuseIdentifier:NXDefaultCellID
     crossingCell.textLabel.text = 'main.crossing_cell'.l
     crossingCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator
-    # crossingCell.detailTextLabel.font = UIFont.boldSystemFontOfSize(17)
-    # crossingCell.detailTextLabel.color = UIColor.blackColor
     
     self.stateCell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleSubtitle, reuseIdentifier:NXDefaultCellID
     stateCell.textLabel.textAlignment = NSTextAlignmentCenter
@@ -75,6 +73,7 @@ class MainViewController < UIViewController
   end
 
   def willAnimateRotationToInterfaceOrientation(orientation, duration:duration)
+    puts 'willAnimateRotationToInterfaceOrientation'
     adSize = Device.portrait?(orientation) ? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape
     adView.adSize = adSize
     y = view.frame.height - CGSizeFromGADAdSize(adSize).height
@@ -146,9 +145,9 @@ class MainViewController < UIViewController
   end
 
   def requestAdView
+    puts 'requesting ad'
     adRequest = GADRequest.request
-    adRequest.testing = GAD_TESTING_MODE
-    adRequest.testDevices = [ GAD_SIMULATOR_ID, GAD_TESTING_IPHONE_ID, GAD_TESTING_IPAD_ID ]
+    adRequest.testDevices = [ GAD_TESTING_IPHONE_ID, GAD_TESTING_IPAD_ID ]
 
     if location = App.locationManager.location
       adRequest.setLocationWithLatitude location.coordinate.latitude, longitude:location.coordinate.longitude, accuracy:location.horizontalAccuracy
@@ -175,15 +174,16 @@ class MainViewController < UIViewController
   end
 
   def adViewDidReceiveAd(adView)
-    # if !adViewLoaded
-    #   adView.frame = adView.frame.change(y: view.bounds.height)
-    #   UIView.animateWithDuration 0.25, animations: -> do
-    #     adView.hidden = NO
-    #     adView.frame = adView.frame.change(y: view.bounds.height - adView.frame.height)
-    #     tableView.frame = tableView.frame.change(height: view.bounds.height - adView.frame.height)
-    #   end
-    #   @adViewLoaded = YES
-    # end
+    puts 'receive an ad'
+    if !adViewLoaded
+      adView.frame = adView.frame.change(y: view.bounds.height)
+      UIView.animateWithDuration 0.25, animations: -> do
+        adView.hidden = NO
+        adView.frame = adView.frame.change(y: view.bounds.height - adView.frame.height)
+        tableView.frame = tableView.frame.change(height: view.bounds.height - adView.frame.height)
+      end
+      @adViewLoaded = YES
+    end
   end
 
   def adView(view, didFailToReceiveAdWithError:error)

@@ -119,7 +119,6 @@ class AppDelegate
 
   def timerTicked
     if @active && @lastFireTime != Device.currentTimeInMunutes
-      puts "timer goes #{visibleViewController}"
       @lastFireTime = Device.currentTimeInMunutes
       triggerModelUpdate      
     end
