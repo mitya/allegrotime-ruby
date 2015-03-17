@@ -50,7 +50,6 @@ class MainViewController < UIViewController
 
     navigationItem.backBarButtonItem = UIBarButtonItem.alloc.initWithTitle "main.backbutton".l, style:UIBarButtonItemStyleBordered, target:nil, action:nil
 
-
     # setup info button
     infoButton = UIButton.buttonWithType UIButtonTypeInfoLight
     infoButton.addTarget self, action:'showInfo', forControlEvents:UIControlEventTouchUpInside
@@ -73,7 +72,6 @@ class MainViewController < UIViewController
   end
 
   def willAnimateRotationToInterfaceOrientation(orientation, duration:duration)
-    puts 'willAnimateRotationToInterfaceOrientation'
     adSize = Device.portrait?(orientation) ? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape
     adView.adSize = adSize
     y = view.frame.height - CGSizeFromGADAdSize(adSize).height
