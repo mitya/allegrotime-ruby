@@ -82,7 +82,7 @@ class AppDelegate
   end
 
   def locationManager(manager, didFailWithError:error)
-    Device.debug "locationManager.didFailWithError: #{error.description}", 
+    Device.debug "locationManager.didFailWithError: #{error.description}"
     Device.track :location_failed, error.description
     Model.closestCrossing = nil
     NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDClosestCrossingChanged, object:Model.closestCrossing
