@@ -36,7 +36,6 @@ class StatusViewController < UIViewController
     statusView.requestAdIfNeeded
   end
 
-
   def recognizedSwipe(recognizer)
     point = recognizer.locationInView view
     showLog if point.y > 300
@@ -55,11 +54,8 @@ class StatusViewController < UIViewController
   end
 
   def screenDeactivated
-    statusView.messageLabel.text = ''
-    statusView.messageLabel.backgroundColor = Colors.closingCellBackgroundFor(:gray.color)
-    statusView.messageLabel.textColor = Colors.messageCellColorFor(:gray.color)
+    statusView.deactivate
   end
-
 
   def statusViewCrossingLabelTouched
     showCrossingListToChangeCurrent
@@ -90,14 +86,6 @@ class StatusViewController < UIViewController
   end
 
   def reloadData
-    crossing = Model.currentCrossing
-    
-    statusView.crossingLabel.text = crossing.localizedName
-    statusView.crossingStatusLabel.text = "main.crossing $closes at $time".li \
-        crossing.closed? ? "closed".l : "will be closed".l, Format.munutes_as_hhmm(crossing.nextClosing.closingTime)
-    statusView.trainStatusLabel.text = "main.allegro will pass at $time".li(Format.munutes_as_hhmm(crossing.nextClosing.trainTime))
-    statusView.messageLabel.text = crossing.subtitle
-    statusView.messageLabel.backgroundColor = Colors.closingCellBackgroundFor(crossing.color)
-    statusView.messageLabel.textColor = Colors.messageCellColorFor(crossing.color)
+    statusView.setCrossing Model.currentCrossing
   end
 end

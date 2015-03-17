@@ -79,7 +79,7 @@ class StatusView < UIView
 
     @footnoteLabel = UILabel.alloc.initWithFrame(CGRectZero).tap do |l|
       l.text = "main.footer".l
-      l.color = UIColor.grayShade(0.6)
+      l.color = UIColor.grayShade(0.5)
       l.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
       l.numberOfLines = 0
       l.shadowColor = UIColor.colorWithWhite 1, alpha:1
@@ -214,6 +214,25 @@ class StatusView < UIView
     end
   end
 
+
+  def setCrossing(crossing)
+    crossingLabel.text = crossing.localizedName
+    crossingStatusLabel.text = "main.crossing $closes at $time".li \
+        crossing.closed? ? "closed".l : "will be closed".l, Format.munutes_as_hhmm(crossing.nextClosing.closingTime)
+    trainStatusLabel.text = "main.allegro will pass at $time".li(Format.munutes_as_hhmm(crossing.nextClosing.trainTime))
+    messageLabel.text = crossing.subtitle
+    messageLabel.backgroundColor = Colors.closingCellBackgroundFor(crossing.color)
+    messageLabel.textColor = Colors.messageCellColorFor(crossing.color)
+    adView.hidden = NO
+  end
+  
+  def deactivate
+    messageLabel.backgroundColor = Colors.closingCellBackgroundFor(:gray.color)
+    messageLabel.text = ''
+    crossingStatusLabel.text = "main.crossing $closes at $time".li("will be closed".l, '—')
+    trainStatusLabel.text = "main.allegro will pass at $time".li('—')
+    adView.hidden = YES
+  end
 
   def requestAdIfNeeded
     @adViewController.requestAdIfNeeded

@@ -6,17 +6,14 @@ class AppDelegate
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     Object.const_set :App, self
     Object.const_set :Model, ModelManager.alloc
-
     Model.init
 
     UINavigationBar.appearance.translucent = NO
     UITabBar.appearance.translucent = NO
 
-    # @mainController = MainViewController.alloc.init
     @mainController = StatusViewController.alloc.init
     @listController = CrossingListController.alloc.initWithStyle UITableViewStyleGrouped
-    # @mapController = CrossingMapController.alloc.init
-    @mapController = MainViewController.alloc.init
+    @mapController = CrossingMapController.alloc.init
     @tabBarController = UITabBarController.new.tap do |tbc|
       tabItemControllers = [@mainController, @listController, @mapController]
       tbc.viewControllers = tabItemControllers.map { |c| UINavigationController.alloc.initWithRootViewController(c, withDelegate:self) }
@@ -31,11 +28,9 @@ class AppDelegate
 
     @perMinuteTimer = NSTimer.scheduledTimerWithTimeInterval 1, target:self, selector:'timerTicked', userInfo:nil, repeats:YES
     @perMinuteTimer.fireDate = Time.next_full_minute_date unless DEBUG
-    @lastFireTime = 0
+    @perMinuteTimerLastFireTime = 0
 
     NSNotificationCenter.defaultCenter.addObserver self, selector:'currentCrossingChanged', name:NXDefaultCellIDCurrentCrossingChanged, object:nil
-
-    updateAppColorsToCurrent
 
     true
   end
@@ -54,19 +49,6 @@ class AppDelegate
     screenDeactivated
   end
 
-  def screenDeactivated
-    @activate = false
-    visibleViewController.performSelectorIfDefined(:screenDeactivated)
-    updateAppColorsTo(:gray.color)
-  end
-
-  def screenActivated
-    @active = true
-    visibleViewController.performSelectorIfDefined(:screenActivated)
-    updateAppColorsToCurrent
-  end
-
-
 
   def locationManager
     @locationManager ||= begin
@@ -78,20 +60,18 @@ class AppDelegate
     end
   end
 
-  # def locationManager(manager, didChangeAuthorizationStatus:status)
-  #   case status
-  #   when KCLAuthorizationStatusAuthorizedWhenInUse, KCLAuthorizationStatusAuthorized
-  #     locationManager.startUpdatingLocation
-  #   else # status > KCLAuthorizationStatusNotDetermined
-  #   end
-  # end
+  def locationManager(manager, didChangeAuthorizationStatus:status)
+    case status
+    when KCLAuthorizationStatusAuthorizedWhenInUse, KCLAuthorizationStatusAuthorizedAlways
+      locationManager.startUpdatingLocation
+    else
+      locationManager.stopUpdatingLocation
+    end
+  end
 
-  def locationManager(manager, didUpdateToLocation:newLocation, fromLocation:oldLocation)
-    MXWriteToConsole(
-      "didUpdateToLocation acc=%.f dist=%.f %@",
-      newLocation.horizontalAccuracy, newLocation.distanceFromLocation(oldLocation), Model.closestCrossing.localizedName)
-
-    newClosestCrossing = Model.crossingClosestTo(newLocation)
+  def locationManager(manager, didUpdateToLocation:nl, fromLocation:ol)
+    Device.debug("didUpdateToLocation acc=%.f dist=%.f %s", nl.horizontalAccuracy, nl.distanceFromLocation(ol), Model.closestCrossing.localizedName)
+    newClosestCrossing = Model.crossingClosestTo(nl)
     if newClosestCrossing != Model.closestCrossing
       Model.closestCrossing = newClosestCrossing
       NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDClosestCrossingChanged, object:Model.closestCrossing
@@ -99,54 +79,34 @@ class AppDelegate
   end
 
   def locationManager(manager, didFailWithError:error)
-    MXWriteToConsole("locationManager:didFailWithError: %@", error)
-
+    Device.debug "locationManager:didFailWithError: %s", error.description
     Model.closestCrossing = nil
     NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDClosestCrossingChanged, object:Model.closestCrossing
   end
 
-  def startLocationTracking
-    locationManager.startUpdatingLocation
+
+  def screenDeactivated
+    @active = false
+    visibleViewController.performSelectorIfDefined(:screenDeactivated)
   end
 
-
-
-  def navigationController(navController, willShowViewController:viewController, animated:animated)
-    newControllerHasNoToolbar = viewController.toolbarItems.nil? || viewController.toolbarItems.count == 0
-    navController.setToolbarHidden newControllerHasNoToolbar, animated:animated
-    triggerModelUpdate if animated
+  def screenActivated
+    @active = true
+    visibleViewController.performSelectorIfDefined(:screenActivated)
   end
 
   def timerTicked
-    if @active && @lastFireTime != Device.currentTimeInMunutes
-      @lastFireTime = Device.currentTimeInMunutes
+    if @active && @perMinuteTimerLastFireTime != Device.currentTimeInMunutes
+      @perMinuteTimerLastFireTime = Device.currentTimeInMunutes
       triggerModelUpdate      
     end
   end
 
   def currentCrossingChanged
-    updateAppColorsToCurrent
   end
 
   def triggerModelUpdate
     visibleViewController.performSelectorIfDefined :modelUpdated
-  end
-
-  def updateAppColorsToCurrent
-    updateAppColorsTo(Model.currentCrossing.color)
-  end
-
-  def updateAppColorsTo(baseColor)
-    # barBackColor = Colors.barBackColorFor(baseColor)
-    # barTextColor = Colors.barTextColorFor(baseColor)
-    # barStyle = Colors.barStyleFor(baseColor)
-    #
-    # [@mainController.navigationController].each do |navController|
-    #   navController.navigationBar.barTintColor = barBackColor
-    #   navController.navigationBar.tintColor = barTextColor
-    #   navController.navigationBar.barStyle = barStyle
-    #   navController.navigationBar.setTitleTextAttributes NSForegroundColorAttributeName => barTextColor
-    # end
   end
 
   def visibleViewController

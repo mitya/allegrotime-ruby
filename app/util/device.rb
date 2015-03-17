@@ -53,4 +53,8 @@ module Device
   def currentTimeInMunutes
     Time.now.to_i / 60
   end
+  
+  def debug(format, *args)
+    puts format % args if DEBUG
+  end
 end
