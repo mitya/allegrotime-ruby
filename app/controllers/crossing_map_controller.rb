@@ -26,6 +26,7 @@ class CrossingMapController < UIViewController
   end
   
   def viewWillAppear(animated) super
+    Device.trackScreen :map
     if lastRegion
       mapView.setRegion lastRegion, animated:animated
     elsif Model.closestCrossing
@@ -72,6 +73,8 @@ class CrossingMapController < UIViewController
   
     crossing = view.annotation
     
+    Device.track :map_accessory_tapped, crossing.key, crossing.state
+    
     App.listController.navigationController.popToViewController App.listController, animated:NO
     tabBarController.selectedViewController = App.listController.navigationController
     UIView.animateWithDuration(0.3,
@@ -84,6 +87,7 @@ class CrossingMapController < UIViewController
   
   def changeMapType(segment)
     mapView.mapType = segment.selectedSegmentIndex
+    Device.track :map_type_changed, nil, mapView.mapType
   end
   
   def modelUpdated
@@ -113,6 +117,7 @@ class CrossingMapController < UIViewController
   
   def showUserLocation
     coordinate = mapView.userLocation.location && mapView.userLocation.location.coordinate
+    Device.track :map_show_location
     if coordinate && coordinate.latitude != 0 && coordinate.latitude != 0
       mapView.setCenterCoordinate coordinate, animated:YES
     end

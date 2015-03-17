@@ -75,4 +75,19 @@ module Device
     debug(message, *args) if DEBUG
     NSLog message % args
   end
+  
+  def tracker
+    GAI.sharedInstance.defaultTracker
+  end
+  
+  def track(action, label=nil, value=nil)
+    tracker.send GAIDictionaryBuilder.createEventWithCategory('ui', action: action.to_s, label: label, value: value).build
+    debug "EVENT #{action} '#{label}' (#{value})" if DEBUG
+  end
+  
+  def trackScreen(screenName, key=nil)
+    tracker.set KGAIScreenName, value: screenName.to_s
+    tracker.send GAIDictionaryBuilder.createScreenView.build    
+    debug "SCREEN #{screenName} [#{key}]" if DEBUG
+  end
 end

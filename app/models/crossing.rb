@@ -147,6 +147,10 @@ class Crossing
     Model.crossings.indexOfObject self
   end
 
+  def key
+    distance
+  end
+
   def addClosingWithTime(time, direction:direction)
     closing = Closing.new
     closing.crossing = self

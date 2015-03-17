@@ -8,7 +8,7 @@ class LogViewController < UIViewController
   def viewDidLoad
     self.title = "Лог";
 
-    table = UITableView.alloc.initWithFrame view.bounds, style:UITableViewStylePlain
+    self.table = UITableView.alloc.initWithFrame view.bounds, style:UITableViewStylePlain
     table.delegate = self
     table.dataSource = self
     table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
@@ -28,7 +28,7 @@ class LogViewController < UIViewController
     startTime = CFAbsoluteTimeGetCurrent()
 
     isFirstRowVisible = table.indexPathsForVisibleRows.containsObject NSIndexPath.indexPathForRow(0, inSection:0)
-    if isFirstRowVisible && table.numberOfRowsInSection(0) == MXGetConsole().count - 1
+    if isFirstRowVisible && table.numberOfRowsInSection(0) == storage.count - 1
       table.insertRowsAtIndexPaths NSArray.arrayWithObject(NSIndexPath.indexPathForRow(0, inSection:0)), withRowAnimation:UITableViewRowAnimationFade
     else
       table.reloadData

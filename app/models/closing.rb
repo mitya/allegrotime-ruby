@@ -2,7 +2,6 @@ class Closing
   DirectionToFinland = 1
   DirectionToRussia = 2
 
-  ### properties
 
   attr_accessor :time, :crossing, :direction, :trainTime
 
@@ -41,8 +40,11 @@ class Closing
   def color
     crossing.color
   end
+  
+  def key
+    "#{crossing.distance}-#{time}"
+  end
 
-  ### static
 
   def self.closingWithCrossingName(crossingName, time:time, direction:direction)
     crossing = Crossing.getCrossingWithName crossingName

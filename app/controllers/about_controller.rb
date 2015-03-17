@@ -3,16 +3,14 @@ class AboutController < UIViewController
 
   def viewDidLoad
     self.title = 'about.title'.l
-
     self.webView = UIWebView.alloc.initWithFrame view.bounds
     webView.backgroundColor = UIColor.whiteColor
     webView.delegate = self
     view.addSubview webView
   end
 
-  def viewWillAppear(animated)
-    super
-
+  def viewWillAppear(animated) super
+    Device.trackScreen :about
     htmlPath = NSBundle.mainBundle.pathForResource "about", ofType:"html"
     htmlString = NSString.stringWithContentsOfFile htmlPath, encoding:NSUTF8StringEncoding, error:NULL
     webView.loadHTMLString htmlString, baseURL:NSURL.URLWithString("/")

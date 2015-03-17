@@ -8,6 +8,9 @@ class TrainScheduleController < UITableViewController
     @crossings = @sampleClosing.toRussia?? Model.reverseCrossings : Model.crossings
   end
 
+  def viewWillAppear(animated) super
+    Device.trackScreen :train_schedule, sampleClosing.key
+  end
 
 
   def tableView(tableView, numberOfRowsInSection:section)

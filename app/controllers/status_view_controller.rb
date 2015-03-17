@@ -41,6 +41,7 @@ class StatusViewController < UIViewController
   end
 
   def viewWillAppear(animated) super
+    Device.trackScreen :status, Model.currentCrossing.key
     reloadData
     statusView.requestAdIfNeeded
   end
@@ -55,6 +56,7 @@ class StatusViewController < UIViewController
   end
 
   def closestCrossingChanged
+    Device.track :status_view_crossing_changed, Model.currentCrossing.key
     reloadData
   end
 
@@ -75,6 +77,7 @@ class StatusViewController < UIViewController
     crossingsController.target = self
     crossingsController.action = 'changeCurrentCrossing:'
     crossingsController.accessoryType = UITableViewCellAccessoryCheckmark
+    crossingsController.screenName = "status.crossing_list"
     navigationController.pushViewController crossingsController, animated:YES
   end
 

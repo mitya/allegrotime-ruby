@@ -1,9 +1,10 @@
 class CrossingListController < UITableViewController
-  attr_accessor :target, :action, :accessoryType
+  attr_accessor :target, :action, :accessoryType, :screenName
 
   def initWithStyle(tableViewStyle) super
     self.title = "crossings.title".l
     self.tabBarItem = UITabBarItem.alloc.initWithTitle("crossings.tab".l, image:Device.image_named("ti-schedule"), selectedImage:Device.image_named("ti-schedule-filled"))
+    self.screenName = 'crossing_list'
     self
   end
 
@@ -15,6 +16,7 @@ class CrossingListController < UITableViewController
   end
 
   def viewWillAppear(animated) super
+    Device.trackScreen screenName
     unless @initialScrollDone
       scrollToCrossing Model.currentCrossing, animated:NO
       @initialScrollDone = true
@@ -39,6 +41,8 @@ class CrossingListController < UITableViewController
   def selectClosestCrossing
    closestCrossingIndex = Model.crossings.indexOfObject(Model.closestCrossing)
    closestCrossingIndexPath = NSIndexPath.indexPathForRow(closestCrossingIndex, inSection:0)
+
+   Device.track :crossing_list_select_closest, Model.closestCrossing.key
    
    UIView.animateWithDuration 0.5,
      animations: lambda { tableView.selectRowAtIndexPath closestCrossingIndexPath, animated:NO, scrollPosition:UITableViewScrollPositionMiddle },
@@ -82,6 +86,7 @@ class CrossingListController < UITableViewController
     end
 
     crossing = Model.crossings.objectAtIndex(ip.row)
+     Device.track :crossing_list_select, crossing.key
     if target && action
       target.performSelector action, withObject:crossing
     else

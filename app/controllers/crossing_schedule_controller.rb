@@ -5,6 +5,9 @@ class CrossingScheduleController < UITableViewController
     self.title = self.crossing.localizedName
   end
 
+  def viewWillAppear(animated) super
+    Device.trackScreen :crossing_schedule, crossing.key
+  end
 
 
   def numberOfSectionsInTableView(tableView)
@@ -65,7 +68,8 @@ class CrossingScheduleController < UITableViewController
     tableView.reloadData
   end
 
-  def showMap    
+  def showMap
+    Device.track :show_crossing_map, crossing.key
     App.mapController.crossingToShowOnNextAppearance = crossing
     tabBarController.selectedViewController = App.mapController.navigationController
   end

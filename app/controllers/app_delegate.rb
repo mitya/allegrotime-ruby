@@ -32,6 +32,8 @@ class AppDelegate
 
     NSNotificationCenter.defaultCenter.addObserver self, selector:'currentCrossingChanged', name:NXDefaultCellIDCurrentCrossingChanged, object:nil
 
+    initGoogleTracker
+
     true
   end
 
@@ -61,6 +63,7 @@ class AppDelegate
   end
 
   def locationManager(manager, didChangeAuthorizationStatus:status)
+    Device.track :location_authorization_changed, nil, status
     case status
     when KCLAuthorizationStatusAuthorizedWhenInUse, KCLAuthorizationStatusAuthorizedAlways
       locationManager.startUpdatingLocation
@@ -79,7 +82,8 @@ class AppDelegate
   end
 
   def locationManager(manager, didFailWithError:error)
-    Device.debug "locationManager:didFailWithError: %s", error.description
+    Device.debug "locationManager.didFailWithError: #{error.description}", 
+    Device.track :location_failed, error.description
     Model.closestCrossing = nil
     NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDClosestCrossingChanged, object:Model.closestCrossing
   end
@@ -91,6 +95,7 @@ class AppDelegate
   end
 
   def screenActivated
+    Device.track :app_activated
     @active = true
     visibleViewController.performSelectorIfDefined(:screenActivated)
   end
@@ -111,5 +116,13 @@ class AppDelegate
 
   def visibleViewController
     tabBarController.selectedViewController.visibleViewController
+  end
+  
+  def initGoogleTracker
+    GAI.sharedInstance.trackUncaughtExceptions = YES
+    GAI.sharedInstance.dispatchInterval = 20
+    GAI.sharedInstance.trackerWithTrackingId "UA-60863161-1"
+    GAI.sharedInstance.logger.setLogLevel DEBUG ? KGAILogLevelWarning : KGAILogLevelInfo
+    # GAI.sharedInstance.setDryRun YES if DEBUG
   end
 end

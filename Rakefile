@@ -22,7 +22,9 @@ Motion::Project::App.setup do |app|
   app.provisioning_profile = '/Volumes/Vault/Sources/active/_etc/iOS_Team.mobileprovision'
   app.icons = %w(Icon-60 Icon-76 Icon-Small-40 Icon-Small)
   app.frameworks += %w(StoreKit AdSupport QuartzCore AVFoundation CoreTelephony SystemConfiguration MessageUI AudioToolbox MapKit CoreLocation CoreData EventKit EventKitUI)
+  app.libs += %w(/usr/lib/libsqlite3.dylib /usr/lib/libz.dylib)
   app.vendor_project 'vendor/GoogleMobileAds-7.0.0.framework', :static, :products => ['GoogleMobileAds'], :headers_dir => 'Headers', force_load: false
+  app.vendor_project 'vendor/GoogleAnalyticsServicesiOS-3.10', :static, :products => ['libGoogleAnalyticsServices.a'], :headers_dir => 'GoogleAnalytics/Library', force_load: false
   app.device_family = [:iphone, :ipad]
   app.info_plist['DebugModeEnabled'] = true
   app.info_plist['UIStatusBarHidden'] = true

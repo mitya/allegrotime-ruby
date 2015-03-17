@@ -148,6 +148,7 @@ class StatusView < UIView
 
 
   def deviceRotated
+    Device.track :status_view_rotated, nil, UIApplication.sharedApplication.statusBarOrientation
     setNeedsUpdateConstraints
   end
 
@@ -172,7 +173,7 @@ class StatusView < UIView
   end
 
   def touchesCancelled(touches, withEvent:event)
-    puts "touchesCancelled is never called?"
+    @crossingLabel.backgroundColor = UIColor.whiteColor
   end
 
 
@@ -274,10 +275,12 @@ class StatusAdViewController
   end
 
   def adViewDidReceiveAd(adView)
+    Device.track :ad_received
     UIView.animateWithDuration 1.5, animations: -> { adView.alpha = 1.0 }
   end
   
   def adView(view, didFailToReceiveAdWithError:error)
+    Device.track :ad_failed
     Device.warn "failed receiving ad: #{error.description}"
   end  
 end
