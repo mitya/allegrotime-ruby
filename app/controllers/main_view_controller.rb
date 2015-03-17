@@ -185,7 +185,7 @@ class MainViewController < UIViewController
   end
 
   def adView(view, didFailToReceiveAdWithError:error)
-    Log.warn "adView:didFailToReceiveAdWithError: #{error.description}"
+    Device.warn "adView:didFailToReceiveAdWithError: #{error.description}"
   end
 
 

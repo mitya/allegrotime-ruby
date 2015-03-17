@@ -70,7 +70,7 @@ class AppDelegate
   end
 
   def locationManager(manager, didUpdateToLocation:nl, fromLocation:ol)
-    Device.debug("didUpdateToLocation acc=%.f dist=%.f %s", nl.horizontalAccuracy, nl.distanceFromLocation(ol), Model.closestCrossing.localizedName)
+    Device.debug "didUpdateToLocation acc=%.f dist=%.f %s", nl.horizontalAccuracy, nl.distanceFromLocation(ol), Model.closestCrossing.localizedName
     newClosestCrossing = Model.crossingClosestTo(nl)
     if newClosestCrossing != Model.closestCrossing
       Model.closestCrossing = newClosestCrossing

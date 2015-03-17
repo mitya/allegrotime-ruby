@@ -55,6 +55,24 @@ module Device
   end
   
   def debug(format, *args)
-    puts format % args if DEBUG
+    if DEBUG
+      message = format % args
+      puts message
+      
+      message = "#{Time.now}: #{message}"
+      
+      if $logging_buffer.count > 200
+        $logging_buffer.clear
+        NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDLogConsoleFlushed, object:$logging_buffer
+      end      
+      
+      $logging_buffer << message
+      NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDLogConsoleUpdated, object:$logging_buffer
+    end    
+  end
+
+  def warn(message, *args)
+    debug(message, *args) if DEBUG
+    NSLog message % args
   end
 end

@@ -20,6 +20,7 @@ NXDefaultCellIDLogConsoleUpdated = "NXDefaultCellIDLogConsoleUpdated"
 NXDefaultCellIDLogConsoleFlushed = "NXDefaultCellIDLogConsoleFlushed"
 NXDefaultCellID = "NXDefaultCellID"
 
+$logging_buffer = []
 
 ##############################
 

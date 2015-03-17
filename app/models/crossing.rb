@@ -181,7 +181,7 @@ class Crossing
       return crossing if crossing.name == name
     end
 
-    Log.warn("[%@] crossing is not found for name = '%@'", __method__, name)
+    Device.warn("[%@] crossing is not found for name = '%@'", __method__, name)
 
     nil
   end

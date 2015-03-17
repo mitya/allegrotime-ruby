@@ -278,6 +278,6 @@ class StatusAdViewController
   end
   
   def adView(view, didFailToReceiveAdWithError:error)
-    Log.warn "failed receiving ad: #{error.description}"
+    Device.warn "failed receiving ad: #{error.description}"
   end  
 end

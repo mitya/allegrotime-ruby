@@ -22,7 +22,7 @@ class LogViewController < UIViewController
     view.addGestureRecognizer swipeRecognizer
   end
 
-  ### handlers
+
 
   def consoleUpdated
     startTime = CFAbsoluteTimeGetCurrent()
@@ -33,8 +33,6 @@ class LogViewController < UIViewController
     else
       table.reloadData
     end
-
-    Log.info "%@ updated in %d", __func__, startTime - CFAbsoluteTimeGetCurrent()
   end
 
   def consoleFlushed
@@ -46,21 +44,20 @@ class LogViewController < UIViewController
     navigationController.popViewControllerAnimated YES if point.y > 300
   end
 
-  ### table view
+
 
   def tableView(tableView, numberOfRowsInSection:section)
-    MXGetConsole().count
+    storage.count
   end
 
   def tableView(tableView, cellForRowAtIndexPath:indexPath)
-    console = MXGetConsole()
-    message = console.objectAtIndex (console.count - 1 - indexPath.row)
+    message = storage[storage.count - 1 - indexPath.row]
 
     cell = tableView.dequeueReusableCellWithIdentifier NXDefaultCellID
     if !cell
       cell = UITableViewCell.alloc.initWithStyle UITableViewCellStyleDefault, reuseIdentifier:NXDefaultCellID
       cell.selectionStyle = UITableViewCellSelectionStyleGray;
-      cell.textLabel.font = UIFont.systemFontOfSize 12
+      cell.textLabel.font = UIFont.systemFontOfSize 10
       cell.textLabel.numberOfLines = 0
       cell.textLabel.lineBreakMode = UILineBreakModeWordWrap
     end
@@ -71,11 +68,14 @@ class LogViewController < UIViewController
   end
 
   def tableView(tableView, heightForRowAtIndexPath:indexPath)
-    console = MXGetConsole()
-    message = console.objectAtIndex console.count - 1 - indexPath.row
-    font = UIFont.systemFontOfSize 12
-    onstraintSize = CGSizeMake(table.bounds.size.width - 20, MAXFLOAT)
+    message = storage[storage.count - 1 - indexPath.row]
+    font = UIFont.systemFontOfSize 10
+    constraintSize = CGSizeMake(tableView.bounds.size.width - 20, 10_000)
     labelSize = message.sizeWithFont font, constrainedToSize:constraintSize, lineBreakMode:NSLineBreakByWordWrapping
     labelSize.height + 6
+  end
+  
+  def storage
+    $logging_buffer
   end
 end
