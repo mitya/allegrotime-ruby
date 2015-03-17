@@ -59,7 +59,7 @@ module Device
       message = format % args
       puts message
       
-      message = "#{Time.now}: #{message}"
+      message = "[#{Time.now.strftime('%d.%m %H:%M:%S')}] #{message}"
       
       if $logging_buffer.count > 200
         $logging_buffer.clear
