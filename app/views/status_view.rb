@@ -25,7 +25,7 @@ class StatusView < UIView
       l.textAlignment = NSTextAlignmentCenter
       l.font = UIFont.boldSystemFontOfSize(21)
       l.color = UIColor.grayShade 0.2
-      l.shadowColor = UIColor.colorWithWhite 0.80, alpha:0.70
+      l.shadowColor = UIColor.colorWithWhite 0.90, alpha:0.70
       l.shadowOffset = CGSizeMake(1, 1)
       l.backgroundColor = UIColor.whiteColor
       l.translatesAutoresizingMaskIntoConstraints = NO
