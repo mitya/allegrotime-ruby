@@ -23,9 +23,9 @@ class StatusView < UIView
     @crossingLabel = UILabel.alloc.initWithFrame(CGRectZero).tap do |l|
       l.text = "Poklonnogorskaya"
       l.textAlignment = NSTextAlignmentCenter
-      l.font = UIFont.boldSystemFontOfSize(22)
+      l.font = UIFont.boldSystemFontOfSize(21)
       l.color = UIColor.grayShade 0.2
-      l.shadowColor = UIColor.colorWithWhite 1, alpha:1
+      l.shadowColor = UIColor.colorWithWhite 0.80, alpha:0.70
       l.shadowOffset = CGSizeMake(1, 1)
       l.backgroundColor = UIColor.whiteColor
       l.translatesAutoresizingMaskIntoConstraints = NO

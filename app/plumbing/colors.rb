@@ -6,8 +6,11 @@ module Colors
   end
   
   def windowTintColor
-    # UIColor.darkGrayColor
-    UIColor.hex 0x0248b2
+    UIColor.hsb 216, 99, 70
+  end
+  
+  def logoColor
+    UIColor.hsb 216, 99, 50
   end
   
   def barBackColorFor(color)

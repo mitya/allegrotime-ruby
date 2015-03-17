@@ -16,7 +16,6 @@ class StatusViewController < UIViewController
 
   def viewDidLoad() super
     NSNotificationCenter.defaultCenter.addObserver self, selector:'closestCrossingChanged', name:NXDefaultCellIDClosestCrossingChanged, object:nil
-    navigationItem.backBarButtonItem = UIBarButtonItem.alloc.initWithTitle "main.backbutton".l, style:UIBarButtonItemStyleBordered, target:nil, action:nil
 
     # setup info button
     infoButton = UIButton.buttonWithType UIButtonTypeInfoLight
@@ -29,6 +28,16 @@ class StatusViewController < UIViewController
       swipeRecognizer.direction = UISwipeGestureRecognizerDirectionLeft
       view.addGestureRecognizer swipeRecognizer
     end
+
+    titleLabel = UILabel.alloc.initWithFrame(CGRectZero)
+    titleLabel.text = "main.title".l
+    titleLabel.font = UIFont.fontWithName('MarkerFelt-Thin', size: 18)
+    titleLabel.shadowColor = UIColor.colorWithWhite 0.75, alpha:0.75
+    titleLabel.shadowOffset = CGSizeMake(1, 1)
+    titleLabel.sizeToFit
+
+    navigationItem.titleView = titleLabel
+    navigationItem.backBarButtonItem = UIBarButtonItem.alloc.initWithTitle "main.backbutton".l, style:UIBarButtonItemStyleBordered, target:nil, action:nil
   end
 
   def viewWillAppear(animated) super
