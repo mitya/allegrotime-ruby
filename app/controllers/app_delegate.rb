@@ -16,7 +16,11 @@ class AppDelegate
     @mapController = CrossingMapController.alloc.init
     @tabBarController = UITabBarController.new.tap do |tbc|
       tabItemControllers = [@mainController, @listController, @mapController]
-      tbc.viewControllers = tabItemControllers.map { |c| UINavigationController.alloc.initWithRootViewController(c, withDelegate:self) }
+      tbc.viewControllers = tabItemControllers.map do |c|
+         nav = UINavigationController.alloc.initWithRootViewController(c)
+         nav.delegate = self
+         nav
+      end
       tbc.delegate = self
       tbc.selectedIndex = 0
     end
@@ -32,7 +36,7 @@ class AppDelegate
 
     NSNotificationCenter.defaultCenter.addObserver self, selector:'currentCrossingChanged', name:NXDefaultCellIDCurrentCrossingChanged, object:nil
 
-    initGoogleTracker
+    initTrackers
 
     true
   end
@@ -63,7 +67,7 @@ class AppDelegate
   end
 
   def locationManager(manager, didChangeAuthorizationStatus:status)
-    Device.track :location_authorization_changed, nil, status
+    Device.track :location_authorization_changed, status 
     case status
     when KCLAuthorizationStatusAuthorizedWhenInUse, KCLAuthorizationStatusAuthorizedAlways
       locationManager.startUpdatingLocation
@@ -74,11 +78,14 @@ class AppDelegate
 
   def locationManager(manager, didUpdateToLocation:nl, fromLocation:ol)
     Device.debug "didUpdateToLocation acc=%.f dist=%.f %s", nl.horizontalAccuracy, nl.distanceFromLocation(ol), Model.closestCrossing.localizedName
+    
     newClosestCrossing = Model.crossingClosestTo(nl)
     if newClosestCrossing != Model.closestCrossing
       Model.closestCrossing = newClosestCrossing
       NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDClosestCrossingChanged, object:Model.closestCrossing
     end
+    
+    Flurry.setLatitude nl.coordinate.latitude, longitude:nl.coordinate.longitude, horizontalAccuracy:nl.horizontalAccuracy, verticalAccuracy:nl.verticalAccuracy
   end
 
   def locationManager(manager, didFailWithError:error)
@@ -118,11 +125,13 @@ class AppDelegate
     tabBarController.selectedViewController.visibleViewController
   end
   
-  def initGoogleTracker
-    GAI.sharedInstance.trackUncaughtExceptions = YES
-    GAI.sharedInstance.dispatchInterval = 20
+  def initTrackers
     GAI.sharedInstance.trackerWithTrackingId "UA-60863161-1"
+    GAI.sharedInstance.dispatchInterval = 20
+    GAI.sharedInstance.trackUncaughtExceptions = YES
     GAI.sharedInstance.logger.setLogLevel DEBUG ? KGAILogLevelWarning : KGAILogLevelInfo
     # GAI.sharedInstance.setDryRun YES if DEBUG
+    
+    Flurry.startSession FLURRY_TOKEN
   end
 end

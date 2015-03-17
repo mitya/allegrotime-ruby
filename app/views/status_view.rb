@@ -148,7 +148,7 @@ class StatusView < UIView
 
 
   def deviceRotated
-    Device.track :status_view_rotated, nil, UIApplication.sharedApplication.statusBarOrientation
+    Device.track :status_view_rotated, UIApplication.sharedApplication.statusBarOrientation
     setNeedsUpdateConstraints
   end
 
@@ -248,7 +248,7 @@ class StatusAdViewController
     @adView = adView
     @adView.delegate = self
     @adView.adUnitID = Device.iphone? ? GAD_IPHONE_AD_UNIT_ID : GAD_IPAD_AD_UNIT_ID
-    @adView.rootViewController = App.mainController    
+    @adView.rootViewController = App.mainController
     @adTimer = NSTimer.scheduledTimerWithTimeInterval GAD_REFRESH_PERIOD, target:self, selector:'adTimerTicked', userInfo:nil, repeats:YES
   end
   

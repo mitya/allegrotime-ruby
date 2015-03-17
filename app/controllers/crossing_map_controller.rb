@@ -73,7 +73,7 @@ class CrossingMapController < UIViewController
   
     crossing = view.annotation
     
-    Device.track :map_accessory_tapped, crossing.key, crossing.state
+    Device.track :map_accessory_tapped, crossing.key
     
     App.listController.navigationController.popToViewController App.listController, animated:NO
     tabBarController.selectedViewController = App.listController.navigationController
@@ -87,7 +87,7 @@ class CrossingMapController < UIViewController
   
   def changeMapType(segment)
     mapView.mapType = segment.selectedSegmentIndex
-    Device.track :map_type_changed, nil, mapView.mapType
+    Device.track :map_type_changed, mapView.mapType
   end
   
   def modelUpdated

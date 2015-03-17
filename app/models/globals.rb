@@ -14,6 +14,10 @@ GAD_TESTING_IPAD_ID = 'e993311bb857d82d1b2df4a83f03101e'
 
 TABLE_VIEW_HEADER_HEIGHT = 44
 
+SIMULATOR = UIDevice.currentDevice.model == "iPhone Simulator"
+
+FLURRY_TOKEN = 'SM6YJJ3V9TP8XPFQJWTM'
+
 NXDefaultCellIDClosestCrossingChanged = "NXDefaultCellIDClosestCrossingChangedNotification"
 NXDefaultCellIDCurrentCrossingChanged = "NXDefaultCellIDCurrentCrossingChangedNotification"
 NXDefaultCellIDLogConsoleUpdated = "NXDefaultCellIDLogConsoleUpdated"

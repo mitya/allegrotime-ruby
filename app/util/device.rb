@@ -57,7 +57,8 @@ module Device
   def debug(format, *args)
     if DEBUG
       message = format % args
-      puts message
+      puts message if SIMULATOR
+      
       
       message = "[#{Time.now.strftime('%d.%m %H:%M:%S')}] #{message}"
       
@@ -76,18 +77,32 @@ module Device
     NSLog message % args
   end
   
-  def tracker
+  def gai
     GAI.sharedInstance.defaultTracker
   end
   
   def track(action, label=nil, value=nil)
-    tracker.send GAIDictionaryBuilder.createEventWithCategory('ui', action: action.to_s, label: label, value: value).build
-    debug "EVENT #{action} '#{label}' (#{value})" if DEBUG
+    gai.send GAIDictionaryBuilder.createEventWithCategory('ui', action: action.to_s, label: label, value: value).build
+
+    if label || value
+      flurry_params = {}
+      flurry_params['label'] = label if label
+      flurry_params['value'] = value if value
+      Flurry.logEvent action.to_s, withParameters:flurry_params
+    else
+      Flurry.logEvent action.to_s
+    end
+    
+    debug "EVENT #{action} [#{label}] (#{value})" if DEBUG
   end
   
   def trackScreen(screenName, key=nil)
-    tracker.set KGAIScreenName, value: screenName.to_s
-    tracker.send GAIDictionaryBuilder.createScreenView.build    
+    gai.set KGAIScreenName, value: screenName.to_s
+    gai.send GAIDictionaryBuilder.createScreenView.build    
+    
+    Flurry.logPageView
+    Flurry.logEvent 'screen_view', withParameters:{name: screenName, screenKey: key}
+    
     debug "SCREEN #{screenName} [#{key}]" if DEBUG
   end
 end
