@@ -89,6 +89,8 @@ module Device
   end
   
   def track(category, action, label=nil)
+    return unless TRACKING
+    
     label = label.to_tracking_key if label && label.respond_to?(:to_tracking_key)
     
     gai.send GAIDictionaryBuilder.createEventWithCategory(category.to_s, action: action.to_s, label: label, value: nil).build
@@ -106,6 +108,8 @@ module Device
   end
   
   def trackScreen(screenName, key=nil)
+    return unless TRACKING
+
     key = key.to_tracking_key if key && key.respond_to?(:to_tracking_key)
     
     gai.set KGAIScreenName, value: screenName.to_s

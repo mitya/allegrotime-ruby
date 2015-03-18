@@ -126,6 +126,8 @@ class AppDelegate
   end
   
   def initTrackers
+    return unless TRACKING    
+    
     GAI.sharedInstance.trackerWithTrackingId "UA-60863161-1"
     GAI.sharedInstance.dispatchInterval = 20
     GAI.sharedInstance.trackUncaughtExceptions = YES

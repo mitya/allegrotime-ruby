@@ -16,6 +16,9 @@ TABLE_VIEW_HEADER_HEIGHT = 44
 
 SIMULATOR = UIDevice.currentDevice.model == "iPhone Simulator"
 
+TRACKING = true
+ADVERTISEMENT = true
+
 FLURRY_TOKEN = 'SM6YJJ3V9TP8XPFQJWTM'
 
 NXDefaultCellIDClosestCrossingChanged = "NXDefaultCellIDClosestCrossingChangedNotification"
