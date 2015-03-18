@@ -116,7 +116,7 @@ module Device
     gai.send GAIDictionaryBuilder.createScreenView.build    
     
     Flurry.logPageView
-    Flurry.logEvent 'screen:view', withParameters:{name: screenName, key: key}
+    Flurry.logEvent "screen:#{screenName}", withParameters:{key: key}
     
     debug "SCREEN #{screenName} [#{key}]" if DEBUG
   end
