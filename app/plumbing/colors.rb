@@ -2,11 +2,11 @@ module Colors
   module_function
     
   def mainCellTextColor
-    UIColor.rgb(32, 32, 40)
+    UIColor.rgb 32, 32, 40
   end
   
   def windowTintColor
-    UIColor.hsb 216, 99, 70
+    UIColor.grayShade 0.2
   end
   
   def logoColor

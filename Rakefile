@@ -59,8 +59,8 @@ namespace :g do
   end
 
   task :message_bg do
-    colors = { red: %w(f00 c00), green: %w(0a0 080), yellow: %w(ff0 dd0), gray: %w(999 aaa) }
-    colors = { gray: %w(999 aaa) }
+    colors = { red: %w(f00 c00), green: %w(0a0 080), yellow: %w(ff0 dd0), gray: %w(aaa 888) }
+    colors = { gray: %w(aaa 888) }
     height = 70
   
     colors.each_pair do |name, color|

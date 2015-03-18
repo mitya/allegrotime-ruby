@@ -222,6 +222,7 @@ class StatusView < UIView
         crossing.closed? ? "closed".l : "will be closed".l, Format.munutes_as_hhmm(crossing.nextClosing.closingTime)
     trainStatusLabel.text = "main.allegro will pass at $time".li(Format.munutes_as_hhmm(crossing.nextClosing.trainTime))
     messageLabel.text = crossing.subtitle
+    messageLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
     messageLabel.backgroundColor = Colors.closingCellBackgroundFor(crossing.color)
     messageLabel.textColor = Colors.messageCellColorFor(crossing.color)
     adView.hidden = NO
@@ -229,7 +230,8 @@ class StatusView < UIView
   
   def deactivate
     messageLabel.backgroundColor = Colors.closingCellBackgroundFor(:gray.color)
-    messageLabel.text = ''
+    messageLabel.font = UIFont.systemFontOfSize(32)
+    messageLabel.text = '☻'
     crossingStatusLabel.text = "main.crossing $closes at $time".li("will be closed".l, '—')
     trainStatusLabel.text = "main.allegro will pass at $time".li('—')
     adView.hidden = YES

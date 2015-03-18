@@ -17,7 +17,7 @@ TABLE_VIEW_HEADER_HEIGHT = 44
 SIMULATOR = UIDevice.currentDevice.model == "iPhone Simulator"
 
 TRACKING = true
-ADVERTISEMENT = true
+ADVERTISEMENT = false
 
 FLURRY_TOKEN = 'SM6YJJ3V9TP8XPFQJWTM'
 
