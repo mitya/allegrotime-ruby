@@ -80,7 +80,7 @@ class Crossing
       return closing if closing.trainTime >= currentTime
     end
 
-    closings.firstObject
+    closings.first
   end
 
   def previousClosing
@@ -147,15 +147,15 @@ class Crossing
     Model.crossings.indexOfObject self
   end
 
-  def key
-    distance
+  def to_tracking_key
+    name
   end
 
   def addClosingWithTime(time, direction:direction)
     closing = Closing.new
     closing.crossing = self
     closing.time = time
-    closing.trainTime = time.minutes_from_hhmm
+    closing.trainTime = Device.minutes_from_hhmm(time)
     closing.direction = direction
     closings.addObject closing
   end

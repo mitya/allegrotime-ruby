@@ -73,7 +73,7 @@ class CrossingMapController < UIViewController
   
     crossing = view.annotation
     
-    Device.track :map_accessory_tapped, crossing.key
+    Device.trackUI :tap_map_accessory, crossing
     
     App.listController.navigationController.popToViewController App.listController, animated:NO
     tabBarController.selectedViewController = App.listController.navigationController
@@ -87,7 +87,7 @@ class CrossingMapController < UIViewController
   
   def changeMapType(segment)
     mapView.mapType = segment.selectedSegmentIndex
-    Device.track :map_type_changed, mapView.mapType
+    Device.trackUI :change_map_type, mapView.mapType
   end
   
   def modelUpdated
@@ -117,7 +117,7 @@ class CrossingMapController < UIViewController
   
   def showUserLocation
     coordinate = mapView.userLocation.location && mapView.userLocation.location.coordinate
-    Device.track :map_show_location
+    Device.trackUI :tap_show_location
     if coordinate && coordinate.latitude != 0 && coordinate.latitude != 0
       mapView.setCenterCoordinate coordinate, animated:YES
     end

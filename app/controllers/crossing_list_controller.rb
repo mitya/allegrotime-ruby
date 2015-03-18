@@ -42,7 +42,7 @@ class CrossingListController < UITableViewController
    closestCrossingIndex = Model.crossings.indexOfObject(Model.closestCrossing)
    closestCrossingIndexPath = NSIndexPath.indexPathForRow(closestCrossingIndex, inSection:0)
 
-   Device.track :crossing_list_select_closest, Model.closestCrossing.key
+   Device.trackUI :select_closest_crossing_list, Model.closestCrossing
    
    UIView.animateWithDuration 0.5,
      animations: lambda { tableView.selectRowAtIndexPath closestCrossingIndexPath, animated:NO, scrollPosition:UITableViewScrollPositionMiddle },
@@ -86,7 +86,7 @@ class CrossingListController < UITableViewController
     end
 
     crossing = Model.crossings.objectAtIndex(ip.row)
-     Device.track :crossing_list_select, crossing.key
+     Device.trackUI :select_crossing_list, crossing
     if target && action
       target.performSelector action, withObject:crossing
     else

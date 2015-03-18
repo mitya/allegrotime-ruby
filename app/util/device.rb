@@ -57,8 +57,7 @@ module Device
   def debug(format, *args)
     if DEBUG
       message = format % args
-      puts message if SIMULATOR
-      
+      puts message if SIMULATOR      
       
       message = "[#{Time.now.strftime('%d.%m %H:%M:%S')}] #{message}"
       
@@ -81,28 +80,47 @@ module Device
     GAI.sharedInstance.defaultTracker
   end
   
-  def track(action, label=nil, value=nil)
-    gai.send GAIDictionaryBuilder.createEventWithCategory('ui', action: action.to_s, label: label, value: value).build
+  def trackUI(action, label=nil)
+    track :ui, action, label
+  end
+  
+  def trackSystem(action, label=nil)
+    track :sys, action, label    
+  end
+  
+  def track(category, action, label=nil)
+    label = label.to_tracking_key if label && label.respond_to?(:to_tracking_key)
+    
+    gai.send GAIDictionaryBuilder.createEventWithCategory(category.to_s, action: action.to_s, label: label, value: nil).build
 
-    if label || value
+    full_action_name = "#{category}:#{action}"
+    if label
       flurry_params = {}
       flurry_params['label'] = label if label
-      flurry_params['value'] = value if value
-      Flurry.logEvent action.to_s, withParameters:flurry_params
+      Flurry.logEvent full_action_name, withParameters:flurry_params
     else
-      Flurry.logEvent action.to_s
+      Flurry.logEvent full_action_name
     end
     
-    debug "EVENT #{action} [#{label}] (#{value})" if DEBUG
+    debug "EVENT #{full_action_name} [#{label}]" if DEBUG
   end
   
   def trackScreen(screenName, key=nil)
+    key = key.to_tracking_key if key && key.respond_to?(:to_tracking_key)
+    
     gai.set KGAIScreenName, value: screenName.to_s
     gai.send GAIDictionaryBuilder.createScreenView.build    
     
     Flurry.logPageView
-    Flurry.logEvent 'screen_view', withParameters:{name: screenName, screenKey: key}
+    Flurry.logEvent 'screen:view', withParameters:{name: screenName, key: key}
     
     debug "SCREEN #{screenName} [#{key}]" if DEBUG
   end
+  
+  def minutes_from_hhmm(string)
+    components = string.componentsSeparatedByString ":"
+    hours = components.objectAtIndex(0).integerValue
+    minutes = components.objectAtIndex(1).integerValue
+    hours * 60 + minutes
+  end  
 end
