@@ -253,12 +253,14 @@ class StatusAdViewController
   end
   
   def requestAd
+    return unless ADVERTISEMENT
     adRequest = GADRequest.request
     adRequest.testDevices = [ GAD_TESTING_IPHONE_ID, GAD_TESTING_IPAD_ID ]
     if loc = App.locationManager.location
       adRequest.setLocationWithLatitude loc.coordinate.latitude, longitude:loc.coordinate.longitude, accuracy:loc.horizontalAccuracy 
     end
     adView.loadRequest adRequest
+    Device.debug "ad_requested"
   end
 
   def requestAdIfNeeded
