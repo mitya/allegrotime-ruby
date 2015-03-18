@@ -41,7 +41,7 @@ class StatusViewController < UIViewController
   end
 
   def viewWillAppear(animated) super
-    Device.trackScreen :status, Model.currentCrossing.key
+    Device.trackScreen :status, Model.currentCrossing
     reloadData
     statusView.requestAdIfNeeded
   end
@@ -56,7 +56,7 @@ class StatusViewController < UIViewController
   end
 
   def closestCrossingChanged
-    Device.track :status_view_crossing_changed, Model.currentCrossing.key
+    Device.trackSystem :status_view_crossing_changed, Model.currentCrossing
     reloadData
   end
 

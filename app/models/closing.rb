@@ -41,8 +41,8 @@ class Closing
     crossing.color
   end
   
-  def key
-    "#{crossing.distance}-#{time}"
+  def to_tracking_key
+    "#{crossing.name}-#{time}"
   end
 
 
@@ -52,7 +52,7 @@ class Closing
     closing = Closing.new
     closing.crossing = crossing
     closing.time = time
-    closing.trainTime = time.minutes_from_hhmm
+    closing.trainTime = Device.minutes_from_hhmm(time)
     closing.direction = direction
 
     crossing.closings.addObject closing

@@ -6,7 +6,7 @@ class CrossingScheduleController < UITableViewController
   end
 
   def viewWillAppear(animated) super
-    Device.trackScreen :crossing_schedule, crossing.key
+    Device.trackScreen :crossing_schedule, crossing
   end
 
 
@@ -69,7 +69,7 @@ class CrossingScheduleController < UITableViewController
   end
 
   def showMap
-    Device.track :show_crossing_map, crossing.key
+    Device.trackUI :tap_show_crossing_map, crossing
     App.mapController.crossingToShowOnNextAppearance = crossing
     tabBarController.selectedViewController = App.mapController.navigationController
   end

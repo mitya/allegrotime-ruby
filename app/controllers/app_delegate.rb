@@ -67,7 +67,7 @@ class AppDelegate
   end
 
   def locationManager(manager, didChangeAuthorizationStatus:status)
-    Device.track :location_authorization_changed, status 
+    Device.trackSystem :location_authorization_changed, status
     case status
     when KCLAuthorizationStatusAuthorizedWhenInUse, KCLAuthorizationStatusAuthorizedAlways
       locationManager.startUpdatingLocation
@@ -90,7 +90,7 @@ class AppDelegate
 
   def locationManager(manager, didFailWithError:error)
     Device.debug "locationManager.didFailWithError: #{error.description}"
-    Device.track :location_failed, error.description
+    Device.trackSystem :location_failed, error.description
     Model.closestCrossing = nil
     NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDClosestCrossingChanged, object:Model.closestCrossing
   end
@@ -102,7 +102,7 @@ class AppDelegate
   end
 
   def screenActivated
-    Device.track :app_activated
+    Device.trackSystem :app_activated
     @active = true
     visibleViewController.performSelectorIfDefined(:screenActivated)
   end

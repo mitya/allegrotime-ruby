@@ -9,7 +9,7 @@ class TrainScheduleController < UITableViewController
   end
 
   def viewWillAppear(animated) super
-    Device.trackScreen :train_schedule, sampleClosing.key
+    Device.trackScreen :train_schedule, sampleClosing
   end
 
 

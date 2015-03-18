@@ -12,7 +12,7 @@ class StatusView < UIView
   ArrowH = 13
   ArrowW = 8
   ArrowRM = 23
-  FootnoteTM = 70
+  FootnoteTM = 50
   FootnoteTM_LS = 5
   CrossingLabelTag = 500
 
@@ -148,7 +148,7 @@ class StatusView < UIView
 
 
   def deviceRotated
-    Device.track :status_view_rotated, UIApplication.sharedApplication.statusBarOrientation
+    Device.trackSystem :status_view_rotated, UIApplication.sharedApplication.statusBarOrientation
     setNeedsUpdateConstraints
   end
 
@@ -275,12 +275,12 @@ class StatusAdViewController
   end
 
   def adViewDidReceiveAd(adView)
-    Device.track :ad_received
+    Device.trackSystem :ad_received
     UIView.animateWithDuration 1.5, animations: -> { adView.alpha = 1.0 }
   end
   
   def adView(view, didFailToReceiveAdWithError:error)
-    Device.track :ad_failed
+    Device.trackSystem :ad_failed
     Device.warn "failed receiving ad: #{error.description}"
   end  
 end
