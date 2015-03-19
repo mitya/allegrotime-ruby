@@ -8,7 +8,7 @@ begin
 rescue LoadError
 end
 
-ENV['device_name'] ||= 'iPhone 6' # 'iPhone 5s 7.1' 'iPhone 5s'
+ENV['device_name'] ||= 'iPhone 5' # 'iPhone 5s 7.1' 'iPhone 5s'
 # ENV['device_name'] = 'iPad Air'
 
 Motion::Project::App.setup do |app|
@@ -93,5 +93,18 @@ namespace :g do
     `convert originals/images/i8-pin-100.png   -resize 50x50 resources/images/ti-pin@2x.png`
     `convert originals/images/i8-info-100.png  -resize 50x50 resources/images/ti-info@2x.png`
   end
+  
+  desc "removes the statusbar from a full-screen screenshot"
+  task :chop_statusbar do
+    statusbar_height = 40
+    %w(en-1 en-2 en-3 en-4 en-5 ru-1 ru-2 ru-3 ru-4 ru-5).each do |file|
+      ss = Magick::Image.read("originals/screenshots/v2b/ipad/#{file}.png").first
+      ss.crop! 0, statusbar_height, ss.columns, ss.rows, true
+      unless ENV['nofill']
+        ss.background_color = "#FFFFFF"
+        ss = ss.extent ss.columns, ss.rows + statusbar_height, 0, -statusbar_height
+      end
+      ss.write ss.filename
+    end
+  end  
 end
-
