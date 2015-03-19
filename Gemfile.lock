@@ -2,9 +2,11 @@ GEM
   remote: https://rubygems.org/
   specs:
     rake (10.4.2)
+    rmagick (2.13.4)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   rake
+  rmagick

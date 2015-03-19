@@ -74,7 +74,7 @@ class Crossing
   end
 
   def nextClosing
-    currentTime = Time.minutes_since_midnight;
+    currentTime = Time.minutes_since_midnight
 
     for closing in closings
       return closing if closing.trainTime >= currentTime

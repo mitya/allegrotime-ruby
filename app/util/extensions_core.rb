@@ -20,9 +20,11 @@ class Time
       now = NSDate.date
       nowParts = calendar.components NSHourCalendarUnit | NSMinuteCalendarUnit, fromDate:now
 
-      hours = nowParts.hour;
-      minutes = nowParts.minute;
-      hours * 60 + minutes;    
+      hours = nowParts.hour
+      minutes = nowParts.minute
+      hours * 60 + minutes
+      
+      # 18*60 + 47
     end
   
     def time_till_full_minute
