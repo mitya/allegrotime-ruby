@@ -49,6 +49,11 @@ def retina_sh
   end
 end
 
+def run(command)
+  puts command
+  sh command
+end
+
 namespace :g do
   task :appicon do
     input = "originals/images/app_icon.png"
@@ -107,4 +112,17 @@ namespace :g do
       ss.write ss.filename
     end
   end  
+  
+  desc "Composes an app screenshot over the device image"
+  task :compose_mockup do
+    device_image = "/Volumes/Vault/Sources/Active/_assets/mockup-iphone-5s.png"
+    results_dir = "tmp"
+    screenshots_dir = "/Volumes/Vault/Sources/Active/allegrotime/originals/screenshots/v2b-sources/5"    
+    screenshots = %w(1 2 3 4 5)
+    screenshots.each do |name|
+      screenshot = "#{screenshots_dir}/ru-#{name}.png"
+      result_image = "#{results_dir}/mockup-5-#{name}.png"
+      run "convert #{device_image} #{screenshot} -geometry 641x1140+69+255 -composite -resize 350 #{result_image}"
+    end
+  end
 end
