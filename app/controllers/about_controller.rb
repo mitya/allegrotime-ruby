@@ -6,6 +6,7 @@ class AboutController < UIViewController
     self.webView = UIWebView.alloc.initWithFrame view.bounds
     webView.backgroundColor = UIColor.whiteColor
     webView.delegate = self
+    webView.autoresizingMask = UIViewAutoresizingFlexibleWidth
     view.addSubview webView
   end
 
