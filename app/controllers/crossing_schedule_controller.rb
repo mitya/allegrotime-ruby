@@ -3,8 +3,7 @@ class CrossingScheduleController < UITableViewController
 
   def initWithStyle(tableViewStyle) super
     self.tabBarItem = UITabBarItem.alloc.initWithTitle("crossings.tab".l, image:Device.image_named("ti-schedule"), selectedImage:Device.image_named("ti-schedule-filled"))
-    navigationItem.leftBarButtonItem = \
-      UIBarButtonItem.alloc.initWithImage Device.image_named("bb-pin"), style:UIBarButtonItemStylePlain, target:self, action:'showMap'
+    navigationItem.backBarButtonItem = UIBarButtonItem.alloc.initWithTitle "main.crossing_cell".l, style:UIBarButtonItemStyleBordered, target:nil, action:nil
     self
   end
 
@@ -46,7 +45,7 @@ class CrossingScheduleController < UITableViewController
 
 
   def crossing
-    @crossing || Model.currentCrossing
+    Model.currentCrossing
   end
 
   def modelUpdated
@@ -55,7 +54,6 @@ class CrossingScheduleController < UITableViewController
 
   def showMap
     Device.trackUI :tap_show_crossing_map, crossing
-    App.mapController.crossingToShowOnNextAppearance = crossing
     tabBarController.selectedViewController = App.mapController.navigationController
   end
 end

@@ -5,18 +5,20 @@ class CrossingListController < UITableViewController
     self.title = "crossings.title".l
     self.tabBarItem = UITabBarItem.alloc.initWithTitle("crossings.tab".l, image:Device.image_named("ti-schedule"), selectedImage:Device.image_named("ti-schedule-filled"))
     self.screenName = 'crossing_list'
+    NSNotificationCenter.defaultCenter.addObserver self, selector:'closestCrossingChanged', name:NXDefaultCellIDClosestCrossingChanged, object:nil
     self
   end
 
-  def viewDidLoad
-    if Model.closestCrossing
-      navigationItem.rightBarButtonItem = \
-        UIBarButtonItem.alloc.initWithImage Device.image_named("bb-define_location"), style:UIBarButtonItemStylePlain, target:self, action:'selectClosestCrossing'
-    end
+  def dealloc
+    NSNotificationCenter.defaultCenter.removeObserver self
+  end
+
+  def viewDidLoad    
   end
 
   def viewWillAppear(animated) super
     Device.trackScreen screenName
+    setupSelectClosestCrossingButton
     unless @initialScrollDone
       scrollToCrossing Model.currentCrossing, animated:NO
       @initialScrollDone = true
@@ -123,5 +125,14 @@ class CrossingListController < UITableViewController
   def selectCrossing(crossing, animated:animated)
     crossingIndex = NSIndexPath.indexPathForRow crossing.index, inSection:0
     tableView.selectRowAtIndexPath crossingIndex, animated:animated, scrollPosition:UITableViewScrollPositionTop
+  end
+
+  def closestCrossingChanged
+    setupSelectClosestCrossingButton
+  end
+
+  def setupSelectClosestCrossingButton
+    @selectClosestCrossingButton ||= UIBarButtonItem.alloc.initWithImage Device.image_named("bb-define_location"), style:UIBarButtonItemStylePlain, target:self, action:'selectClosestCrossing'
+    navigationItem.rightBarButtonItem = Model.closestCrossing && Model.currentCrossing != Model.closestCrossing ? @selectClosestCrossingButton : nil
   end
 end

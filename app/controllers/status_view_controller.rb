@@ -1,11 +1,17 @@
 class StatusViewController < UIViewController
   attr_accessor :statusView
   attr_accessor :adView, :adTimer, :adViewLoaded  
+  attr_accessor :lastAccessTime
   
   def init() super
     self.title = "main.title".l
     self.tabBarItem = UITabBarItem.alloc.initWithTitle("main.tab".l, image:Device.image_named("ti-semaphore"), selectedImage:Device.image_named("ti-semaphore-filled"))
+    NSNotificationCenter.defaultCenter.addObserver self, selector:'closestCrossingChanged', name:NXDefaultCellIDClosestCrossingChanged, object:nil
     self
+  end
+
+  def dealloc
+    NSNotificationCenter.defaultCenter.removeObserver self
   end
 
   def loadView
@@ -15,8 +21,6 @@ class StatusViewController < UIViewController
   end
 
   def viewDidLoad() super
-    NSNotificationCenter.defaultCenter.addObserver self, selector:'closestCrossingChanged', name:NXDefaultCellIDClosestCrossingChanged, object:nil
-
     # setup info button
     infoButton = UIButton.buttonWithType UIButtonTypeInfoLight
     infoButton.addTarget self, action:'showInfo', forControlEvents:UIControlEventTouchUpInside
@@ -43,7 +47,9 @@ class StatusViewController < UIViewController
   def viewWillAppear(animated) super
     Device.trackScreen :status, Model.currentCrossing
     reloadData
+    setupSelectClosestCrossingButton
     statusView.requestAdIfNeeded
+    @lastAccessTime = Time.now
   end
 
   def recognizedSwipe(recognizer)
@@ -56,8 +62,8 @@ class StatusViewController < UIViewController
   end
 
   def closestCrossingChanged
-    Device.trackSystem :status_view_crossing_changed, Model.currentCrossing
     reloadData
+    setupSelectClosestCrossingButton
   end
 
   def screenActivated
@@ -82,11 +88,16 @@ class StatusViewController < UIViewController
   end
 
   def changeCurrentCrossing(crossing)
-    Model.currentCrossing = crossing
+    Model.currentCrossing = crossing    
     navigationController.popViewControllerAnimated YES
     reloadData
   end
-
+  
+  def selectClosestCrossing
+    Model.currentCrossing = Model.closestCrossing
+    reloadData    
+  end
+  
   def showInfo
     aboutController = AboutController.alloc.init
     navigationController.pushViewController aboutController, animated:YES
@@ -99,5 +110,10 @@ class StatusViewController < UIViewController
 
   def reloadData
     statusView.setCrossing Model.currentCrossing
+  end
+  
+  def setupSelectClosestCrossingButton
+    @selectClosestCrossingButton ||= UIBarButtonItem.alloc.initWithImage Device.image_named("bb-define_location"), style:UIBarButtonItemStylePlain, target:self, action:'selectClosestCrossing'
+    navigationItem.rightBarButtonItem = Model.closestCrossing && Model.currentCrossing != Model.closestCrossing ? @selectClosestCrossingButton : nil
   end
 end

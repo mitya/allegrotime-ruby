@@ -82,7 +82,11 @@ class AppDelegate
     
     newClosestCrossing = Model.crossingClosestTo(nl)
     if newClosestCrossing != Model.closestCrossing
+      Device.trackSystem :closest_crossing_changed, newClosestCrossing
       Model.closestCrossing = newClosestCrossing
+      if (Model.currentCrossingChangeTime || 0) < Time.now - 10*60
+        Model.currentCrossing = newClosestCrossing
+      end
       NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDClosestCrossingChanged, object:Model.closestCrossing
     end
     
@@ -133,8 +137,12 @@ class AppDelegate
     GAI.sharedInstance.dispatchInterval = 20
     GAI.sharedInstance.trackUncaughtExceptions = YES
     GAI.sharedInstance.logger.setLogLevel DEBUG ? KGAILogLevelWarning : KGAILogLevelInfo
-    # GAI.sharedInstance.setDryRun YES if DEBUG
+    GAI.sharedInstance.setDryRun YES if DEBUG
     
     Flurry.startSession FLURRY_TOKEN
+  end
+  
+  def locationAvailable?
+    CLLocationManager.locationServicesEnabled && locationManager && locationManager.location
   end
 end

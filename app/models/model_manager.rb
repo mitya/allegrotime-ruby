@@ -2,6 +2,7 @@ class ModelManager
   ### properties
 
   attr_accessor :crossings, :closings, :closestCrossing, :selectedCrossing
+  attr_accessor :currentCrossingChangeTime
 
   def defaultCrossing
     Crossing.getCrossingWithName "Удельная"
@@ -31,6 +32,7 @@ class ModelManager
 
   def currentCrossing=(crossing)
     self.selectedCrossing = crossing.closest? ? nil : crossing
+    @currentCrossingChangeTime = Time.now
     NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDCurrentCrossingChanged, object:crossing
   end
   
