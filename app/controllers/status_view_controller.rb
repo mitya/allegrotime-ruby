@@ -20,7 +20,7 @@ class StatusViewController < UIViewController
     # setup info button
     infoButton = UIButton.buttonWithType UIButtonTypeInfoLight
     infoButton.addTarget self, action:'showInfo', forControlEvents:UIControlEventTouchUpInside
-    navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithCustomView infoButton
+    navigationItem.leftBarButtonItem = UIBarButtonItem.alloc.initWithCustomView infoButton
 
     # setup log console gestures
     if DEBUG
