@@ -1,7 +1,7 @@
 class AppDelegate
   attr_accessor :window, :locationManager, :perMinuteTimer
   attr_accessor :navigationController, :tabBarController
-  attr_accessor :mainController, :listController, :mapController, :crossingScheduleController
+  attr_accessor :mainController, :mapController, :crossingScheduleController
 
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     Object.const_set :App, self
@@ -12,7 +12,6 @@ class AppDelegate
     UITabBar.appearance.translucent = NO
 
     @mainController = StatusViewController.alloc.init
-    @listController = CrossingListController.alloc.initWithStyle UITableViewStyleGrouped
     @crossingScheduleController = CrossingScheduleController.alloc.initWithStyle UITableViewStyleGrouped
     @mapController = CrossingMapController.alloc.init
     @tabBarController = UITabBarController.new.tap do |tbc|
@@ -44,16 +43,25 @@ class AppDelegate
 
   def applicationDidBecomeActive(application)
     screenActivated
+    
     if CLLocationManager.locationServicesEnabled
       locationManager.requestWhenInUseAuthorization if locationManager.respondsToSelector 'requestWhenInUseAuthorization'
       locationManager.startUpdatingLocation
     end
+    
     triggerModelUpdate
+    
+    if @applicationDeactivatedAt && @applicationDeactivatedAt < Time.now - 5*60
+      tabBarController.selectedViewController = App.mainController.navigationController
+      App.mainController.navigationController.popToRootViewControllerAnimated(NO)
+      Model.currentCrossing = Model.closestCrossing if Model.closestCrossing
+    end    
   end
 
   def applicationWillResignActive(application)
     locationManager.stopUpdatingLocation
     screenDeactivated
+    @applicationDeactivatedAt = Time.now
   end
 
 

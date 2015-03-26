@@ -26,7 +26,7 @@ class CrossingMapController < UIViewController
   
   def viewWillAppear(animated) super
     setupShowLocationButton
-    mapView.setRegion MKCoordinateRegionMakeWithDistance(Model.currentCrossing.coordinate, 50_000, 50_000), animated:NO unless lastRegion
+    mapView.setRegion MKCoordinateRegionMakeWithDistance(Model.currentCrossing.coordinate, 30_000, 30_000), animated:NO unless lastRegion
     # if lastRegion
     #   mapView.setRegion lastRegion, animated:animated
     #   mapView.setCenterCoordinate Model.currentCrossing.coordinate, animated:YES
@@ -72,8 +72,7 @@ class CrossingMapController < UIViewController
     return unless view.annotation.isKindOfClass Crossing
     crossing = view.annotation
     Device.trackUI :tap_map_accessory, crossing
-    App.crossingScheduleController.crossing = crossing
-    tabBarController.selectedViewController = App.crossingScheduleController.navigationController    
+    openCrossingSchedule(crossing)
   end
   
   
@@ -119,6 +118,12 @@ class CrossingMapController < UIViewController
     mapView.setRegion MKCoordinateRegionMakeWithDistance(crossing.coordinate, 10_000, 10_000), animated:animated
     mapView.selectAnnotation crossing, animated:animated    
     @lastCrossing = crossing
+  end
+  
+  def openCrossingSchedule(crossing)
+    Model.currentCrossing = crossing
+    App.crossingScheduleController.navigationController.popToRootViewControllerAnimated(NO)
+    tabBarController.selectedViewController = App.crossingScheduleController.navigationController
   end
   
 

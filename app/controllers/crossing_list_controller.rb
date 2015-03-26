@@ -13,16 +13,16 @@ class CrossingListController < UITableViewController
     NSNotificationCenter.defaultCenter.removeObserver self
   end
 
-  def viewDidLoad    
+  def viewDidLoad
   end
 
   def viewWillAppear(animated) super
     Device.trackScreen screenName
     setupSelectClosestCrossingButton
-    unless @initialScrollDone
-      scrollToCrossing Model.currentCrossing, animated:NO
-      @initialScrollDone = true
-    end
+  end
+  
+  def viewDidAppear(animated) super
+    scrollToCrossing Model.currentCrossing, animated:YES
   end
 
 
@@ -45,12 +45,12 @@ class CrossingListController < UITableViewController
    closestCrossingIndexPath = NSIndexPath.indexPathForRow(closestCrossingIndex, inSection:0)
 
    Device.trackUI :select_closest_crossing_list, Model.closestCrossing
-   
+
    UIView.animateWithDuration 0.5,
      animations: lambda { tableView.selectRowAtIndexPath closestCrossingIndexPath, animated:NO, scrollPosition:UITableViewScrollPositionMiddle },
      completion: lambda { |_| tableView tableView, didSelectRowAtIndexPath:closestCrossingIndexPath }
   end
-    
+
 
   def tableView(tableView, numberOfRowsInSection:section)
     Model.crossings.count

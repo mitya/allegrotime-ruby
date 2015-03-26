@@ -9,12 +9,8 @@ class ModelManager
   end
 
   def closestCrossing
-    unless @closestCrossing
-      if location = CLLocationManager.new.location
-        @closestCrossing = crossingClosestTo location
-      end
-    end
-    @closestCrossing
+    return nil unless App.locationAvailable?
+    @closestCrossing ||= crossingClosestTo App.locationManager.location
   end
 
   def selectedCrossing
