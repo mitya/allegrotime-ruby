@@ -1,11 +1,13 @@
 class CrossingScheduleController < UITableViewController
   attr_accessor :crossing
 
-  def viewDidLoad
-    self.title = self.crossing.localizedName
+  def initWithStyle(tableViewStyle) super
+    self.tabBarItem = UITabBarItem.alloc.initWithTitle("crossings.tab".l, image:Device.image_named("ti-schedule"), selectedImage:Device.image_named("ti-schedule-filled"))
+    self
   end
 
   def viewWillAppear(animated) super
+    navigationItem.title = crossing.localizedName
     Device.trackScreen :crossing_schedule, crossing
   end
 
@@ -63,6 +65,9 @@ class CrossingScheduleController < UITableViewController
   end
 
 
+  def crossing
+    @crossing || Model.currentCrossing
+  end
 
   def modelUpdated
     tableView.reloadData

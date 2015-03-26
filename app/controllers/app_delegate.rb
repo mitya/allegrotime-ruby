@@ -1,7 +1,7 @@
 class AppDelegate
   attr_accessor :window, :locationManager, :perMinuteTimer
   attr_accessor :navigationController, :tabBarController
-  attr_accessor :mainController, :listController, :mapController
+  attr_accessor :mainController, :listController, :mapController, :crossingScheduleController
 
   def application(application, didFinishLaunchingWithOptions:launchOptions)
     Object.const_set :App, self
@@ -13,9 +13,10 @@ class AppDelegate
 
     @mainController = StatusViewController.alloc.init
     @listController = CrossingListController.alloc.initWithStyle UITableViewStyleGrouped
+    @crossingScheduleController = CrossingScheduleController.alloc.initWithStyle UITableViewStyleGrouped
     @mapController = CrossingMapController.alloc.init
     @tabBarController = UITabBarController.new.tap do |tbc|
-      tabItemControllers = [@mainController, @listController, @mapController]
+      tabItemControllers = [@mainController, @crossingScheduleController, @mapController]
       tbc.viewControllers = tabItemControllers.map do |c|
          nav = UINavigationController.alloc.initWithRootViewController(c)
          nav.delegate = self
