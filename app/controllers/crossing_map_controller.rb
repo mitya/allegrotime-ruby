@@ -1,5 +1,7 @@
 class CrossingMapController < UIViewController
- attr_accessor :mapView, :pinMapping, :timer, :lastRegion, :lastMapType, :crossingToShowOnNextAppearance
+ attr_accessor :mapView, :pinMapping, :timer, :crossingToShowOnNextAppearance
+ attr_accessor :lastRegion, :lastMapType, :lastCrossing, :lastAccessTime
+ 
 
   def init() super
     self.title = 'map.title'.l
@@ -10,36 +12,35 @@ class CrossingMapController < UIViewController
 
   def loadView
     self.mapView = MKMapView.alloc.init.tap do |mv|
-      mv.showsUserLocation = CLLocationManager.locationServicesEnabled
       mv.delegate = self
       mv.mapType = lastMapType
+      mv.showsUserLocation = YES
     end
     self.view = mapView
   end
   
-  def viewDidLoad() super
+  def viewDidLoad() super  
     navigationItem.titleView = segmentedControl
-    navigationItem.rightBarButtonItem = UIBarButtonItem.alloc.initWithImage \
-        Device.image_named("bb-location"), style:UIBarButtonItemStyleBordered, target:self, action:'showUserLocation'
-  
     mapView.addAnnotations Model.crossings
   end
   
   def viewWillAppear(animated) super
-    Device.trackScreen :map
-    if lastRegion
-      # mapView.setRegion lastRegion, animated:animated
-      # mapView.setCenterCoordinate Model.currentCrossing.coordinate, animated:YES
-    else
-      showCrossing Model.currentCrossing, animated:animated
-    end
+    setupShowLocationButton
+    mapView.setRegion MKCoordinateRegionMakeWithDistance(Model.currentCrossing.coordinate, 50_000, 50_000), animated:NO unless lastRegion
+    # if lastRegion
+    #   mapView.setRegion lastRegion, animated:animated
+    #   mapView.setCenterCoordinate Model.currentCrossing.coordinate, animated:YES
+    # else
+    #   showCrossing Model.currentCrossing, animated:animated
+    # end
   end
   
   def viewDidAppear(animated) super
-    if crossingToShowOnNextAppearance
-      showCrossing crossingToShowOnNextAppearance, animated:YES
-      self.crossingToShowOnNextAppearance = nil
-    end    
+    Device.trackScreen :map
+    if lastCrossing != Model.currentCrossing || (lastAccessTime || 0) < Time.now - 5*60
+      showCrossing Model.currentCrossing, animated:YES
+    end
+    @lastAccessTime = Time.now
   end
   
   def viewWillDisappear(animated) super
@@ -69,20 +70,12 @@ class CrossingMapController < UIViewController
   
   def mapView(mapView, annotationView:view, calloutAccessoryControlTapped:control)
     return unless view.annotation.isKindOfClass Crossing
-  
     crossing = view.annotation
-    
     Device.trackUI :tap_map_accessory, crossing
-    
-    App.listController.navigationController.popToViewController App.listController, animated:NO
-    tabBarController.selectedViewController = App.listController.navigationController
-    UIView.animateWithDuration(0.3,
-      animations: lambda { App.listController.selectCrossing(crossing, animated:NO) },
-      completion: lambda { |finished| App.listController.showScheduleForCrossing(crossing, animated:YES) }
-    )
+    App.crossingScheduleController.crossing = crossing
+    tabBarController.selectedViewController = App.crossingScheduleController.navigationController    
   end
   
-
   
   def changeMapType(segment)
     mapView.mapType = segment.selectedSegmentIndex
@@ -125,10 +118,10 @@ class CrossingMapController < UIViewController
   def showCrossing(crossing, animated:animated)
     mapView.setRegion MKCoordinateRegionMakeWithDistance(crossing.coordinate, 10_000, 10_000), animated:animated
     mapView.selectAnnotation crossing, animated:animated    
+    @lastCrossing = crossing
   end
   
 
-  
   def pinMappingFor(color)
     color.api_name ? Device.image_named("crossing-pin-#{color.api_name}") : nil
   end
@@ -140,5 +133,11 @@ class CrossingMapController < UIViewController
       sc.selectedSegmentIndex = lastMapType
       sc.addTarget self, action:'changeMapType:', forControlEvents:UIControlEventValueChanged
     end
+  end  
+  
+  def setupShowLocationButton
+    @showLocationButton ||= UIBarButtonItem.alloc.initWithImage \
+        Device.image_named("bb-location"), style:UIBarButtonItemStyleBordered, target:self, action:'showUserLocation'    
+    navigationItem.rightBarButtonItem = App.locationAvailable? ? @showLocationButton : nil    
   end
 end

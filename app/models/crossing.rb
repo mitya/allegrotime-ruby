@@ -52,14 +52,16 @@ class Crossing
     CLLocationCoordinate2DMake(latitude, longitude);
   end
 
+  # is used by map annotations
   def title
-    'crossing.title'.li(localizedName, distance)
+    localizedName
   end
   
   def localizedName
     name.l
   end
 
+  # is used by map annotations
   def subtitle
     case state
     when StateClear, StateSoon, StateVerySoon, StateClosing

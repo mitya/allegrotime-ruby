@@ -231,9 +231,9 @@ class StatusView < UIView
   def deactivate
     messageLabel.backgroundColor = Colors.closingCellBackgroundFor(:gray.color)
     messageLabel.font = UIFont.systemFontOfSize(32)
-    messageLabel.text = '☻'
-    crossingStatusLabel.text = "main.crossing $closes at $time".li("will be closed".l, '—')
-    trainStatusLabel.text = "main.allegro will pass at $time".li('—')
+    messageLabel.text = ''
+    crossingStatusLabel.text = ''
+    trainStatusLabel.text = ''
     adView.hidden = YES
   end
 
