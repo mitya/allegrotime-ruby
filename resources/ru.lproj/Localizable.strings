@@ -14,7 +14,7 @@
 "map.standard" = "Стандарт";
 "map.hybrid" = "Гибрид";
 "map.satellite" = "Спутник";
-"crossing.title" = "%@. %@ км";
+"crossing.title" = "%@, %@ км";
 "crossing.just_closed" = "Только что закрыли";
 "crossing.just_opened" = "Только что открыли";
 "crossing.will be closed in X mins" = "Закроют через %@";

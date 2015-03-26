@@ -28,11 +28,10 @@ class CrossingMapController < UIViewController
   def viewWillAppear(animated) super
     Device.trackScreen :map
     if lastRegion
-      mapView.setRegion lastRegion, animated:animated
-    elsif Model.closestCrossing
-      showCrossing Model.closestCrossing, animated:animated
+      # mapView.setRegion lastRegion, animated:animated
+      # mapView.setCenterCoordinate Model.currentCrossing.coordinate, animated:YES
     else
-      showCrossing Crossing.getCrossingWithName("Парголово"), animated:animated
+      showCrossing Model.currentCrossing, animated:animated
     end
   end
   

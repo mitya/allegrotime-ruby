@@ -143,6 +143,10 @@ class Crossing
     "<Crossing: #{name}, #{latitude}, #{longitude}, #{closings.count}>"
   end
 
+  def inspect
+    "{#{name}}"
+  end
+
   def index
     Model.crossings.indexOfObject self
   end
@@ -163,12 +167,6 @@ class Crossing
   def closed?
     state == Crossing::StateClosed
   end
-
-
-  def inspect
-    "{#{name}}"
-  end
-
 
 
   def self.crossingWithName(name, latitude:lat, longitude:lng)
