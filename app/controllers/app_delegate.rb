@@ -80,6 +80,8 @@ class AppDelegate
   def locationManager(manager, didUpdateToLocation:nl, fromLocation:ol)
     Device.debug "didUpdateToLocation acc=%.f dist=%.f %s", nl.horizontalAccuracy, nl.distanceFromLocation(ol), Model.closestCrossing.localizedName
     
+    return if nl.horizontalAccuracy > 1_000
+    
     newClosestCrossing = Model.crossingClosestTo(nl)
     if newClosestCrossing != Model.closestCrossing
       Device.trackSystem :closest_crossing_changed, newClosestCrossing
