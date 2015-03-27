@@ -36,4 +36,5 @@ convert #{result_image} -resize 360 #{result_image}
 ### Docs
   
   * http://flurrydev.github.io/FlurryiOSSDK6xAPI/interface_flurry.html
+  * https://developer.yahoo.com/flurry/docs/analytics/gettingstarted/events/ios/
   * https://developers.google.com/analytics/devguides/collection/ios/v3/

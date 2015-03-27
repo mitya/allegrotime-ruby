@@ -11,8 +11,7 @@ class AppDelegate
     Object.const_set :Model, ModelManager.alloc
     Model.init
 
-    UINavigationBar.appearance.translucent = NO
-    UITabBar.appearance.translucent = NO
+    initTrackers
 
     @mainController = StatusViewController.alloc.init
     @crossingScheduleController = CrossingScheduleController.alloc.initWithStyle UITableViewStyleGrouped
@@ -22,11 +21,13 @@ class AppDelegate
       tbc.viewControllers = tabItemControllers.map do |c|
          nav = UINavigationController.alloc.initWithRootViewController(c)
          nav.delegate = self
+         nav.navigationBar.translucent = NO
          nav
       end
       tbc.delegate = self
       tbc.selectedIndex = 0
     end
+    @tabBarController.tabBar.translucent = NO
 
     @window = UIWindow.alloc.initWithFrame UIScreen.mainScreen.bounds
     @window.rootViewController = @tabBarController
@@ -39,8 +40,6 @@ class AppDelegate
 
     NSNotificationCenter.defaultCenter.addObserver self, selector:'currentCrossingChanged', name:NXDefaultCellIDCurrentCrossingChanged, object:nil
 
-    initTrackers
-  
     true
   end
 
@@ -141,7 +140,6 @@ class AppDelegate
     GAI.sharedInstance.trackerWithTrackingId "UA-60863161-1"
     GAI.sharedInstance.dispatchInterval = 20
     GAI.sharedInstance.logger.setLogLevel DEBUG ? KGAILogLevelWarning : KGAILogLevelInfo
-    # GAI.sharedInstance.setDryRun YES if DEBUG
   end
   
   def locationAvailable?
