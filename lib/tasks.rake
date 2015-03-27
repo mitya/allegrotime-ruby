@@ -64,8 +64,8 @@ namespace :g do
   desc "removes the statusbar from a full-screen screenshot"
   task :chop_statusbar do
     statusbar_height = 40
-    %w(en-1 en-2 en-3 en-4 en-5 ru-1 ru-2 ru-3 ru-4 ru-5).each do |file|
-      ss = Magick::Image.read("originals/screenshots/v2b/ipad/#{file}.png").first
+    %w(ru-1 ru-3 en-1 en-3).each do |file|
+      ss = Magick::Image.read("originals/screenshots/v2b/ipad-extent/#{file}.png").first
       ss.crop! 0, statusbar_height, ss.columns, ss.rows, true
       unless ENV['nofill']
         ss.background_color = "#FFFFFF"

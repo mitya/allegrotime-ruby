@@ -35,10 +35,8 @@ class StatusViewController < UIViewController
 
     titleLabel = UILabel.alloc.initWithFrame(CGRectZero)
     titleLabel.text = "main.title".l
-    titleLabel.font = UIFont.fontWithName('MarkerFelt-Thin', size: 17)
-    titleLabel.textColor = UIColor.colorWithWhite 0.50, alpha:1.00
-    # titleLabel.shadowColor = UIColor.colorWithWhite 0.85, alpha:1.00
-    # titleLabel.shadowOffset = CGSizeMake(1, 1)
+    titleLabel.font = UIFont.fontWithName('HelveticaNeue-BoldItalic', size: 17)
+    titleLabel.textColor = UIColor.grayShade 0.2
     titleLabel.sizeToFit
 
     navigationItem.titleView = titleLabel
