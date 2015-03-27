@@ -56,8 +56,8 @@ module Device
   
   def debug(format, *args)
     if DEBUG
-      message = format % args
-      puts message if SIMULATOR      
+      message = "DEBUG #{format % args}"
+      puts message if SIMULATOR
       
       message = "[#{Time.now.strftime('%d.%m %H:%M:%S')}] #{message}"
       

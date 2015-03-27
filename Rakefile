@@ -8,18 +8,18 @@ begin
 rescue LoadError
 end
 
-ENV['device_name'] ||= 'iPhone 5' # 'iPhone 5s 7.1' 'iPhone 5s'
-# ENV['device_name'] = 'iPad Air'
+DEVICE_IPHONE_5 = 'iPhone 5'
+DEVICE_IPHONE_5_7 = 'iPhone 5s 7.1'
+DEVICE_IPHONE_6 = 'iPhone 6'
+DEVICE_IPAD = 'iPad Air'
+
+ENV['device_name'] ||= DEVICE_IPHONE_6
 
 Motion::Project::App.setup do |app|
-  app.name = 'AllegroTime2'
-  app.identifier = "name.sokurenko.AllegroTime2"
-  app.version = "2.0"
-  app.short_version = "2.0"
+  app.name = 'AllegroTime'  
+  app.identifier = "name.sokurenko.AllegroTime"
   app.sdk_version = '8.2'
-  app.deployment_target = '7.0'
-  # app.codesign_certificate = "iPhone Distribution: Iconoclast Labs LLC"
-  app.provisioning_profile = '/Volumes/Vault/Sources/active/_etc/iOS_Team.mobileprovision'
+  app.deployment_target = '7.0'  
   app.icons = %w(Icon-60 Icon-76 Icon-Small-40 Icon-Small)
   app.frameworks += %w(StoreKit AdSupport QuartzCore AVFoundation CoreTelephony SystemConfiguration MessageUI AudioToolbox MapKit CoreLocation CoreData EventKit EventKitUI)
   app.libs += %w(/usr/lib/libsqlite3.dylib /usr/lib/libz.dylib)
@@ -27,8 +27,23 @@ Motion::Project::App.setup do |app|
   app.vendor_project 'vendor/GoogleAnalyticsServicesiOS-3.10', :static, :products => ['libGoogleAnalyticsServices.a'], :headers_dir => 'GoogleAnalytics/Library', force_load: false
   app.vendor_project 'vendor/Flurry', :static, :products => ['libFlurry_6.2.0.a'], :headers_dir => 'Flurry.h', force_load: false
   app.device_family = [:iphone, :ipad]
-  app.info_plist['DebugModeEnabled'] = true
   app.info_plist['UIStatusBarHidden'] = true
+  
+  app.development do
+    app.version = "2.0.100"
+    app.short_version = "2.0.101"
+    app.codesign_certificate = "iPhone Developer: Dmitry Sokurenko (9HS3696XGX)"
+    app.provisioning_profile = "/Volumes/Vault/Sources/active/_etc/iOS_Team.mobileprovision"    
+    app.info_plist['DebugModeEnabled'] = true
+  end
+  
+  app.release do
+    app.version = "2.0.900"
+    app.short_version = "2.0.901"
+    app.codesign_certificate = "iPhone Distribution: Dmitry Sokurenko (SQLB2GAZ2T)"
+    app.provisioning_profile = "/Volumes/Vault/Sources/active/_etc/AdHoc_Profile_for_AllegroTime.mobileprovision"
+    app.info_plist['DebugModeEnabled'] = false
+  end  
 end
 
 
@@ -127,3 +142,8 @@ namespace :g do
     end
   end
 end
+
+
+# NSBundle.mainBundle.infoDictionary['CFBundleVersion']
+# CFBundleVersion
+# CFBundleShortVersionString
