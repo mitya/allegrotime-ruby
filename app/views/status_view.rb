@@ -285,6 +285,6 @@ class StatusAdViewController
   
   def adView(view, didFailToReceiveAdWithError:error)
     Device.trackSystem :ad_failed
-    Device.warn "failed receiving ad: #{error.description}"
+    Device.warn "Failed receiving ad: #{error.description}"
   end  
 end
