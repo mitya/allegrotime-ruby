@@ -3,7 +3,10 @@ class AppDelegate
   attr_accessor :navigationController, :tabBarController
   attr_accessor :mainController, :mapController, :crossingScheduleController
 
-  def application(application, didFinishLaunchingWithOptions:launchOptions)
+  def application(application, didFinishLaunchingWithOptions:launchOptions)  
+    @exceptionHandler = method :uncaughtExceptionHandler
+    NSSetUncaughtExceptionHandler @exceptionHandler
+        
     Object.const_set :App, self
     Object.const_set :Model, ModelManager.alloc
     Model.init
@@ -37,25 +40,15 @@ class AppDelegate
     NSNotificationCenter.defaultCenter.addObserver self, selector:'currentCrossingChanged', name:NXDefaultCellIDCurrentCrossingChanged, object:nil
 
     initTrackers
-
+  
     true
   end
 
   def applicationDidBecomeActive(application)
     screenActivated
-    
-    if CLLocationManager.locationServicesEnabled
-      locationManager.requestWhenInUseAuthorization if locationManager.respondsToSelector 'requestWhenInUseAuthorization'
-      locationManager.startUpdatingLocation
-    end
-    
-    triggerModelUpdate
-    
-    if @applicationDeactivatedAt && @applicationDeactivatedAt < Time.now - 5*60
-      tabBarController.selectedViewController = App.mainController.navigationController
-      App.mainController.navigationController.popToRootViewControllerAnimated(NO)
-      Model.currentCrossing = Model.closestCrossing if Model.closestCrossing
-    end    
+    startUpdatingLocation    
+    triggerModelUpdate    
+    resetScreenIfNeeded    
   end
 
   def applicationWillResignActive(application)
@@ -142,17 +135,44 @@ class AppDelegate
   
   def initTrackers
     return unless TRACKING    
-    
+  
+    Flurry.startSession FLURRY_TOKEN
+          
     GAI.sharedInstance.trackerWithTrackingId "UA-60863161-1"
     GAI.sharedInstance.dispatchInterval = 20
-    GAI.sharedInstance.trackUncaughtExceptions = YES
     GAI.sharedInstance.logger.setLogLevel DEBUG ? KGAILogLevelWarning : KGAILogLevelInfo
-    GAI.sharedInstance.setDryRun YES if DEBUG
-    
-    Flurry.startSession FLURRY_TOKEN
+    # GAI.sharedInstance.setDryRun YES if DEBUG
   end
   
   def locationAvailable?
     CLLocationManager.locationServicesEnabled && locationManager && locationManager.location
+  end
+  
+  def uncaughtExceptionHandler(exception)
+    NSLog "--- Fatal exception catched"
+    NSLog "--- Name: #{exception.name}\n--- Reason: #{exception.reason}\n--- UserInfo: #{exception.userInfo}"
+    Flurry.logError exception.name, message:exception.reason, exception:exception
+    NSLog "--- Logged error to Flurry"
+    Device.gai.send GAIDictionaryBuilder.createExceptionWithDescription("#{exception.name}, #{exception.reason}", withFatal:YES).build
+    NSLog "--- Logged error to Google"
+  end
+  
+  def resetScreenIfNeeded
+    @applicationDeactivatedAt ||= 0
+    timeSinceLastLaunch = (Time.now - @applicationDeactivatedAt).to_i
+    Device.debug "Time since last launch: #{timeSinceLastLaunch / 60}:#{timeSinceLastLaunch % 60}"
+    if timeSinceLastLaunch > 5 * 60
+      Device.debug "Reset main screen"
+      tabBarController.selectedViewController = App.mainController.navigationController
+      App.mainController.navigationController.popToRootViewControllerAnimated(NO)
+      Model.currentCrossing = Model.closestCrossing if Model.closestCrossing
+    end
+  end
+  
+  def startUpdatingLocation
+    if CLLocationManager.locationServicesEnabled
+      locationManager.requestWhenInUseAuthorization if locationManager.respondsToSelector 'requestWhenInUseAuthorization'
+      locationManager.startUpdatingLocation
+    end    
   end
 end

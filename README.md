@@ -31,3 +31,9 @@ composite -geometry 200x200+400+400 red.png base.png composite.png
 
 convert -size 100x100 xc:skyblue -size 30x30 xc:red -geometry 60x60+10+10 -composite com2.gif
 convert #{result_image} -resize 360 #{result_image}
+
+
+### Docs
+  
+  * http://flurrydev.github.io/FlurryiOSSDK6xAPI/interface_flurry.html
+  * https://developers.google.com/analytics/devguides/collection/ios/v3/
