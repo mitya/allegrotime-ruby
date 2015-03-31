@@ -28,10 +28,12 @@ class CrossingListController < UITableViewController
 
   def modelUpdated
     tableView.reloadData
+    setupSelectClosestCrossingButton
   end
 
   def screenActivated
     tableView.reloadData
+    setupSelectClosestCrossingButton
   end
 
   def screenDeactivated
