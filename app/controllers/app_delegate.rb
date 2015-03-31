@@ -140,8 +140,8 @@ class AppDelegate
     end
        
     if Env::TRACKING_GA
-      GAI.sharedInstance.trackerWithTrackingId "UA-60863161-1"
-      GAI.sharedInstance.dispatchInterval = 20
+      GAI.sharedInstance.trackerWithTrackingId GAI_TOKEN
+      GAI.sharedInstance.dispatchInterval = GAI_DISPATCH_INTERVAL
       GAI.sharedInstance.logger.setLogLevel DEBUG ? KGAILogLevelWarning : KGAILogLevelInfo
     end
   end
