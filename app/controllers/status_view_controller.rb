@@ -94,7 +94,8 @@ class StatusViewController < UIViewController
   
   def selectClosestCrossing
     Model.currentCrossing = Model.closestCrossing
-    reloadData    
+    reloadData
+    setupSelectClosestCrossingButton
   end
   
   def showInfo
