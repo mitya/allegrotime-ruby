@@ -45,8 +45,7 @@ Motion::Project::App.setup do |app|
     app.version = "2.0.900"
     app.short_version = "2.0.901"
     app.codesign_certificate = "iPhone Distribution: Dmitry Sokurenko (SQLB2GAZ2T)"
-    app.provisioning_profile = "/Volumes/Vault/Sources/active/_etc/AdHoc_Profile_for_AllegroTime.mobileprovision"
-    app.info_plist['DebugModeEnabled'] = false
+    app.provisioning_profile = "/Volumes/Vault/Sources/active/_etc/AppStore_Profile_for_AllegroTime.mobileprovision"
   end  
 end
 

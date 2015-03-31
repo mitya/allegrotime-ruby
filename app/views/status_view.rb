@@ -260,7 +260,7 @@ class StatusAdViewController
   end
   
   def requestAd
-    return unless ADVERTISEMENT
+    return unless Env::ads?
     adRequest = GADRequest.request
     adRequest.testDevices = [ GAD_TESTING_IPHONE_ID, GAD_TESTING_IPAD_ID ] if DEBUG
     if loc = App.locationManager.location
