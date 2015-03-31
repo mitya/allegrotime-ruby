@@ -242,8 +242,7 @@ class StatusView < UIView
   end
 
   def requestAdIfNeeded
-    return unless Env.ads?
-    @adViewController.requestAdIfNeeded
+    @adViewController.requestAdIfNeeded if Env.ads?
   end
 end
 

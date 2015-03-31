@@ -58,6 +58,7 @@ class StatusViewController < UIViewController
 
   def modelUpdated
     reloadData
+    setupSelectClosestCrossingButton
   end
 
   def closestCrossingChanged
@@ -67,6 +68,7 @@ class StatusViewController < UIViewController
 
   def screenActivated
     reloadData
+    setupSelectClosestCrossingButton
   end
 
   def screenDeactivated

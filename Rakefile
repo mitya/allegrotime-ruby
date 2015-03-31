@@ -42,8 +42,10 @@ Motion::Project::App.setup do |app|
   end
   
   app.release do
-    app.version = "2.0.900"
-    app.short_version = "2.0.901"
+    app.version = "2.0.0"
+    app.short_version = "2.0.0"
+    # app.version = "2.0.900"
+    # app.short_version = "2.0.901"
     app.codesign_certificate = "iPhone Distribution: Dmitry Sokurenko (SQLB2GAZ2T)"
     app.provisioning_profile = "/Volumes/Vault/Sources/active/_etc/AppStore_Profile_for_AllegroTime.mobileprovision"
   end  
