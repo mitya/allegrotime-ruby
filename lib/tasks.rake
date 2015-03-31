@@ -79,12 +79,12 @@ namespace :g do
   task :compose_mockup do
     device_image = "/Volumes/Vault/Sources/Active/_assets/mockup-iphone-5s.png"
     results_dir = "tmp"
-    screenshots_dir = "/Volumes/Vault/Sources/Active/allegrotime/originals/screenshots/v2b-sources/5"    
-    screenshots = %w(1 1-red 2 3 4 5)
+    screenshots_dir = "/Volumes/Vault/Sources/Active/allegrotime/originals/screenshots/v2b-sources/5"
+    screenshots = %w(1 1-red 2 3 3-red 4)
     screenshots.each do |name|
       screenshot = "#{screenshots_dir}/ru-#{name}.png"
       result_image = "#{results_dir}/w-screen-#{name}.jpg"
-      run "convert #{device_image} #{screenshot} -geometry 641x1140+69+255 -composite -background white -flatten -resize 350 #{result_image}"
+      run "convert #{device_image} #{screenshot} -geometry 641x1140+69+255 -composite -background white -flatten -resize 300 #{result_image}"
     end
   end
 end

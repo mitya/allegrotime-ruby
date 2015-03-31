@@ -56,7 +56,7 @@ module Device
   
   def debug(format, *args)
     if DEBUG
-      message = "DEBUG #{format % args}"
+      message = format % args
       puts message if SIMULATOR
       
       message = "[#{Time.now.strftime('%d.%m %H:%M:%S')}] #{message}"
@@ -77,7 +77,19 @@ module Device
   end
   
   def gai
-    GAI.sharedInstance.defaultTracker
+    if Env::TRACKING_GA
+      @gai ||= GAI.sharedInstance.defaultTracker
+    else
+      nil
+    end
+  end
+  
+  def flurry
+    if Env::TRACKING_FLURRY
+      @flurry ||= Flurry
+    else
+      nil
+    end
   end
   
   def trackUI(action, label=nil)
@@ -89,34 +101,41 @@ module Device
   end
   
   def track(category, action, label=nil)
-    return unless TRACKING
+    return unless Env::TRACKING
     
+    action_name = "#{category}:#{action}"
     label = label.to_tracking_key if label && label.respond_to?(:to_tracking_key)
     
-    gai.send GAIDictionaryBuilder.createEventWithCategory(category.to_s, action: action.to_s, label: label, value: nil).build
+    if gai
+      gai.send GAIDictionaryBuilder.createEventWithCategory(category.to_s, action: action.to_s, label: label, value: nil).build
+    end
 
-    full_action_name = "#{category}:#{action}"
-    if label
-      flurry_params = {}
-      flurry_params['label'] = label if label
-      Flurry.logEvent full_action_name, withParameters:flurry_params
-    else
-      Flurry.logEvent full_action_name
+    if flurry
+      if label
+        flurry_params = {'label' => label}
+        flurry.logEvent action_name, withParameters:flurry_params
+      else
+        flurry.logEvent action_name
+      end
     end
     
-    debug "EVENT #{full_action_name} [#{label}]" if DEBUG
+    debug "EVENT #{action_name} [#{label}]" if DEBUG
   end
   
   def trackScreen(screenName, key=nil)
-    return unless TRACKING
+    return unless Env::TRACKING
 
     key = key.to_tracking_key if key && key.respond_to?(:to_tracking_key)
     
-    gai.set KGAIScreenName, value: screenName.to_s
-    gai.send GAIDictionaryBuilder.createScreenView.build    
+    if gai
+      gai.set KGAIScreenName, value: screenName.to_s
+      gai.send GAIDictionaryBuilder.createScreenView.build
+    end
     
-    Flurry.logPageView
-    Flurry.logEvent "screen:#{screenName}", withParameters:{key: key}
+    if flurry
+      flurry.logPageView
+      flurry.logEvent "screen:#{screenName}", withParameters:{key: key}
+    end
     
     debug "SCREEN #{screenName} [#{key}]" if DEBUG
   end
@@ -127,4 +146,21 @@ module Device
     minutes = components.objectAtIndex(1).integerValue
     hours * 60 + minutes
   end  
+  
+  def testTrackers
+    5.times do
+      Device.trackScreen :test_screen1, Model.currentCrossing
+      Device.trackUI :test_tap_button2
+      Device.trackScreen :test_screen2, Model.currentCrossing
+      Device.trackSystem :test_system_event2
+      Device.trackUI :test_tap_button3
+      Device.trackScreen :test_screen3, Model.currentCrossing
+      Device.trackSystem :test_system_event1
+      Device.trackUI :test_tap_button1
+      Device.trackScreen :test_screen1, Model.currentCrossing
+      Device.trackUI :test_tap_button2
+      Device.trackScreen :test_screen2, Model.currentCrossing
+      Device.trackSystem :test_system_event3
+    end
+  end
 end

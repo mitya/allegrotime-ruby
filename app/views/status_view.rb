@@ -88,13 +88,17 @@ class StatusView < UIView
       l.textAlignment = Device.ipad?? NSTextAlignmentCenter : NSTextAlignmentJustified
     end
 
-    @adView = GADBannerView.alloc.initWithAdSize(Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape).tap do |av|
-      av.backgroundColor = UIColor.clearColor
-      av.alpha = 0.0
-      av.translatesAutoresizingMaskIntoConstraints = NO
+    if Env.ads?
+      @adView = GADBannerView.alloc.initWithAdSize(Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape).tap do |av|
+        av.backgroundColor = UIColor.clearColor
+        av.alpha = 0.0
+        av.translatesAutoresizingMaskIntoConstraints = NO
+      end
+      @adViewController = StatusAdViewController.new(@adView)
+    else
+      @adView = UIView.alloc.init
+      @adView.translatesAutoresizingMaskIntoConstraints = NO
     end
-
-    @adViewController = StatusAdViewController.new(@adView)
     
     addSubview @crossingLabel
     addSubview @messageLabel
@@ -106,7 +110,7 @@ class StatusView < UIView
     setStaticConstraints
     setNeedsUpdateConstraints
     
-    @adViewController.requestAd
+    @adViewController.requestAd if Env.ads?
 
     return self
   end
@@ -119,7 +123,7 @@ class StatusView < UIView
   def layoutSubviews
     @crossingLabelArrow.frame = CGRectMake Device.screenWidth - ArrowRM, (RowH-ArrowH)/2, ArrowW, ArrowH
     @footnoteLabel.hidden = Device.landscapePhone?
-    @adView.adSize = Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape  
+    @adView.adSize = Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape if Env.ads?
     super
   end
 
@@ -238,6 +242,7 @@ class StatusView < UIView
   end
 
   def requestAdIfNeeded
+    return unless Env.ads?
     @adViewController.requestAdIfNeeded
   end
 end

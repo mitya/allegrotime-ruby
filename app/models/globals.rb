@@ -10,8 +10,6 @@ GAD_TESTING_IPHONE_ID = '398a17d1387d6fa3ac0e24597718c091'
 GAD_TESTING_IPAD_ID = 'e993311bb857d82d1b2df4a83f03101e'
 FLURRY_TOKEN = 'SM6YJJ3V9TP8XPFQJWTM'
 SIMULATOR = UIDevice.currentDevice.model == "iPhone Simulator"
-TRACKING = true
-ADVERTISEMENT = false
 TABLE_VIEW_HEADER_HEIGHT = 44
 
 NXDefaultCellIDClosestCrossingChanged = "NXDefaultCellIDClosestCrossingChangedNotification"
