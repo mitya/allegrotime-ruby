@@ -35,6 +35,10 @@ Motion::Project::App.setup do |app|
     app.codesign_certificate = "iPhone Developer: Dmitry Sokurenko (9HS3696XGX)"
     app.provisioning_profile = "/Volumes/Vault/Sources/active/_etc/iOS_Team.mobileprovision"    
     app.info_plist['DebugModeEnabled'] = true
+    # app.info_plist['ATAds'] = false
+    app.info_plist['ATTracking'] = true
+    app.info_plist['ATTrackingFlurry'] = true
+    # app.info_plist['ATTrackingGA'] = true
   end
   
   app.release do

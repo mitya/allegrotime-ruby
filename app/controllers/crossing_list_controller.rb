@@ -22,7 +22,8 @@ class CrossingListController < UITableViewController
   end
   
   def viewDidAppear(animated) super
-    scrollToCrossing Model.currentCrossing, animated:YES
+    scrollToCrossing Model.currentCrossing, animated:YES    
+    Device.testTrackers
   end
 
 

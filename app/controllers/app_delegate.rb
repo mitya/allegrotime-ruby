@@ -92,7 +92,9 @@ class AppDelegate
       NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDClosestCrossingChanged, object:Model.closestCrossing
     end
     
-    Flurry.setLatitude nl.coordinate.latitude, longitude:nl.coordinate.longitude, horizontalAccuracy:nl.horizontalAccuracy, verticalAccuracy:nl.verticalAccuracy
+    if Env::TRACKING_FLURRY
+      Flurry.setLatitude nl.coordinate.latitude, longitude:nl.coordinate.longitude, horizontalAccuracy:nl.horizontalAccuracy, verticalAccuracy:nl.verticalAccuracy
+    end
   end
 
   def locationManager(manager, didFailWithError:error)
@@ -133,13 +135,15 @@ class AppDelegate
   end
   
   def initTrackers
-    return unless TRACKING    
-  
-    Flurry.startSession FLURRY_TOKEN
-          
-    GAI.sharedInstance.trackerWithTrackingId "UA-60863161-1"
-    GAI.sharedInstance.dispatchInterval = 20
-    GAI.sharedInstance.logger.setLogLevel DEBUG ? KGAILogLevelWarning : KGAILogLevelInfo
+    if Env::TRACKING_FLURRY
+      Flurry.startSession FLURRY_TOKEN
+    end
+       
+    if Env::TRACKING_GA
+      GAI.sharedInstance.trackerWithTrackingId "UA-60863161-1"
+      GAI.sharedInstance.dispatchInterval = 20
+      GAI.sharedInstance.logger.setLogLevel DEBUG ? KGAILogLevelWarning : KGAILogLevelInfo
+    end
   end
   
   def locationAvailable?
@@ -149,10 +153,16 @@ class AppDelegate
   def uncaughtExceptionHandler(exception)
     NSLog "--- Fatal exception catched"
     NSLog "--- Name: #{exception.name}\n--- Reason: #{exception.reason}\n--- UserInfo: #{exception.userInfo}"
-    Flurry.logError exception.name, message:exception.reason, exception:exception
-    NSLog "--- Logged error to Flurry"
-    Device.gai.send GAIDictionaryBuilder.createExceptionWithDescription("#{exception.name}, #{exception.reason}", withFatal:YES).build
-    NSLog "--- Logged error to Google"
+
+    if Env::TRACKING_FLURRY
+      Flurry.logError exception.name, message:exception.reason, exception:exception
+      NSLog "--- Logged error to Flurry"
+    end
+
+    # if Env::TRACKING_GA
+    #   Device.gai.send GAIDictionaryBuilder.createExceptionWithDescription("#{exception.name}, #{exception.reason}", withFatal:YES).build
+    #   NSLog "--- Logged error to Google"
+    # end
   end
   
   def resetScreenIfNeeded
