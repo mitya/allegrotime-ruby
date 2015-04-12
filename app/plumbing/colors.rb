@@ -40,7 +40,7 @@ module Colors
       :red.color     => :white.color,
       :yellow.color  => UIColor.rgb(48, 48, 55),
       :green.color   => :white.color,
-      :gray.color    => :black.color,
+      :gray.color    => :white.color,
     }
     @@message_text_color_map[color]    
   end

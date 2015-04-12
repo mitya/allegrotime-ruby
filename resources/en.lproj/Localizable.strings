@@ -20,6 +20,7 @@
 "crossing.will be closed in X mins" = "Will be closed in %@";
 "crossing.will be opened in X mins" = "Will be opened in %@";
 "crossing.opened X min ago" = "Was opened %@ ago";
+"crossing.unknown" = "Schedule unknown";
 "crossings.title" = "Crossings";
 "crossings.tab" = "Schedule";
 "crossings.closest" = "The nearest is %@";
@@ -33,7 +34,9 @@
 "closed" = "closed";
 "will be closed" = "will be closed";
 
-
+"poklonnogorskaya_state" = "Closed for reconstruction";
+"poklonnogorskaya_open_estimate" = "Will be opened on 20.12.2016 (estimated)";
+"no_schedule" = "Schedule Unknown";
 
 "Удельная" = "Udelnaya";
 "Поклонногорская" = "Poklonnogorskaya";

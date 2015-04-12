@@ -92,7 +92,6 @@ class CrossingMapController < UIViewController
   
   def updateModel
     @modelUpdatePending = false
-    Device.debug "update map"
     for crossing in mapView.annotations
       annotationView = mapView.viewForAnnotation crossing
       next unless Crossing === crossing

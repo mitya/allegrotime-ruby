@@ -17,8 +17,8 @@ class CrossingListController < UITableViewController
     setupSelectClosestCrossingButton
   end
   
-  def viewDidAppear(animated) super
-    scrollToCrossing Model.currentCrossing, animated:YES    
+  def viewDidAppear(animated) super    
+    scrollToCrossing Model.currentCrossing, animated:YES
   end
   
   def viewDidLoad
@@ -27,7 +27,6 @@ class CrossingListController < UITableViewController
 
 
   def modelUpdated
-    puts "update crossing list"
     tableView.reloadData
     setupSelectClosestCrossingButton
   end
@@ -75,7 +74,8 @@ class CrossingListController < UITableViewController
     end
 
     crossing = Model.crossings.objectAtIndex(ip.row)
-     Device.trackUI :select_crossing_list, crossing
+    Device.trackUI :select_crossing_list, crossing
+    
     if target && action
       target.performSelector action, withObject:crossing
     else
@@ -84,7 +84,7 @@ class CrossingListController < UITableViewController
   end
 
   def tableView(tableView, titleForHeaderInSection:section)
-    Model.closestCrossing ? 'crossings.closest'.li(Model.closestCrossing.localizedName) : 'crossings.closest_undefined'.l
+    Model.closestCrossing ? 'crossings.closest'.li(Model.realClosestCrossing.localizedName) : 'crossings.closest_undefined'.l
   end
 
   def tableView(tableView, viewForHeaderInSection:section)

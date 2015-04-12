@@ -59,7 +59,6 @@ class StatusViewController < UIViewController
   end
 
   def modelUpdated
-    Device.debug "update status"
     reloadData
     setupSelectClosestCrossingButton
   end

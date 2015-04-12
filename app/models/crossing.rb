@@ -8,6 +8,7 @@ class Crossing
   StateClosing = 3
   StateClosed = 4
   StateJustOpened = 5
+  StateUnknown = 6
 
   ### properties
 
@@ -21,6 +22,10 @@ class Crossing
   def state
     if name == 'Поклонногорская'
       return StateClosed
+    end
+    
+    if !hasSchedule?
+      return StateUnknown
     end
     
     currentTime = Time.minutes_since_midnight
@@ -48,7 +53,8 @@ class Crossing
     when StateClosing    then UIColor.redColor
     when StateClosed     then UIColor.redColor
     when StateJustOpened then UIColor.yellowColor
-                                 else UIColor.greenColor
+    when StateUnknown    then UIColor.grayColor      
+                         else UIColor.greenColor
     end
   end
 
@@ -68,7 +74,7 @@ class Crossing
   # is used by map annotations
   def subtitle
     if name == 'Поклонногорская'
-      return "Закрыто на строительство путепровода"
+      return 'poklonnogorskaya_state'.l
     end
     
     case state
@@ -78,6 +84,8 @@ class Crossing
       minutesTillOpening == 0 ? 'crossing.just_opened'.l : 'crossing.will be opened in X mins'.li(Format.minutes_as_text(minutesTillOpening))
     when StateJustOpened
       minutesSinceOpening == 0 ? 'crossing.just_opened'.l : 'crossing.opened X min ago'.li(Format.minutes_as_text(minutesSinceOpening))
+    when StateUnknown
+      "crossing.unknown".l
     else
       nil
     end
@@ -174,14 +182,18 @@ class Crossing
   def addClosingWithTime(time, direction:direction)
     closing = Closing.new
     closing.crossing = self
-    closing.time = time
-    closing.trainTime = Device.minutes_from_hhmm(time)
+    closing.rawTime = time
+    closing.trainTime = Device.minutes_from_military_string(time)
     closing.direction = direction
     closings.addObject closing
   end
 
   def closed?
-    state == Crossing::StateClosed
+    state == StateClosed
+  end
+  
+  def hasSchedule?
+    closings.count > 0
   end
 
 

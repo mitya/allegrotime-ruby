@@ -145,7 +145,13 @@ module Device
     hours = components.objectAtIndex(0).integerValue
     minutes = components.objectAtIndex(1).integerValue
     hours * 60 + minutes
-  end  
+  end
+  
+  def minutes_from_military_string(string)
+    hours = string[0..1].integerValue
+    minutes = string[2..3].integerValue
+    hours * 60 + minutes
+  end
   
   def testTrackers
     5.times do
