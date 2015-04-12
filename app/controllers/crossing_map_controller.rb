@@ -37,6 +37,8 @@ class CrossingMapController < UIViewController
     # else
     #   showCrossing Model.currentCrossing, animated:animated
     # end
+    
+    updateModel if @modelUpdatePending
   end
   
   def viewDidAppear(animated) super
@@ -81,17 +83,24 @@ class CrossingMapController < UIViewController
   
 
   def modelUpdated
-    puts "update map"
-    t = Time.now
+    if isViewLoaded && view.window
+      updateModel
+    else
+      @modelUpdatePending = true
+    end
+  end
+  
+  def updateModel
+    @modelUpdatePending = false
+    Device.debug "update map"
     for crossing in mapView.annotations
       annotationView = mapView.viewForAnnotation crossing
       next unless Crossing === crossing
       next unless annotationView
-      newImage = pinMappingFor(crossing.color)
-      annotationView.image = newImage
+      crossing.triggerSubtitleChanged
+      annotationView.image = pinMappingFor(crossing.color)
       annotationView.leftCalloutAccessoryView.image = Widgets.stripeForCrossing(crossing)
-    end
-    puts "time = #{Time.now - t}"
+    end    
   end
 
   def screenDeactivated

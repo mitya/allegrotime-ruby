@@ -19,6 +19,10 @@ class Crossing
   # - вероятно уже закрыт — красный
   # - Аллегро только что прошел — желтый
   def state
+    if name == 'Поклонногорская'
+      return StateClosed
+    end
+    
     currentTime = Time.minutes_since_midnight
     trainTime = currentClosing.trainTime
 
@@ -63,6 +67,10 @@ class Crossing
 
   # is used by map annotations
   def subtitle
+    if name == 'Поклонногорская'
+      return "Закрыто на строительство путепровода"
+    end
+    
     case state
     when StateClear, StateSoon, StateVerySoon, StateClosing
       minutesTillClosing == 0 ? 'crossing.just_closed'.l : 'crossing.will be closed in X mins'.li(Format.minutes_as_text(minutesTillClosing))
@@ -74,6 +82,12 @@ class Crossing
       nil
     end
   end
+  
+  def triggerSubtitleChanged
+    willChangeValueForKey('subtitle')
+    didChangeValueForKey('subtitle')
+  end
+  
 
   def nextClosing
     currentTime = Time.minutes_since_midnight
