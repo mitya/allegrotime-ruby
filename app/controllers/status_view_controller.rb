@@ -1,5 +1,5 @@
 class StatusViewController < UIViewController
-  attr_accessor :statusView
+  attr_accessor :statusView, :scrollView
   attr_accessor :adView, :adTimer, :adViewLoaded  
   attr_accessor :lastAccessTime
   
@@ -15,8 +15,23 @@ class StatusViewController < UIViewController
 
   def loadView
     self.statusView = StatusView.alloc.initWithFrame(UIScreen.mainScreen.bounds)
-    self.statusView.delegate = self
-    self.view = statusView
+    statusView.delegate = self    
+
+    self.scrollView = UIScrollView.alloc.initWithFrame(CGRectNull)    
+    scrollView.addSubview(statusView)
+    scrollView.contentSize = statusView.bounds.size
+    # scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    scrollView.backgroundColor = UIColor.groupTableViewBackgroundColor
+
+    self.view = scrollView
+  end
+  
+  def willRotateToInterfaceOrientation(toInterfaceOrientation, duration:duration)
+    rect = UIScreen.mainScreen.bounds
+    rect.size.width = UIScreen.mainScreen.bounds.size.height
+    rect.size.height = UIScreen.mainScreen.bounds.size.width
+    scrollView.contentSize = rect.size
+    statusView.frame = rect
   end
 
   def viewDidLoad() super

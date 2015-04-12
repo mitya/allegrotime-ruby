@@ -11,6 +11,7 @@ end
 DEVICE_IPHONE_5 = 'iPhone 5'
 DEVICE_IPHONE_5_7 = 'iPhone 5s 7.1'
 DEVICE_IPHONE_6 = 'iPhone 6'
+DEVICE_IPHONE_6_PLUS = 'iPhone 6 Plus'
 DEVICE_IPAD = 'iPad Air'
 
 ENV['device_name'] ||= DEVICE_IPHONE_5

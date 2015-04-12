@@ -57,7 +57,7 @@ module Device
   def debug(format, *args)
     if DEBUG
       message = format % args
-      NSLog message
+      # NSLog message
       
       message = "[#{Time.now.strftime('%d.%m %H:%M:%S')}] #{message}"
       

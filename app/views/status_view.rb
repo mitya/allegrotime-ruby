@@ -12,16 +12,17 @@ class StatusView < UIView
   ArrowH = 13
   ArrowW = 8
   ArrowRM = 23
-  FootnoteTM = 50
+  FootnoteTM = 22
   FootnoteTM_LS = 5
   CrossingLabelTag = 500
 
   def initWithFrame(frame) super
     self.backgroundColor = UIColor.hex 0xefeff4
-    NSNotificationCenter.defaultCenter.addObserver self, selector:'deviceRotated', name:UIApplicationWillChangeStatusBarOrientationNotification, object:nil
+    # NSNotificationCenter.defaultCenter.addObserver self, selector:'deviceRotated', name:UIApplicationWillChangeStatusBarOrientationNotification, object:nil
+
+    self.translatesAutoresizingMaskIntoConstraints = YES
 
     @crossingLabel = UILabel.alloc.initWithFrame(CGRectZero).tap do |l|
-      l.text = "Poklonnogorskaya"
       l.textAlignment = NSTextAlignmentCenter
       l.font = UIFont.boldSystemFontOfSize(21)
       l.color = UIColor.grayShade 0.2
@@ -29,6 +30,7 @@ class StatusView < UIView
       l.shadowOffset = CGSizeMake(1, 1)
       l.backgroundColor = UIColor.whiteColor
       l.translatesAutoresizingMaskIntoConstraints = NO
+      l.autoresizingMask = UIViewAutoresizingFlexibleWidth      
       l.tag = CrossingLabelTag
       l.userInteractionEnabled = YES
 
@@ -47,11 +49,11 @@ class StatusView < UIView
       l.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
       l.textAlignment = NSTextAlignmentCenter
       l.adjustsFontSizeToFitWidth = YES
+      l.autoresizingMask = UIViewAutoresizingFlexibleWidth      
       l.translatesAutoresizingMaskIntoConstraints = NO
     end
 
     @crossingStatusLabel = UILabel.alloc.initWithFrame(CGRectZero).tap do |l|
-      l.text = "crossing status"
       l.textAlignment = NSTextAlignmentCenter
       l.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
       l.translatesAutoresizingMaskIntoConstraints = NO
@@ -64,7 +66,6 @@ class StatusView < UIView
     end
 
     @trainStatusLabel = UILabel.alloc.initWithFrame(CGRectZero).tap do |l|
-      l.text = "train status"
       l.textAlignment = NSTextAlignmentCenter
       l.font = UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
       l.color = UIColor.grayShade(0.4)
@@ -76,15 +77,40 @@ class StatusView < UIView
       l.addSubview border
     end
 
-    @footnoteLabel = UILabel.alloc.initWithFrame(CGRectZero).tap do |l|
-      l.text = "main.footer".l
-      l.color = UIColor.grayShade(0.5)
-      l.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
-      l.numberOfLines = 0
-      l.shadowColor = UIColor.colorWithWhite 1, alpha:1
-      l.shadowOffset = CGSizeMake(0, 1)
+    # @footnoteLabel = UILabel.alloc.initWithFrame(CGRectZero).tap do |l|
+    #   l.color = UIColor.grayShade(0.5)
+    #   l.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+    #   l.numberOfLines = 0
+    #   l.shadowColor = UIColor.colorWithWhite 1, alpha:1
+    #   l.shadowOffset = CGSizeMake(0, 1)
+    #   l.translatesAutoresizingMaskIntoConstraints = NO
+    #   l.textAlignment = Device.ipad?? NSTextAlignmentCenter : NSTextAlignmentJustified
+    #
+    #   email = "allegrotime@yandex.ru"
+    #   string = "ВНИМАНИЕ: Расписание Аллегро сильно изменилось, и к сожалению у меня в данный момент нет нового расписания, и так как я больше не байкер, то объезжать все переезды мне очень неохота. Я постараюсь достать его из РЖД, а пока что приложение отображает расписание только Удельной, Шувалово и Песочной. Если вам не трудно вы можете прислать фото синей таблички с расписанием расположенной у любого другого переезда на #{email} и я добавлю его в приложение."
+    #   text = NSMutableAttributedString.alloc.init
+    #   text.appendAttributedString NSAttributedString.alloc.initWithString(string)
+    #   text.addAttribute NSLinkAttributeName, value: "mailto:#{email}", range: NSMakeRange(string.index(email), email.length)
+    #
+    #   l.userInteractionEnabled = YES
+    #   l.attributedText = text
+    # end
+
+    @footnoteLabel = UITextView.alloc.initWithFrame(CGRectZero).tap do |l|
       l.translatesAutoresizingMaskIntoConstraints = NO
-      l.textAlignment = Device.ipad?? NSTextAlignmentCenter : NSTextAlignmentJustified
+      l.editable = NO
+      l.textColor = UIColor.grayShade(0.5)
+      l.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+      l.backgroundColor = UIColor.clearColor
+      l.textAlignment = Device.ipad?? NSTextAlignmentCenter : NSTextAlignmentLeft
+      l.dataDetectorTypes = UIDataDetectorTypeLink
+      l.scrollEnabled = NO
+      l.layer.shadowColor = UIColor.colorWithWhite 1, alpha:1
+      l.layer.shadowOffset = CGSizeMake(0, 1)
+
+      email = "allegrotime@yandex.ru"
+      string = "ВНИМАНИЕ: Расписание Аллегро сильно изменилось, и к сожалению у меня в данный момент нет нового расписания, и так как я больше не байкер, то объезжать все переезды мне очень неохота. Я постараюсь достать его из РЖД, а пока что приложение отображает расписание только Удельной, Шувалово и Песочной. Если вам не трудно вы можете прислать фото синей таблички с расписанием расположенной у любого другого переезда на #{email} и я добавлю его в приложение. "
+      l.text = string
     end
 
     if Env.ads?
@@ -115,20 +141,20 @@ class StatusView < UIView
   end
 
   def dealloc
-    NSNotificationCenter.defaultCenter.removeObserver self
+    # NSNotificationCenter.defaultCenter.removeObserver self
   end
 
 
   def layoutSubviews
     @crossingLabelArrow.frame = CGRectMake Device.screenWidth - ArrowRM, (RowH-ArrowH)/2, ArrowW, ArrowH
-    @footnoteLabel.hidden = Device.landscapePhone?
     @adView.adSize = Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape if Env.ads?
     super
   end
 
-  def setStaticConstraints
-    addConstraints [
-      NSLayoutConstraint.constraintsWithVisualFormat("H:|[crossing]|", options:0, metrics:defaultMetrics, views:views),
+  
+
+  def staticConstraints
+    [ NSLayoutConstraint.constraintsWithVisualFormat("H:|[crossing]|", options:0, metrics:defaultMetrics, views:views),
       NSLayoutConstraint.constraintsWithVisualFormat("H:|[message]|", options:0, metrics:defaultMetrics, views:views),
       NSLayoutConstraint.constraintsWithVisualFormat("H:|[trainStatus]|", options:0, metrics:defaultMetrics, views:views),
       NSLayoutConstraint.constraintsWithVisualFormat("H:|[crossingStatus]|", options:0, metrics:defaultMetrics, views:views),
@@ -136,7 +162,11 @@ class StatusView < UIView
       NSLayoutConstraint.constraintsWithVisualFormat("V:[crossingStatus(SmallRowH)]", options:0, metrics:defaultMetrics, views:views),
       NSLayoutConstraint.constraintsWithVisualFormat("V:[trainStatus(SmallRowH)]", options:0, metrics:defaultMetrics, views:views),
       NSLayoutConstraint.constraintsWithVisualFormat("V:[crossing(RowH)]", options:0, metrics:defaultMetrics, views:views)
-    ].flatten
+    ].flatten    
+  end
+
+  def setStaticConstraints
+    addConstraints staticConstraints
   end
 
   def updateConstraints
@@ -150,10 +180,10 @@ class StatusView < UIView
   end
 
 
-  def deviceRotated
-    Device.trackSystem :status_view_rotated, UIApplication.sharedApplication.statusBarOrientation
-    setNeedsUpdateConstraints
-  end
+  # def deviceRotated
+  #   Device.trackSystem :status_view_rotated, UIApplication.sharedApplication.statusBarOrientation
+  #   setNeedsUpdateConstraints
+  # end
 
   def touchesBegan(touches, withEvent:event)
     touch = touches.anyObject
