@@ -14,8 +14,8 @@ class LogViewController < UIViewController
     table.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight
     view.addSubview table
 
-    NSNotificationCenter.defaultCenter.addObserver self, selector:'consoleUpdated', name:NXDefaultCellIDLogConsoleUpdated, object:nil
-    NSNotificationCenter.defaultCenter.addObserver self, selector:'consoleFlushed', name:NXDefaultCellIDLogConsoleFlushed, object:nil
+    NSNotificationCenter.defaultCenter.addObserver self, selector:'consoleUpdated', name:ATLogConsoleUpdated, object:nil
+    NSNotificationCenter.defaultCenter.addObserver self, selector:'consoleFlushed', name:ATLogConsoleFlushed, object:nil
 
     swipeRecognizer = UISwipeGestureRecognizer.alloc.initWithTarget self, action:'recognizedSwipe:'
     swipeRecognizer.direction = UISwipeGestureRecognizerDirectionRight

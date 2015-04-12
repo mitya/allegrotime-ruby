@@ -29,7 +29,7 @@ class ModelManager
   def currentCrossing=(crossing)
     self.selectedCrossing = crossing.closest? ? nil : crossing
     @currentCrossingChangeTime = Time.now
-    NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDCurrentCrossingChanged, object:crossing
+    Device.notify ATModelUpdated
   end
   
   def reverseCrossings

@@ -18,7 +18,7 @@ ENV['device_name'] ||= DEVICE_IPHONE_5
 Motion::Project::App.setup do |app|
   app.name = 'AllegroTime'  
   app.identifier = "name.sokurenko.AllegroTime"
-  app.sdk_version = '8.2'
+  app.sdk_version = '8.3'
   app.deployment_target = '7.0'  
   app.icons = %w(Icon-60 Icon-76 Icon-Small-40 Icon-Small)
   app.frameworks += %w(StoreKit AdSupport QuartzCore AVFoundation CoreTelephony SystemConfiguration MessageUI AudioToolbox MapKit CoreLocation CoreData EventKit EventKitUI)
@@ -33,7 +33,7 @@ Motion::Project::App.setup do |app|
     app.version = "2.0.100"
     app.short_version = "2.0.101"
     app.codesign_certificate = "iPhone Developer: Dmitry Sokurenko (9HS3696XGX)"
-    app.provisioning_profile = "/Volumes/Vault/Sources/active/_etc/iOS_Team.mobileprovision"    
+    app.provisioning_profile = "/Volumes/Vault/Sources/active/_etc/Universal_Development_Profile.mobileprovision"    
     app.info_plist['DebugModeEnabled'] = true
     app.info_plist['ATAds'] = true
     app.info_plist['ATTracking'] = true
@@ -42,10 +42,10 @@ Motion::Project::App.setup do |app|
   end
   
   app.release do
-    app.version = "2.0.0"
-    app.short_version = "2.0.0"
-    # app.version = "2.0.900"
-    # app.short_version = "2.0.901"
+    # app.version = "2.0.1"
+    # app.short_version = "2.0.1"
+    app.version = "2.0.900"
+    app.short_version = "2.0.901"
     app.codesign_certificate = "iPhone Distribution: Dmitry Sokurenko (SQLB2GAZ2T)"
     app.provisioning_profile = "/Volumes/Vault/Sources/active/_etc/AppStore_Profile_for_AllegroTime.mobileprovision"
   end  

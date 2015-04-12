@@ -38,15 +38,13 @@ class AppDelegate
     @perMinuteTimer.fireDate = Time.next_full_minute_date unless DEBUG
     @perMinuteTimerLastFireTime = 0
 
-    NSNotificationCenter.defaultCenter.addObserver self, selector:'currentCrossingChanged', name:NXDefaultCellIDCurrentCrossingChanged, object:nil
-
     true
   end
 
   def applicationDidBecomeActive(application)
     screenActivated
     startUpdatingLocation    
-    triggerModelUpdate    
+    Device.notify(ATModelUpdated)
     resetScreenIfNeeded    
   end
 
@@ -78,7 +76,7 @@ class AppDelegate
   end
 
   def locationManager(manager, didUpdateToLocation:nl, fromLocation:ol)
-    Device.debug "didUpdateToLocation acc=%.f dist=%.f %s", nl.horizontalAccuracy, nl.distanceFromLocation(ol), Model.closestCrossing.localizedName
+    Device.debug "updated location acc=%.f dist=%.f %s", nl.horizontalAccuracy, nl.distanceFromLocation(ol), Model.closestCrossing.localizedName
     
     return if nl.horizontalAccuracy > 1_000
     
@@ -89,7 +87,7 @@ class AppDelegate
       if (Model.currentCrossingChangeTime || 0) < Time.now - 10*60
         Model.currentCrossing = newClosestCrossing
       end
-      NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDClosestCrossingChanged, object:Model.closestCrossing
+      NSNotificationCenter.defaultCenter.postNotificationName ATModelUpdated
     end
     
     if Env::TRACKING_FLURRY
@@ -101,7 +99,7 @@ class AppDelegate
     Device.debug "locationManager.didFailWithError: #{error.description}"
     Device.trackSystem :location_failed, error.description
     Model.closestCrossing = nil
-    NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDClosestCrossingChanged, object:Model.closestCrossing
+    NSNotificationCenter.defaultCenter.postNotificationName ATModelUpdated
   end
 
 
@@ -113,21 +111,13 @@ class AppDelegate
   def screenActivated
     Device.trackSystem :app_activated
     @active = true
-    visibleViewController.performSelectorIfDefined(:screenActivated)
   end
 
   def timerTicked
     if @active && @perMinuteTimerLastFireTime != Device.currentTimeInMunutes
       @perMinuteTimerLastFireTime = Device.currentTimeInMunutes
-      triggerModelUpdate      
+      Device.notify(ATModelUpdated)
     end
-  end
-
-  def currentCrossingChanged
-  end
-
-  def triggerModelUpdate
-    visibleViewController.performSelectorIfDefined :modelUpdated
   end
 
   def visibleViewController
