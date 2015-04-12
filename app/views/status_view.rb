@@ -221,17 +221,22 @@ class StatusView < UIView
 
   def setCrossing(crossing)
     crossingLabel.text = crossing.localizedName
-    crossingStatusLabel.text = "main.crossing $closes at $time".li \
-        crossing.closed? ? "closed".l : "will be closed".l, Format.munutes_as_hhmm(crossing.nextClosing.closingTime)
-    trainStatusLabel.text = "main.allegro will pass at $time".li(Format.munutes_as_hhmm(crossing.nextClosing.trainTime))
-    messageLabel.text = crossing.subtitle
     messageLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
     messageLabel.backgroundColor = Colors.closingCellBackgroundFor(crossing.color)
     messageLabel.textColor = Colors.messageCellColorFor(crossing.color)
-    
-    if crossing.name == 'Поклонногорская'
+    if crossing.hasSchedule?
+      messageLabel.text = crossing.subtitle
+      crossingStatusLabel.text = "main.crossing $closes at $time".li \
+          crossing.closed? ? "closed".l : "will be closed".l, Format.munutes_as_hhmm(crossing.nextClosing.closingTime)
+      trainStatusLabel.text = "main.allegro will pass at $time".li(Format.munutes_as_hhmm(crossing.nextClosing.trainTime))
+    elsif crossing.name == 'Поклонногорская'
       messageLabel.text = " #{crossing.subtitle} "
-      crossingStatusLabel.text = "Откроют — 20.12.2016 (предположительно)"
+      crossingStatusLabel.text = 'poklonnogorskaya_open_estimate'.l
+      trainStatusLabel.text = ''
+    else
+      messageLabel.text = 'no_schedule'.l
+      crossingStatusLabel.text = ''
+      trainStatusLabel.text = ''
     end
     
     adView.hidden = NO
@@ -271,7 +276,6 @@ class StatusAdViewController
       adRequest.setLocationWithLatitude loc.coordinate.latitude, longitude:loc.coordinate.longitude, accuracy:loc.horizontalAccuracy 
     end
     adView.loadRequest adRequest
-    Device.debug "ad_requested"
   end
 
   def requestAdIfNeeded

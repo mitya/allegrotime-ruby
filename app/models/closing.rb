@@ -3,10 +3,18 @@ class Closing
   DirectionToRussia = 2
 
 
-  attr_accessor :time, :crossing, :direction, :trainTime
+  attr_accessor :rawTime, :time, :crossing, :direction, :trainTime
 
   def closingTime
     trainTime - 10;
+  end
+  
+  def time
+    @time ||= begin
+      hours = trainTime / 60
+      minutes = trainTime.remainder(60)
+      "%i:%02i" % [hours, minutes]
+    end
   end
 
   def toRussia?
@@ -15,7 +23,7 @@ class Closing
 
   def trainNumber
     position = crossing.closings.indexOfObject self
-    150 + 1 + position
+    780 + 1 + position
   end
 
   def directionCode
@@ -52,7 +60,7 @@ class Closing
     closing = Closing.new
     closing.crossing = crossing
     closing.time = time
-    closing.trainTime = Device.minutes_from_hhmm(time)
+    closing.trainTime = Device.minutes_from_military_string(time)
     closing.direction = direction
 
     crossing.closings.addObject closing

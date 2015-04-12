@@ -10,7 +10,7 @@ class ModelManager
 
   def closestCrossing
     return nil unless App.locationAvailable?
-    @closestCrossing ||= crossingClosestTo App.locationManager.location
+    @closestCrossing ||= crossingClosestTo App.locationManager.location, :active
   end
 
   def selectedCrossing
@@ -37,13 +37,18 @@ class ModelManager
   end
   
   def activeCrossings
-    @activeCrossings ||= crossings - [Crossing.getCrossingWithName('Поклонногорская')]
+    @activeCrossings ||= crossings.select { |crossing| crossing.hasSchedule? } - [Crossing.getCrossingWithName('Поклонногорская')]
+  end
+
+  def realClosestCrossing
+    crossingClosestTo App.locationManager.location, :all
   end
 
   ### methods
 
-  def crossingClosestTo(location)
-    activeCrossings.minimumObject -> (crossing) do 
+  def crossingClosestTo(location, collection)
+    source = collection == :active ? activeCrossings : crossings
+    source.minimumObject -> (crossing) do 
       currentLocation = CLLocation.alloc.initWithLatitude crossing.latitude, longitude:crossing.longitude
       currentLocation.distanceFromLocation location
     end
@@ -58,6 +63,7 @@ class ModelManager
   end
 
   def loadFile
+    s = Time.now
     @crossings = NSMutableArray.arrayWithCapacity 30
 
     dataPath = NSBundle.mainBundle.pathForResource("data/schedule", ofType:"csv")
@@ -72,18 +78,23 @@ class ModelManager
       crossing.distance = components.objectAtIndex(1).intValue
       crossing.latitude = components.objectAtIndex(2).floatValue
       crossing.longitude = components.objectAtIndex(3).floatValue
-      crossing.closings = NSMutableArray.arrayWithCapacity(8)
+      
+      if components.objectAtIndex(4) != ''
+        crossing.closings = NSMutableArray.arrayWithCapacity(8)
 
-      lastDatumIndex = 3
-      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 1), direction:Closing::DirectionToFinland
-      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 2), direction:Closing::DirectionToRussia
-      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 3), direction:Closing::DirectionToFinland
-      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 4), direction:Closing::DirectionToRussia
-      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 5), direction:Closing::DirectionToFinland
-      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 6), direction:Closing::DirectionToRussia
-      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 7), direction:Closing::DirectionToFinland
-      crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 8), direction:Closing::DirectionToRussia
-
+        lastDatumIndex = 3
+        crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 1), direction:Closing::DirectionToFinland
+        crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 2), direction:Closing::DirectionToRussia
+        crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 3), direction:Closing::DirectionToFinland
+        crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 4), direction:Closing::DirectionToRussia
+        crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 5), direction:Closing::DirectionToFinland
+        crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 6), direction:Closing::DirectionToRussia
+        crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 7), direction:Closing::DirectionToFinland
+        crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 8), direction:Closing::DirectionToRussia
+      else
+        crossing.closings = []
+      end
+      
       @crossings.addObject crossing
     end
 

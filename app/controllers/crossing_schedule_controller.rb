@@ -51,7 +51,6 @@ class CrossingScheduleController < UITableViewController
   end
 
   def modelUpdated
-    Device.debug "update crossing schedule"
     tableView.reloadData
   end
 

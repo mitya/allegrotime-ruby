@@ -80,7 +80,7 @@ class AppDelegate
     
     return if nl.horizontalAccuracy > 1_000
     
-    newClosestCrossing = Model.crossingClosestTo(nl)
+    newClosestCrossing = Model.crossingClosestTo(nl, :active)
     if newClosestCrossing != Model.closestCrossing
       Device.trackSystem :closest_crossing_changed, newClosestCrossing
       Model.closestCrossing = newClosestCrossing
@@ -96,7 +96,7 @@ class AppDelegate
   end
 
   def locationManager(manager, didFailWithError:error)
-    Device.debug "locationManager.didFailWithError: #{error.description}"
+    Device.debug "location update failed: #{error.description}"
     Device.trackSystem :location_failed, error.description
     Model.closestCrossing = nil
     NSNotificationCenter.defaultCenter.postNotificationName ATModelUpdated
@@ -160,7 +160,6 @@ class AppDelegate
     timeSinceLastLaunch = (Time.now - @applicationDeactivatedAt).to_i
     Device.debug "Time since last launch: #{timeSinceLastLaunch / 60}:#{timeSinceLastLaunch % 60}"
     if timeSinceLastLaunch > 5 * 60
-      Device.debug "Reset main screen"
       tabBarController.selectedViewController = App.mainController.navigationController
       App.mainController.navigationController.popToRootViewControllerAnimated(NO)
       Model.currentCrossing = Model.closestCrossing if Model.closestCrossing

@@ -25,7 +25,7 @@ class TrainScheduleController < UITableViewController
     crossing = @crossings[indexPath.row]
     closing = crossing.closings[@trainIndex]
 
-    cell.textLabel.text = closing.time
+    cell.textLabel.text = closing ? closing.time : "неизвестно"
     cell.detailTextLabel.text = crossing.localizedName
 
     cell
