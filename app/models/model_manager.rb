@@ -35,11 +35,15 @@ class ModelManager
   def reverseCrossings
     @reverseCrossings ||= crossings.reverse
   end
+  
+  def activeCrossings
+    @activeCrossings ||= crossings - [Crossing.getCrossingWithName('Поклонногорская')]
+  end
 
   ### methods
 
   def crossingClosestTo(location)
-    crossings.minimumObject -> (crossing) do 
+    activeCrossings.minimumObject -> (crossing) do 
       currentLocation = CLLocation.alloc.initWithLatitude crossing.latitude, longitude:crossing.longitude
       currentLocation.distanceFromLocation location
     end

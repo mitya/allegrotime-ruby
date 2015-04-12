@@ -44,7 +44,6 @@ class StatusView < UIView
     end
 
     @messageLabel = UILabel.alloc.initWithFrame(CGRectZero).tap do |l|
-      l.text = "Will be closed in an hour"
       l.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
       l.textAlignment = NSTextAlignmentCenter
       l.adjustsFontSizeToFitWidth = YES
@@ -229,6 +228,12 @@ class StatusView < UIView
     messageLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
     messageLabel.backgroundColor = Colors.closingCellBackgroundFor(crossing.color)
     messageLabel.textColor = Colors.messageCellColorFor(crossing.color)
+    
+    if crossing.name == 'Поклонногорская'
+      messageLabel.text = " #{crossing.subtitle} "
+      crossingStatusLabel.text = "Откроют — 20.12.2016 (предположительно)"
+    end
+    
     adView.hidden = NO
   end
   
