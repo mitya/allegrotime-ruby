@@ -6,12 +6,11 @@ class StatusViewController < UIViewController
   def init() super
     self.title = "main.title".l
     self.tabBarItem = UITabBarItem.alloc.initWithTitle("main.tab".l, image:Device.image_named("ti-semaphore"), selectedImage:Device.image_named("ti-semaphore-filled"))
-    NSNotificationCenter.defaultCenter.addObserver self, selector:'closestCrossingChanged', name:NXDefaultCellIDClosestCrossingChanged, object:nil
     self
   end
 
   def dealloc
-    NSNotificationCenter.defaultCenter.removeObserver self
+    Device.removeObserver self
   end
 
   def loadView
@@ -41,6 +40,8 @@ class StatusViewController < UIViewController
 
     navigationItem.titleView = titleLabel
     navigationItem.backBarButtonItem = UIBarButtonItem.alloc.initWithTitle "main.backbutton".l, style:UIBarButtonItemStyleBordered, target:nil, action:nil
+    
+    Device.addObserver self, 'modelUpdated', ATModelUpdated
   end
 
   def viewWillAppear(animated) super
@@ -51,22 +52,14 @@ class StatusViewController < UIViewController
     @lastAccessTime = Time.now
   end
 
+
   def recognizedSwipe(recognizer)
     point = recognizer.locationInView view
     showLog if point.y > 300
   end
 
   def modelUpdated
-    reloadData
-    setupSelectClosestCrossingButton
-  end
-
-  def closestCrossingChanged
-    reloadData
-    setupSelectClosestCrossingButton
-  end
-
-  def screenActivated
+    puts "update status"
     reloadData
     setupSelectClosestCrossingButton
   end
@@ -78,6 +71,7 @@ class StatusViewController < UIViewController
   def statusViewCrossingLabelTouched
     showCrossingListToChangeCurrent
   end
+
 
   def showCrossingListToChangeCurrent
     crossingsController = CrossingListController.alloc.initWithStyle UITableViewStyleGrouped

@@ -1,13 +1,16 @@
 class CrossingMapController < UIViewController
  attr_accessor :mapView, :pinMapping, :timer, :crossingToShowOnNextAppearance
  attr_accessor :lastRegion, :lastMapType, :lastCrossing, :lastAccessTime
- 
 
   def init() super
     self.title = 'map.title'.l
     self.tabBarItem = UITabBarItem.alloc.initWithTitle "map.tab".l, image:Device.image_named("ti-map"), selectedImage:Device.image_named("ti-map-filled")
     self.lastMapType ||= MKMapTypeHybrid
     self
+  end
+
+  def dealloc
+    Device.removeObserver self
   end
 
   def loadView
@@ -22,6 +25,7 @@ class CrossingMapController < UIViewController
   def viewDidLoad() super  
     navigationItem.titleView = segmentedControl
     mapView.addAnnotations Model.crossings
+    Device.addObserver self, 'modelUpdated', ATModelUpdated
   end
   
   def viewWillAppear(animated) super
@@ -75,13 +79,10 @@ class CrossingMapController < UIViewController
     openCrossingSchedule(crossing)
   end
   
-  
-  def changeMapType(segment)
-    mapView.mapType = segment.selectedSegmentIndex
-    Device.trackUI :change_map_type, mapView.mapType
-  end
-  
+
   def modelUpdated
+    puts "update map"
+    t = Time.now
     for crossing in mapView.annotations
       annotationView = mapView.viewForAnnotation crossing
       next unless Crossing === crossing
@@ -90,12 +91,9 @@ class CrossingMapController < UIViewController
       annotationView.image = newImage
       annotationView.leftCalloutAccessoryView.image = Widgets.stripeForCrossing(crossing)
     end
+    puts "time = #{Time.now - t}"
   end
 
-  def screenActivated
-    modelUpdated
-  end
-  
   def screenDeactivated
     visibleAnnotations = mapView.annotationsInMapRect(mapView.visibleMapRect)
     visibleAnnotations.each do |annotation|
@@ -105,7 +103,13 @@ class CrossingMapController < UIViewController
       annotationView.leftCalloutAccessoryView.image = Device.image_named("cell-stripe-gray") if annotationView.leftCalloutAccessoryView
     end
   end
+
   
+  def changeMapType(segment)
+    mapView.mapType = segment.selectedSegmentIndex
+    Device.trackUI :change_map_type, mapView.mapType
+  end
+
   def showUserLocation
     coordinate = mapView.userLocation.location && mapView.userLocation.location.coordinate
     Device.trackUI :tap_show_location
@@ -125,7 +129,6 @@ class CrossingMapController < UIViewController
     App.crossingScheduleController.navigationController.popToRootViewControllerAnimated(NO)
     tabBarController.selectedViewController = App.crossingScheduleController.navigationController
   end
-  
 
   def pinMappingFor(color)
     color.api_name ? Device.image_named("crossing-pin-#{color.api_name}") : nil

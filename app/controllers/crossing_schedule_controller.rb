@@ -4,14 +4,18 @@ class CrossingScheduleController < UITableViewController
   def initWithStyle(tableViewStyle) super
     self.tabBarItem = UITabBarItem.alloc.initWithTitle("crossings.tab".l, image:Device.image_named("ti-schedule"), selectedImage:Device.image_named("ti-schedule-filled"))
     navigationItem.backBarButtonItem = UIBarButtonItem.alloc.initWithTitle "main.crossing_cell".l, style:UIBarButtonItemStyleBordered, target:nil, action:nil
+    Device.addObserver self, 'modelUpdated', ATModelUpdated
     self
+  end
+
+  def dealloc
+    Device.removeObserver self
   end
 
   def viewWillAppear(animated) super
     navigationItem.title = crossing.localizedName
     Device.trackScreen :crossing_schedule, crossing
   end
-
 
   def tableView(tableView, numberOfRowsInSection:section)
     crossing.closings.count
@@ -38,9 +42,7 @@ class CrossingScheduleController < UITableViewController
   end
 
   def tableView tableView, didSelectRowAtIndexPath:indexPath
-    trainScheduleController = TrainScheduleController.alloc.initWithStyle UITableViewStyleGrouped
-    trainScheduleController.sampleClosing = crossing.closings.objectAtIndex indexPath.row
-    navigationController.pushViewController trainScheduleController, animated:YES
+    showTrainScheduleForClosing(crossing.closings.objectAtIndex(indexPath.row))
   end
 
 
@@ -49,11 +51,18 @@ class CrossingScheduleController < UITableViewController
   end
 
   def modelUpdated
+    puts "update crossing schedule"
     tableView.reloadData
   end
 
   def showMap
     Device.trackUI :tap_show_crossing_map, crossing
     tabBarController.selectedViewController = App.mapController.navigationController
+  end
+  
+  def showTrainScheduleForClosing(closing)
+    trainScheduleController = TrainScheduleController.alloc.initWithStyle UITableViewStyleGrouped
+    trainScheduleController.sampleClosing = closing
+    navigationController.pushViewController trainScheduleController, animated:YES    
   end
 end

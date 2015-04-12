@@ -14,10 +14,9 @@ FLURRY_TOKEN = 'SM6YJJ3V9TP8XPFQJWTM'
 SIMULATOR = UIDevice.currentDevice.model == "iPhone Simulator"
 TABLE_VIEW_HEADER_HEIGHT = 44
 
-NXDefaultCellIDClosestCrossingChanged = "NXDefaultCellIDClosestCrossingChangedNotification"
-NXDefaultCellIDCurrentCrossingChanged = "NXDefaultCellIDCurrentCrossingChangedNotification"
-NXDefaultCellIDLogConsoleUpdated = "NXDefaultCellIDLogConsoleUpdated"
-NXDefaultCellIDLogConsoleFlushed = "NXDefaultCellIDLogConsoleFlushed"
+ATModelUpdated = "ATModelUpdated"
+ATLogConsoleUpdated = "ATLogConsoleUpdated"
+ATLogConsoleFlushed = "ATLogConsoleFlushed"
 NXDefaultCellID = "NXDefaultCellID"
 
 $logging_buffer = []

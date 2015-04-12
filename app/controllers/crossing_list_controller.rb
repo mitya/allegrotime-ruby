@@ -5,15 +5,11 @@ class CrossingListController < UITableViewController
     self.title = "crossings.title".l
     self.tabBarItem = UITabBarItem.alloc.initWithTitle("crossings.tab".l, image:Device.image_named("ti-schedule"), selectedImage:Device.image_named("ti-schedule-filled"))
     self.screenName = 'crossing_list'
-    NSNotificationCenter.defaultCenter.addObserver self, selector:'closestCrossingChanged', name:NXDefaultCellIDClosestCrossingChanged, object:nil
     self
   end
 
   def dealloc
-    NSNotificationCenter.defaultCenter.removeObserver self
-  end
-
-  def viewDidLoad
+    Device.removeObserver self
   end
 
   def viewWillAppear(animated) super
@@ -24,14 +20,14 @@ class CrossingListController < UITableViewController
   def viewDidAppear(animated) super
     scrollToCrossing Model.currentCrossing, animated:YES    
   end
+  
+  def viewDidLoad
+    Device.addObserver self, 'modelUpdated', ATModelUpdated
+  end
 
 
   def modelUpdated
-    tableView.reloadData
-    setupSelectClosestCrossingButton
-  end
-
-  def screenActivated
+    puts "update crossing list"
     tableView.reloadData
     setupSelectClosestCrossingButton
   end
@@ -40,17 +36,6 @@ class CrossingListController < UITableViewController
     tableView.visibleCells.each do |cell|
       cell.imageView.image = Device.image_named("cell-stripe-gray")
     end
-  end
-
-  def selectClosestCrossing
-   closestCrossingIndex = Model.crossings.indexOfObject(Model.closestCrossing)
-   closestCrossingIndexPath = NSIndexPath.indexPathForRow(closestCrossingIndex, inSection:0)
-
-   Device.trackUI :select_closest_crossing_list, Model.closestCrossing
-
-   UIView.animateWithDuration 0.5,
-     animations: lambda { tableView.selectRowAtIndexPath closestCrossingIndexPath, animated:NO, scrollPosition:UITableViewScrollPositionMiddle },
-     completion: lambda { |_| tableView tableView, didSelectRowAtIndexPath:closestCrossingIndexPath }
   end
 
 
@@ -129,12 +114,19 @@ class CrossingListController < UITableViewController
     tableView.selectRowAtIndexPath crossingIndex, animated:animated, scrollPosition:UITableViewScrollPositionTop
   end
 
-  def closestCrossingChanged
-    setupSelectClosestCrossingButton
-  end
-
   def setupSelectClosestCrossingButton
     @selectClosestCrossingButton ||= UIBarButtonItem.alloc.initWithImage Device.image_named("bb-define_location"), style:UIBarButtonItemStylePlain, target:self, action:'selectClosestCrossing'
     navigationItem.rightBarButtonItem = Model.closestCrossing && Model.currentCrossing != Model.closestCrossing ? @selectClosestCrossingButton : nil
+  end
+
+  def selectClosestCrossing
+   closestCrossingIndex = Model.crossings.indexOfObject(Model.closestCrossing)
+   closestCrossingIndexPath = NSIndexPath.indexPathForRow(closestCrossingIndex, inSection:0)
+
+   Device.trackUI :select_closest_crossing_list, Model.closestCrossing
+
+   UIView.animateWithDuration 0.5,
+     animations: lambda { tableView.selectRowAtIndexPath closestCrossingIndexPath, animated:NO, scrollPosition:UITableViewScrollPositionMiddle },
+     completion: lambda { |_| tableView tableView, didSelectRowAtIndexPath:closestCrossingIndexPath }
   end
 end

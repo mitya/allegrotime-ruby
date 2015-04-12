@@ -63,11 +63,11 @@ module Device
       
       if $logging_buffer.count > 200
         $logging_buffer.clear
-        NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDLogConsoleFlushed, object:$logging_buffer
+        NSNotificationCenter.defaultCenter.postNotificationName ATLogConsoleFlushed, object:$logging_buffer
       end      
       
       $logging_buffer << message
-      NSNotificationCenter.defaultCenter.postNotificationName NXDefaultCellIDLogConsoleUpdated, object:$logging_buffer
+      NSNotificationCenter.defaultCenter.postNotificationName ATLogConsoleUpdated, object:$logging_buffer
     end    
   end
 
@@ -162,5 +162,17 @@ module Device
       Device.trackScreen :test_screen2, Model.currentCrossing
       Device.trackSystem :test_system_event3
     end
+  end
+  
+  def addObserver(observer, selector, event)
+    NSNotificationCenter.defaultCenter.addObserver observer, selector:selector, name:event, object:nil
+  end
+  
+  def removeObserver(observer)
+    NSNotificationCenter.defaultCenter.removeObserver(observer)
+  end
+  
+  def notify(event)
+    NSNotificationCenter.defaultCenter.postNotificationName(event)
   end
 end
