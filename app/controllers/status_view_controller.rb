@@ -19,19 +19,16 @@ class StatusViewController < UIViewController
 
     self.scrollView = UIScrollView.alloc.initWithFrame(CGRectNull)    
     scrollView.addSubview(statusView)
-    scrollView.contentSize = statusView.bounds.size
-    # scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     scrollView.backgroundColor = UIColor.groupTableViewBackgroundColor
+    scrollView.alwaysBounceVertical = YES
+    
+    viewMap = { 'status' => statusView }
+    scrollView.addConstraints NSLayoutConstraint.constraintsWithVisualFormat("V:|[status]|", options:0, metrics:nil, views:viewMap)
+    scrollView.addConstraints NSLayoutConstraint.constraintsWithVisualFormat("H:|[status]|", options:0, metrics:nil, views:viewMap)        
+    scrollView.addConstraint NSLayoutConstraint.constraintWithItem statusView, attribute:NSLayoutAttributeWidth, relatedBy:NSLayoutRelationEqual, 
+        toItem:scrollView, attribute:NSLayoutAttributeWidth, multiplier:1.0, constant:0
 
     self.view = scrollView
-  end
-  
-  def willRotateToInterfaceOrientation(toInterfaceOrientation, duration:duration)
-    rect = UIScreen.mainScreen.bounds
-    rect.size.width = UIScreen.mainScreen.bounds.size.height
-    rect.size.height = UIScreen.mainScreen.bounds.size.width
-    scrollView.contentSize = rect.size
-    statusView.frame = rect
   end
 
   def viewDidLoad() super
@@ -67,6 +64,9 @@ class StatusViewController < UIViewController
     @lastAccessTime = Time.now
   end
 
+  def willRotateToInterfaceOrientation(toInterfaceOrientation, duration:duration)
+    statusView.setNeedsUpdateConstraints    
+  end
 
   def recognizedSwipe(recognizer)
     point = recognizer.locationInView view
