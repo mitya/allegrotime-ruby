@@ -14,7 +14,7 @@ DEVICE_IPHONE_6 = 'iPhone 6'
 DEVICE_IPHONE_6_PLUS = 'iPhone 6 Plus'
 DEVICE_IPAD = 'iPad Air'
 
-ENV['device_name'] ||= DEVICE_IPAD
+ENV['device_name'] ||= DEVICE_IPHONE_5_7
 
 Motion::Project::App.setup do |app|
   app.name = 'AllegroTime'  
@@ -32,7 +32,6 @@ Motion::Project::App.setup do |app|
   
   app.development do
     app.version = "2.0.100"
-    app.short_version = "2.0.101"
     app.codesign_certificate = "iPhone Developer: Dmitry Sokurenko (9HS3696XGX)"
     app.provisioning_profile = "/Volumes/Vault/Sources/active/_etc/Universal_Development_Profile.mobileprovision"    
     app.info_plist['DebugModeEnabled'] = true
@@ -43,12 +42,15 @@ Motion::Project::App.setup do |app|
   end
   
   app.release do
-    # app.version = "2.0.1"
-    # app.short_version = "2.0.1"
     app.version = "2.0.900"
-    app.short_version = "2.0.901"
     app.codesign_certificate = "iPhone Distribution: Dmitry Sokurenko (SQLB2GAZ2T)"
-    app.provisioning_profile = "/Volumes/Vault/Sources/active/_etc/AppStore_Profile_for_AllegroTime.mobileprovision"
+    app.provisioning_profile = "/Volumes/Vault/Sources/active/_etc/AdHoc_Profile_for_AllegroTime.mobileprovision"
+    
+    if ENV['appstore'] == 'yes'
+      app.version = "2.0.1"
+      app.short_version = "2.0.1"
+      app.provisioning_profile = "/Volumes/Vault/Sources/active/_etc/AppStore_Profile_for_AllegroTime.mobileprovision"
+    end
   end  
 end
 
