@@ -54,17 +54,17 @@ class Closing
   end
 
 
-  def self.closingWithCrossingName(crossingName, time:time, direction:direction)
-    crossing = Crossing.getCrossingWithName crossingName
-
-    closing = Closing.new
-    closing.crossing = crossing
-    closing.time = time
-    closing.trainTime = Device.minutes_from_military_string(time)
-    closing.direction = direction
-
-    crossing.closings.addObject closing
-
-    closing
-  end
+  # def self.closingWithCrossingName(crossingName, time:time, direction:direction)
+  #   crossing = Crossing.getCrossingWithName crossingName
+  #
+  #   closing = Closing.new
+  #   closing.crossing = crossing
+  #   closing.time = time
+  #   closing.trainTime = Device.minutes_from_military_string(time)
+  #   closing.direction = direction
+  #
+  #   crossing.closings.addObject closing
+  #
+  #   closing
+  # end
 end

@@ -72,9 +72,12 @@ class ModelManager
 
     dataRows.each do |dataRow| 
       components = dataRow.componentsSeparatedByString ","
+      record_name = components.objectAtIndex 0
+
+      next if record_name == 'Санкт-Петербург' || record_name == 'Выборг'
 
       crossing = Crossing.new
-      crossing.name = components.objectAtIndex 0
+      crossing.name = record_name
       crossing.distance = components.objectAtIndex(1).intValue
       crossing.latitude = components.objectAtIndex(2).floatValue
       crossing.longitude = components.objectAtIndex(3).floatValue
@@ -84,12 +87,12 @@ class ModelManager
 
         lastDatumIndex = 3
         crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 1), direction:Closing::DirectionToFinland
-        crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 2), direction:Closing::DirectionToRussia
-        crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 3), direction:Closing::DirectionToFinland
-        crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 4), direction:Closing::DirectionToRussia
-        crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 5), direction:Closing::DirectionToFinland
+        crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 5), direction:Closing::DirectionToRussia
+        crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 2), direction:Closing::DirectionToFinland
         crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 6), direction:Closing::DirectionToRussia
-        crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 7), direction:Closing::DirectionToFinland
+        crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 3), direction:Closing::DirectionToFinland
+        crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 7), direction:Closing::DirectionToRussia
+        crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 4), direction:Closing::DirectionToFinland
         crossing.addClosingWithTime components.objectAtIndex(lastDatumIndex + 8), direction:Closing::DirectionToRussia
       else
         crossing.closings = []

@@ -183,7 +183,7 @@ class Crossing
     closing = Closing.new
     closing.crossing = self
     closing.rawTime = time
-    closing.trainTime = Device.minutes_from_military_string(time)
+    closing.trainTime = Device.minutes_from_hhmm(time)
     closing.direction = direction
     closings.addObject closing
   end
