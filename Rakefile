@@ -47,8 +47,8 @@ Motion::Project::App.setup do |app|
     app.provisioning_profile = "/Volumes/Vault/Sources/active/_etc/AdHoc_Profile_for_AllegroTime.mobileprovision"
     
     if ENV['appstore'] == 'yes'
-      app.version = "2.0.1"
-      app.short_version = "2.0.1"
+      app.version = "2.0.2.1"
+      app.short_version = "2.0.2"
       app.provisioning_profile = "/Volumes/Vault/Sources/active/_etc/AppStore_Profile_for_AllegroTime.mobileprovision"
     end
   end  
