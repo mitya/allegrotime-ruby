@@ -38,3 +38,11 @@ convert #{result_image} -resize 360 #{result_image}
   * http://flurrydev.github.io/FlurryiOSSDK6xAPI/interface_flurry.html
   * https://developer.yahoo.com/flurry/docs/analytics/gettingstarted/events/ios/
   * https://developers.google.com/analytics/devguides/collection/ios/v3/
+
+
+## Changelog
+
+### 2.0.2 (unreleased)
+
+  * изменено расписание Парголово и Каменки на 2 минуту (и туда и обратно)
+  * исправлен баг с ротацией WebView
