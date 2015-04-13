@@ -38,6 +38,8 @@
 "poklonnogorskaya_open_estimate" = "Will be opened on 20.12.2016 (estimated)";
 "no_schedule" = "Schedule Unknown";
 
+"new_footnote" = "ATTENTION: The app doesn't know the exact Allegro schedule any more. The schedule is calculated using some approximations. The accuracy should be quite high between Udelnaya and Pesochnaya and on the crossings near Vyborg. On the intermediate crossings inaccuracy can be up to 10 minutes";
+
 "Удельная" = "Udelnaya";
 "Поклонногорская" = "Poklonnogorskaya";
 "Озерки – Шувалово" = "Ozerki – Shuvalovo";

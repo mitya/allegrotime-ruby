@@ -9,6 +9,9 @@ class Crossing
   StateClosed = 4
   StateJustOpened = 5
   StateUnknown = 6
+  
+  RED_THRESHOLD = 10
+  YELLOW_THRESHOLD = 30
 
   ### properties
 
@@ -38,8 +41,8 @@ class Crossing
     timeTillClosing = trainTime - CLOSING_TIME - currentTime
 
     return StateClear    if timeTillClosing > 60
-    return StateSoon     if timeTillClosing > 20
-    return StateVerySoon if timeTillClosing > 5
+    return StateSoon     if timeTillClosing > YELLOW_THRESHOLD
+    return StateVerySoon if timeTillClosing > RED_THRESHOLD
     return StateClosing  if timeTillClosing > 0
 
     return StateClosed

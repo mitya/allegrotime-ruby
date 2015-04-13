@@ -14,7 +14,7 @@ DEVICE_IPHONE_6 = 'iPhone 6'
 DEVICE_IPHONE_6_PLUS = 'iPhone 6 Plus'
 DEVICE_IPAD = 'iPad Air'
 
-ENV['device_name'] ||= DEVICE_IPHONE_5_7
+ENV['device_name'] ||= DEVICE_IPAD
 
 Motion::Project::App.setup do |app|
   app.name = 'AllegroTime'  
