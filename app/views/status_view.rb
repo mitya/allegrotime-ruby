@@ -15,12 +15,11 @@ class StatusView < UIView
   FootnoteTM = 22
   FootnoteTM_LS = 5
   CrossingLabelTag = 500
+  BottomM = 44
 
   def initWithFrame(frame) super
     self.backgroundColor = UIColor.hex 0xefeff4
-    # NSNotificationCenter.defaultCenter.addObserver self, selector:'deviceRotated', name:UIApplicationWillChangeStatusBarOrientationNotification, object:nil
-
-    self.translatesAutoresizingMaskIntoConstraints = YES
+    self.translatesAutoresizingMaskIntoConstraints = NO
 
     @crossingLabel = UILabel.alloc.initWithFrame(CGRectZero).tap do |l|
       l.textAlignment = NSTextAlignmentCenter
@@ -33,7 +32,7 @@ class StatusView < UIView
       l.autoresizingMask = UIViewAutoresizingFlexibleWidth      
       l.tag = CrossingLabelTag
       l.userInteractionEnabled = YES
-
+      
       border = UIView.alloc.initWithFrame(CGRectMake 0, 0, Device.screenWidth, 0.5)
       border.backgroundColor = UIColor.grayShade(0.8)
       border.autoresizingMask = UIViewAutoresizingFlexibleWidth
@@ -102,19 +101,22 @@ class StatusView < UIView
       l.textColor = UIColor.grayShade(0.5)
       l.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
       l.backgroundColor = UIColor.clearColor
-      l.textAlignment = Device.ipad?? NSTextAlignmentCenter : NSTextAlignmentLeft
+      l.textAlignment = Device.ipad?? NSTextAlignmentCenter : NSTextAlignmentCenter
       l.dataDetectorTypes = UIDataDetectorTypeLink
       l.scrollEnabled = NO
       l.layer.shadowColor = UIColor.colorWithWhite 1, alpha:1
       l.layer.shadowOffset = CGSizeMake(0, 1)
 
       email = "allegrotime@yandex.ru"
-      string = "ВНИМАНИЕ: Расписание Аллегро сильно изменилось, и к сожалению у меня в данный момент нет нового расписания, и так как я больше не байкер, то объезжать все переезды мне очень неохота. Я постараюсь достать его из РЖД, а пока что приложение отображает расписание только Удельной, Шувалово и Песочной. Если вам не трудно вы можете прислать фото синей таблички с расписанием расположенной у любого другого переезда на #{email} и я добавлю его в приложение. "
+      string = "ВНИМАНИЕ: Расписание Аллегро изменилось, и, к сожалению, нового расписания у меня нет. В данный момент приложение отображает расписание только по Удельной, Шувалово и Песочной. Если вам не трудно, вы можете прислать фото синей таблички с расписанием, расположенной у любого другого переезда на #{email} и я добавлю его в приложение."
       l.text = string
     end
 
-    if Env.ads?
-      @adView = GADBannerView.alloc.initWithAdSize(Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape).tap do |av|
+    if Env.ads?            
+      p KGADAdSizeBanner
+      # @adView = GADBannerView.alloc.initWithAdSize(Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape).tap do |av|
+      # @adView = GADBannerView.alloc.initWithAdSize(Device.ipad?? KGADAdSizeMediumRectangle : KGADAdSizeLargeBanner).tap do |av|
+      @adView = GADBannerView.alloc.initWithAdSize(KGADAdSizeLargeBanner).tap do |av|
         av.backgroundColor = UIColor.clearColor
         av.alpha = 0.0
         av.translatesAutoresizingMaskIntoConstraints = NO
@@ -147,7 +149,7 @@ class StatusView < UIView
 
   def layoutSubviews
     @crossingLabelArrow.frame = CGRectMake Device.screenWidth - ArrowRM, (RowH-ArrowH)/2, ArrowW, ArrowH
-    @adView.adSize = Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape if Env.ads?
+    # @adView.adSize = Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape if Env.ads?
     super
   end
 
@@ -158,6 +160,7 @@ class StatusView < UIView
       NSLayoutConstraint.constraintsWithVisualFormat("H:|[message]|", options:0, metrics:defaultMetrics, views:views),
       NSLayoutConstraint.constraintsWithVisualFormat("H:|[trainStatus]|", options:0, metrics:defaultMetrics, views:views),
       NSLayoutConstraint.constraintsWithVisualFormat("H:|[crossingStatus]|", options:0, metrics:defaultMetrics, views:views),
+      NSLayoutConstraint.constraintsWithVisualFormat("H:|[ad]|", options:0, metrics:defaultMetrics, views:views),
       NSLayoutConstraint.constraintsWithVisualFormat("H:|-[footnote]-|", options:0, metrics:defaultMetrics, views:views),
       NSLayoutConstraint.constraintsWithVisualFormat("V:[crossingStatus(SmallRowH)]", options:0, metrics:defaultMetrics, views:views),
       NSLayoutConstraint.constraintsWithVisualFormat("V:[trainStatus(SmallRowH)]", options:0, metrics:defaultMetrics, views:views),
@@ -173,17 +176,11 @@ class StatusView < UIView
     removeConstraints @dynamicConstraints if @dynamicConstraints
     @dynamicConstraints = [
       NSLayoutConstraint.constraintsWithVisualFormat("V:[message(MessageH)]", options:0, metrics:currentMetrics, views:views),
-      NSLayoutConstraint.constraintsWithVisualFormat("V:|-TopM-[crossing][message][crossingStatus][trainStatus][ad]-FootnoteTM-[footnote]", options:0, metrics:currentMetrics, views:views),
+      NSLayoutConstraint.constraintsWithVisualFormat("V:|-TopM-[crossing][message][crossingStatus][trainStatus][ad]-FootnoteTM-[footnote]-BottomM-|", options:0, metrics:currentMetrics, views:views),
     ].flatten
     addConstraints @dynamicConstraints
     super
   end
-
-
-  # def deviceRotated
-  #   Device.trackSystem :status_view_rotated, UIApplication.sharedApplication.statusBarOrientation
-  #   setNeedsUpdateConstraints
-  # end
 
   def touchesBegan(touches, withEvent:event)
     touch = touches.anyObject
@@ -235,6 +232,7 @@ class StatusView < UIView
       'TopM' => TopM,
       'MessageH' => MessageH,
       'FootnoteTM' => FootnoteTM,
+      'BottomM' => BottomM,
     }
   end
 
@@ -243,6 +241,7 @@ class StatusView < UIView
       m = @defaultMetrics.dup
       m['MessageH'] = MessageH_LS
       m['TopM'] = TopM_LS
+      m['BottomM'] = TopM_LS
       m['FootnoteTM'] = FootnoteTM_LS
       m
     end

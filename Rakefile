@@ -14,7 +14,7 @@ DEVICE_IPHONE_6 = 'iPhone 6'
 DEVICE_IPHONE_6_PLUS = 'iPhone 6 Plus'
 DEVICE_IPAD = 'iPad Air'
 
-ENV['device_name'] ||= DEVICE_IPHONE_5
+ENV['device_name'] ||= DEVICE_IPAD
 
 Motion::Project::App.setup do |app|
   app.name = 'AllegroTime'  
@@ -24,7 +24,7 @@ Motion::Project::App.setup do |app|
   app.icons = %w(Icon-60 Icon-76 Icon-Small-40 Icon-Small)
   app.frameworks += %w(StoreKit AdSupport QuartzCore AVFoundation CoreTelephony SystemConfiguration MessageUI AudioToolbox MapKit CoreLocation CoreData EventKit EventKitUI)
   app.libs += %w(/usr/lib/libsqlite3.dylib /usr/lib/libz.dylib)
-  app.vendor_project 'vendor/GoogleMobileAds-7.0.0.framework', :static, :products => ['GoogleMobileAds'], :headers_dir => 'Headers', force_load: false
+  app.vendor_project 'vendor/GoogleMobileAdsSdkiOS-7.1.0/GoogleMobileAds.framework', :static, :products => ['GoogleMobileAds'], :headers_dir => 'Headers', force_load: false
   app.vendor_project 'vendor/GoogleAnalyticsServicesiOS-3.10', :static, :products => ['libGoogleAnalyticsServices.a'], :headers_dir => 'GoogleAnalytics/Library', force_load: false
   app.vendor_project 'vendor/Flurry', :static, :products => ['libFlurry_6.2.0.a'], :headers_dir => 'Flurry.h', force_load: false
   app.device_family = [:iphone, :ipad]
