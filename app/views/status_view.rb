@@ -108,8 +108,8 @@ class StatusView < UIView
       l.layer.shadowColor = UIColor.colorWithWhite 1, alpha:1
       l.layer.shadowOffset = CGSizeMake(0, 1)
 
-      email = "allegrotime@yandex.ru"
-      string = "ВНИМАНИЕ: Расписание Аллегро изменилось, и, к сожалению, нового расписания у меня нет. В данный момент приложение отображает расписание только по Удельной, Шувалово и Песочной. Если вам не трудно, вы можете прислать фото синей таблички с расписанием, расположенной у любого другого переезда на #{email} и я добавлю его в приложение."
+      string = "new_footnote".l
+
       l.text = string
     end
 
