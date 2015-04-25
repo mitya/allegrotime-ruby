@@ -4,34 +4,26 @@ class AppDelegate
   attr_accessor :mainController, :mapController, :crossingScheduleController
 
   def uncaughtExceptionHandler(exception)
-    if Env::TRACKING_FLURRY
-      Flurry.logError exception.name, message:exception.reason, exception:exception
-      NSLog "--- Logged error to Flurry"
-    end
-
-    # NSLog "--- Error Name: #{exception.name}\n--- Reason: #{exception.reason}\n--- UserInfo: #{exception.userInfo}"
-
-    # if Env::TRACKING_GA
-    #   Device.gai.send GAIDictionaryBuilder.createExceptionWithDescription("#{exception.name}, #{exception.reason}", withFatal:YES).build
-    #   NSLog "--- Logged error to Google"
+    # if Env::TRACKING_FLURRY
+    #   Flurry.logError exception.name, message:exception.reason, exception:exception
+    #   NSLog "--- Logged error to Flurry"
     # end
+    #
+    # # NSLog "--- Error Name: #{exception.name}\n--- Reason: #{exception.reason}\n--- UserInfo: #{exception.userInfo}"
+    #
+    # # if Env::TRACKING_GA
+    # #   Device.gai.send GAIDictionaryBuilder.createExceptionWithDescription("#{exception.name}, #{exception.reason}", withFatal:YES).build
+    # #   NSLog "--- Logged error to Google"
+    # # end
   end
 
   def application(application, didFinishLaunchingWithOptions:launchOptions)  
-    if Env::TRACKING_FLURRY    
-      # Flurry.setCrashReportingEnabled YES
-      # Flurry.setDebugLogEnabled YES
-      Flurry.startSession FLURRY_TOKEN
-    end
+    Crittercism.enableWithAppID "553b7d6c7365f84f7d3d6fa3"
     
-    # Crittercism.enableWithAppID "553b7d6c7365f84f7d3d6fa3"
-    
-    @exceptionHandler = method :uncaughtExceptionHandler
-    NSSetUncaughtExceptionHandler @exceptionHandler
+    # @exceptionHandler = method :uncaughtExceptionHandler
+    # NSSetUncaughtExceptionHandler @exceptionHandler
 
     initTrackers
-        
-    # boom
         
     Object.const_set :App, self
     Object.const_set :Model, ModelManager.alloc
@@ -149,6 +141,12 @@ class AppDelegate
   end
   
   def initTrackers
+    if Env::TRACKING_FLURRY    
+      # Flurry.setCrashReportingEnabled YES
+      # Flurry.setDebugLogEnabled YES
+      Flurry.startSession FLURRY_TOKEN
+    end
+        
     if Env::TRACKING_GA
       GAI.sharedInstance.trackerWithTrackingId GAI_TOKEN
       GAI.sharedInstance.dispatchInterval = GAI_DISPATCH_INTERVAL

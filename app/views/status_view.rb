@@ -114,16 +114,20 @@ class StatusView < UIView
     end
 
     if Env.ads?
-      @adView = GADBannerView.alloc.initWithAdSize(KGADAdSizeBanner).tap do |av|
-      # @adView = GADBannerView.alloc.initWithAdSize(Device.ipad?? KGADAdSizeMediumRectangle : KGADAdSizeLargeBanner).tap do |av|
-      # @adView = GADBannerView.alloc.initWithAdSize(Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape).tap do |av|
-      # @adView = GADBannerView.alloc.initWithAdSize(Device.ipad?? GADAdSizeFromCGSize(CGSizeMake(728, 90)) : KGADAdSizeLargeBanner).tap do |av|
-      # @adView = GADBannerView.alloc.initWithAdSize(GADAdSizeFromCGSize(CGSizeMake(728, 90))).tap do |av|
-        av.backgroundColor = UIColor.clearColor
-        av.alpha = 0.0
-        av.translatesAutoresizingMaskIntoConstraints = NO
+      @adView = GADBannerView.alloc.initWithAdSize(KGADAdSizeBanner)
+      if @adView
+        # @adView = GADBannerView.alloc.initWithAdSize(Device.ipad?? KGADAdSizeMediumRectangle : KGADAdSizeLargeBanner).tap do |av|
+        # @adView = GADBannerView.alloc.initWithAdSize(Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape).tap do |av|
+        # @adView = GADBannerView.alloc.initWithAdSize(Device.ipad?? GADAdSizeFromCGSize(CGSizeMake(728, 90)) : KGADAdSizeLargeBanner).tap do |av|
+        # @adView = GADBannerView.alloc.initWithAdSize(GADAdSizeFromCGSize(CGSizeMake(728, 90))).tap do |av|        
+        @adView.backgroundColor = UIColor.clearColor
+        @adView.alpha = 0.0
+        @adView.translatesAutoresizingMaskIntoConstraints = NO
+        @adViewController = StatusAdViewController.new(@adView)
+      else
+        @adView = UIView.alloc.init
+        @adView.translatesAutoresizingMaskIntoConstraints = NO
       end
-      @adViewController = StatusAdViewController.new(@adView)
     else
       @adView = UIView.alloc.init
       @adView.translatesAutoresizingMaskIntoConstraints = NO
@@ -139,7 +143,7 @@ class StatusView < UIView
     setStaticConstraints
     setNeedsUpdateConstraints
 
-    @adViewController.requestAd if Env.ads?
+    @adViewController.requestAd if @adViewController
 
     return self
   end
@@ -281,7 +285,7 @@ class StatusView < UIView
   end
 
   def requestAdIfNeeded
-    @adViewController.requestAdIfNeeded if Env.ads?
+    @adViewController.requestAdIfNeeded if @adViewController
   end
 end
 
