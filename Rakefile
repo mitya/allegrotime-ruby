@@ -14,7 +14,8 @@ DEVICE_IPHONE_6_PLUS = 'iPhone 6 Plus'
 DEVICE_IPAD = 'iPad Air'
 DEVICE_IPHONE_5_7 = 'iPhone 5s 7.1'
 
-ENV['device_name'] ||= DEVICE_IPHONE_6
+# ENV['device_name'] ||= DEVICE_IPHONE_6
+ENV['device_name'] ||= "iPhone 6 8.1"
 
 Motion::Project::App.setup do |app|
   app.name = 'AllegroTime'  
@@ -27,6 +28,8 @@ Motion::Project::App.setup do |app|
   app.vendor_project 'vendor/GoogleMobileAdsSdkiOS-7.1.0/GoogleMobileAds.framework', :static, :products => ['GoogleMobileAds'], :headers_dir => 'Headers', force_load: false
   app.vendor_project 'vendor/GoogleAnalyticsServicesiOS-3.10', :static, :products => ['libGoogleAnalyticsServices.a'], :headers_dir => 'GoogleAnalytics/Library', force_load: false
   app.vendor_project 'vendor/Flurry', :static, :products => ['libFlurry_6.2.0.a'], :headers_dir => 'Flurry.h', force_load: false
+  app.vendor_project 'vendor/CrittercismSDK', :static, :headers_dir => 'vendor/CrittercismSDK'
+  app.frameworks << 'Crittercism'
   app.device_family = [:iphone, :ipad]
   app.info_plist['UIStatusBarHidden'] = true
   
