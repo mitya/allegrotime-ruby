@@ -51,3 +51,12 @@ convert #{result_image} -resize 360 #{result_image}
 
   * изменено расписание Парголово и Каменки на 2 минуту (и туда и обратно)
   * исправлен баг с ротацией WebView
+
+### Commands
+
+
+xcrun dwarfdump --uuid /Volumes/Vault/Sources/Active/allegrotime/build/iPhoneOS-7.0-Release/AllegroTime.app.dSYM
+
+xcrun atos -o ~/Desktop/AllegroTime\ 2.0.2/Payload/AllegroTime.app/AllegroTime -arch arm64 -l 0x44000 2608ec 27cd7c 2296ec 260118 1719e8 25e078 2411d0 23fbdc 240d2c 004c898 00f4614 0242ad4 0242ccc 0236eec 01a8a08 02417ac 004c898 00f1374 02417ac 004c898 010d108 010db3c 
+
+symbolicatecrash crash.txt ~/Desktop/AllegroTime\ 2.0.2/Payload/AllegroTime.app/ > crash-sym.txt
