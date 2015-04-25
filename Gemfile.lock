@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    motion-appstore (1.0.6)
     rake (10.4.2)
     rmagick (2.13.4)
 
@@ -8,5 +9,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  motion-appstore
   rake
   rmagick

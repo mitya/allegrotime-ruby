@@ -4,14 +4,16 @@ class AppDelegate
   attr_accessor :mainController, :mapController, :crossingScheduleController
 
   def application(application, didFinishLaunchingWithOptions:launchOptions)  
+    initFlurry
+
     @exceptionHandler = method :uncaughtExceptionHandler
     NSSetUncaughtExceptionHandler @exceptionHandler
+
+    initTrackers
         
     Object.const_set :App, self
     Object.const_set :Model, ModelManager.alloc
     Model.init
-
-    initTrackers
 
     @mainController = StatusViewController.alloc.init
     @crossingScheduleController = CrossingScheduleController.alloc.initWithStyle UITableViewStyleGrouped
@@ -124,11 +126,13 @@ class AppDelegate
     tabBarController.selectedViewController.visibleViewController
   end
   
-  def initTrackers
+  def initFlurry
     if Env::TRACKING_FLURRY
       Flurry.startSession FLURRY_TOKEN
-    end
-       
+    end    
+  end
+  
+  def initTrackers
     if Env::TRACKING_GA
       GAI.sharedInstance.trackerWithTrackingId GAI_TOKEN
       GAI.sharedInstance.dispatchInterval = GAI_DISPATCH_INTERVAL
@@ -141,13 +145,12 @@ class AppDelegate
   end
   
   def uncaughtExceptionHandler(exception)
-    NSLog "--- Fatal exception catched"
-    NSLog "--- Name: #{exception.name}\n--- Reason: #{exception.reason}\n--- UserInfo: #{exception.userInfo}"
-
     if Env::TRACKING_FLURRY
       Flurry.logError exception.name, message:exception.reason, exception:exception
       NSLog "--- Logged error to Flurry"
     end
+
+    # NSLog "--- Error Name: #{exception.name}\n--- Reason: #{exception.reason}\n--- UserInfo: #{exception.userInfo}"
 
     # if Env::TRACKING_GA
     #   Device.gai.send GAIDictionaryBuilder.createExceptionWithDescription("#{exception.name}, #{exception.reason}", withFatal:YES).build

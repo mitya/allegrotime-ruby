@@ -9,12 +9,12 @@ rescue LoadError
 end
 
 DEVICE_IPHONE_5 = 'iPhone 5'
-DEVICE_IPHONE_5_7 = 'iPhone 5s 7.1'
 DEVICE_IPHONE_6 = 'iPhone 6'
 DEVICE_IPHONE_6_PLUS = 'iPhone 6 Plus'
 DEVICE_IPAD = 'iPad Air'
+DEVICE_IPHONE_5_7 = 'iPhone 5s 7.1'
 
-ENV['device_name'] ||= DEVICE_IPHONE_5
+ENV['device_name'] ||= DEVICE_IPHONE_6
 
 Motion::Project::App.setup do |app|
   app.name = 'AllegroTime'  
