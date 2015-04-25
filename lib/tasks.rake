@@ -87,4 +87,10 @@ namespace :g do
       run "convert #{device_image} #{screenshot} -geometry 641x1140+69+255 -composite -background white -flatten -resize 300 #{result_image}"
     end
   end
+  
+  task :dsym_crit do
+    # APP_ID="553b7d6c7365f84f7d3d6fa3"
+    # API_KEY="3c4F2SkBNhbuc48udnPZwAuBabUREnyz"
+    # source "${SRCROOT}"/CrittercismSDK/dsym_upload.sh
+  end
 end
