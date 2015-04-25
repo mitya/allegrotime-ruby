@@ -94,3 +94,13 @@ namespace :g do
     # source "${SRCROOT}"/CrittercismSDK/dsym_upload.sh
   end
 end
+
+task :appstore do 
+  ENV['appstore'] = 'yes'
+  Rake::Task['archive:distribution'].invoke 
+end
+
+task :adhoc do 
+  Rake::Task['archive:distribution'].invoke 
+end
+
