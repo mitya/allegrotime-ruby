@@ -6,7 +6,7 @@ module Env
   end
   
   def ads?
-    ADVERTISEMENT && Device.iphone?
+    ADVERTISEMENT
   end
   
   if DEBUG

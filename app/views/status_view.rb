@@ -114,17 +114,15 @@ class StatusView < UIView
     end
 
     if Env.ads?
-      @adView = GADBannerView.alloc.initWithAdSize(KGADAdSizeBanner)
-      if @adView
-        # @adView = GADBannerView.alloc.initWithAdSize(Device.ipad?? KGADAdSizeMediumRectangle : KGADAdSizeLargeBanner).tap do |av|
-        # @adView = GADBannerView.alloc.initWithAdSize(Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape).tap do |av|
-        # @adView = GADBannerView.alloc.initWithAdSize(Device.ipad?? GADAdSizeFromCGSize(CGSizeMake(728, 90)) : KGADAdSizeLargeBanner).tap do |av|
-        # @adView = GADBannerView.alloc.initWithAdSize(GADAdSizeFromCGSize(CGSizeMake(728, 90))).tap do |av|        
+      # adSize = KGADAdSizeBanner
+      adSize = Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape
+      if @adView = GADBannerView.alloc.initWithAdSize(adSize)
         @adView.backgroundColor = UIColor.clearColor
         @adView.alpha = 0.0
         @adView.translatesAutoresizingMaskIntoConstraints = NO
         @adViewController = StatusAdViewController.new(@adView)
       else
+        NSLog "can not initialize ad view"
         @adView = UIView.alloc.init
         @adView.translatesAutoresizingMaskIntoConstraints = NO
       end
@@ -132,7 +130,7 @@ class StatusView < UIView
       @adView = UIView.alloc.init
       @adView.translatesAutoresizingMaskIntoConstraints = NO
     end
-
+    
     addSubview @crossingLabel
     addSubview @messageLabel
     addSubview @crossingStatusLabel
@@ -155,7 +153,7 @@ class StatusView < UIView
 
   def layoutSubviews
     @crossingLabelArrow.frame = CGRectMake Device.screenWidth - ArrowRM, (RowH-ArrowH)/2, ArrowW, ArrowH
-    # @adView.adSize = Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape if Env.ads?
+    @adView.adSize = Device.portrait?? KGADAdSizeSmartBannerPortrait : KGADAdSizeSmartBannerLandscape if @adView && @adView.respond_to?('adSize=')
     super
   end
 
