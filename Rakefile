@@ -11,10 +11,11 @@ end
 DEVICE_IPHONE_5 = 'iPhone 5'
 DEVICE_IPHONE_6 = 'iPhone 6'
 DEVICE_IPHONE_6_PLUS = 'iPhone 6 Plus'
-DEVICE_IPAD = 'iPad Air'
 DEVICE_IPHONE_5_7 = 'iPhone 5s 7.1'
+DEVICE_IPAD = 'iPad Air'
 
 ENV['device_name'] = "iPhone 6 8.1"
+ENV['device_name'] = 'iPad Air'
 ENV['device_name'] = "iPhone 6"
 
 Motion::Project::App.setup do |app|
@@ -50,9 +51,9 @@ Motion::Project::App.setup do |app|
     app.provisioning_profile = "/Volumes/Vault/Sources/active/_etc/AdHoc_Profile_for_AllegroTime.mobileprovision"
     
     if ENV['appstore'] == 'yes'
-      app.entitlements['beta-reports-active'] = true
+      app.entitlements['beta-reports-active'] = true if ENV['beta'] == 'yes'
       app.short_version = "2.0.3"
-      app.version = "2.0.3.1"
+      app.version = "2.0.3.2"
       app.provisioning_profile = "/Volumes/Vault/Sources/active/_etc/AppStore_Profile_for_AllegroTime.mobileprovision"
     end
   end  
